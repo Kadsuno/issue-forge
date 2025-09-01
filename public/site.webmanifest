@@ -1,0 +1,25 @@
+{
+    "name": "IssueForge",
+    "short_name": "IssueForge",
+    "description": "Forge solutions from issues - Modern ticket system",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#6366f1",
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "favicon.ico",
+            "sizes": "16x16 32x32",
+            "type": "image/x-icon"
+        }
+    ],
+    "categories": ["productivity", "business", "utilities"],
+    "lang": "en",
+    "orientation": "portrait-primary"
+}

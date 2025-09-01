@@ -1,0 +1,177 @@
+---
+alwaysApply: true
+---
+
+# Laravel Ticket System (Redmine-Alternative)
+
+Ein modernes, selbst gehostetes Ticketsystem als Redmine-Alternative – entwickelt mit Laravel 12, Livewire, Tailwind CSS.
+
+---
+
+## 🔥 Features
+
+- Projekt- und Ticketverwaltung
+- Rollenbasierte Workflows
+- Kommentare mit Markdown-Unterstützung
+- Responsive UI mit Tailwind CSS
+- Livewire-Komponenten für dynamisches UI
+- REST API für Integration
+- Datei-Uploads & Ticket-Historie
+
+---
+
+## 📦 Stack
+
+- Laravel 12
+- Livewire 3
+- Blade Templates
+- Tailwind CSS
+- Laravel Breeze (Auth)
+- Markdown Editor (TALL-Editor oder einfach `marked.js`)
+- DDEV für lokale Entwicklung
+
+---
+
+## 🧑‍💻 Lokales Setup
+
+```bash
+# Laravel-Projekt erstellen (falls noch nicht geschehen)
+ddev composer create-project laravel/laravel .
+
+# Breeze installieren
+ddev php artisan breeze:install blade
+
+# Node-Module & Assets
+npm install && npm run dev
+
+# Migrationen & Seeder
+ddev php artisan migrate --seed
+```
+
+---
+
+## 📁 Projektstruktur (Auszug)
+
+```txt
+app/
+├── Http/Livewire/
+│   ├── TicketList.php
+│   └── TicketForm.php
+├── Models/
+│   ├── Ticket.php
+│   └── Project.php
+resources/views/
+├── livewire/
+│   ├── ticket-list.blade.php
+│   └── ticket-form.blade.php
+routes/
+├── web.php
+├── api.php
+```
+
+---
+
+## 📌 Roadmap
+
+Siehe [GitHub Project Board](https://github.com/YOUR_USERNAME/YOUR_REPO/projects) für eine komplette Roadmap. Grob gegliedert in:
+
+- Projekt-Setup
+- Ticket-CRUD
+- Workflows & Rollen
+- API & Mobile
+- Kommentare, Suche, Dateiuploads
+
+---
+
+## 📋 Cursor Project Rules (Empfehlung)
+
+```json
+{
+  "naming": {
+    "models": "PascalCase singular",
+    "controllers": "PascalCase singular + 'Controller'",
+    "livewire_components": "PascalCase",
+    "blade_views": "kebab-case",
+    "migrations": "snake_case with timestamp prefix",
+    "routes": "snake_case"
+  },
+  "architecture": {
+    "enforce_folder_structure": true,
+    "folder_structure": {
+      "Models": "app/Models",
+      "Livewire": "app/Http/Livewire",
+      "Controllers": "app/Http/Controllers",
+      "Views": "resources/views",
+      "API": "routes/api.php",
+      "Web": "routes/web.php"
+    }
+  },
+  "laravel": {
+    "prefer_route_resource": true,
+    "use_form_request_validation": true,
+    "avoid_fat_controllers": true,
+    "use_policies_for_authorization": true,
+    "use_casts_and_accessors": true
+  },
+  "livewire": {
+    "use_actions_for_events": true,
+    "keep_components_small": true,
+    "encapsulate_logic": true
+  },
+  "ui": {
+    "use_tailwind": true,
+    "use_markdown_for_descriptions": true,
+    "responsive_first": true
+  },
+  "testing": {
+    "write_feature_tests": true,
+    "write_unit_tests": true,
+    "prefer_pest_over_phpunit": false
+  },
+  "commit": {
+    "conventional_commits": true,
+    "types": [
+      "feat",
+      "fix",
+      "chore",
+      "refactor",
+      "docs",
+      "test"
+    ]
+  }
+}
+```
+
+---
+
+## 📄 License
+
+MIT License – Feel free to use, modify and share.
+
+---
+
+## 🤝 Contribution
+
+Pull Requests sind willkommen! Bitte beachte:
+
+- Schreibe verständlichen, getesteten Code
+- Nutze sprechende Commits (`feat:`, `fix:`, `chore:` etc.)
+- Dokumentiere neue Features oder Änderungen im Code und ggf. im README
+
+---
+
+## 💡 Inspiration
+
+- Redmine
+- Linear.app
+- GitHub Issues
+
+---
+
+## 📬 Kontakt
+
+Erstellt von [Mike Rauch aka Kadsuno](mailto:info@smash-up-randomizer.com)
+
+---
+
+> Work smart. Ship clean. Focus on what matters.

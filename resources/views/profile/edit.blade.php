@@ -1,0 +1,35 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white">Profile</h2>
+                    <p class="text-sm text-slate-400">Manage your account settings and preferences</p>
+                </div>
+            </div>
+        </div>
+    </x-slot>
+
+    <div class="py-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="card p-8 animate-fade-in-up">
+                @include('profile.partials.update-profile-information-form')
+            </div>
+
+            <div class="card p-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+                @include('profile.partials.update-password-form')
+            </div>
+
+            <div class="card p-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+                @include('profile.partials.delete-user-form')
+            </div>
+        </div>
+    </div>
+</x-app-layout>
