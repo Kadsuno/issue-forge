@@ -412,6 +412,13 @@
                         color: #cbd5e1 !important;
                         pointer-events: none;
                     }
+
+                    #ticket-editor .CodeMirror-cursor {
+                        background: #fff !important;
+                        border: none !important;
+                        width: 2px;
+                        opacity: 1;
+                    }
                 </style>
             </div>
 

@@ -878,6 +878,13 @@
                         #comment-form .cm-s-paper .cm-quote {
                             color: #cbd5e1 !important;
                         }
+
+                        #comment-form .CodeMirror-cursor {
+                            background: #fff !important;
+                            border: none !important;
+                            width: 2px;
+                            opacity: 1;
+                        }
                     </style>
                 </div>
             </div>
