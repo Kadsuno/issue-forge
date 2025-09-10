@@ -19,5 +19,3 @@ final class TicketCollection extends ResourceCollection
         ];
     }
 }
-
-

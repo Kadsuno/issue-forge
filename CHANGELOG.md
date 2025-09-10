@@ -1,6 +1,7 @@
 ## 2025-09-10
 
 ### Added
+
 - API v1 for Projects and Tickets: CRUD endpoints under `/api/v1/*`.
 - Admin bearer token auth via `token.admin` middleware and `API_ADMIN_TOKEN`.
 - Form Requests for validation, API Resources for responses.

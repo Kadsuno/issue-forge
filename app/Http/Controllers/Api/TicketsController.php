@@ -11,11 +11,10 @@ use App\Http\Resources\TicketCollection;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class TicketsController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(): TicketCollection
     {
         $query = Ticket::query()->with('project');
 
@@ -30,7 +29,7 @@ final class TicketsController extends Controller
         if ($search = request('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -49,29 +48,38 @@ final class TicketsController extends Controller
 
     public function store(TicketStoreRequest $request): JsonResponse
     {
-        $ticket = Ticket::create($request->validated());
+        $validated = $request->validated();
+
+        // If no user_id provided, use the first available user (for API requests)
+        if (! isset($validated['user_id'])) {
+            $validated['user_id'] = \App\Models\User::first()?->id ?? 1;
+        }
+
+        $ticket = Ticket::create($validated);
 
         return TicketResource::make($ticket->load('project'))->response()->setStatusCode(201);
     }
 
-    public function show(Ticket $ticket): TicketResource
+    public function show(string $id): TicketResource
     {
-        return TicketResource::make($ticket->load('project'));
+        $ticket = Ticket::with('project')->findOrFail((int) $id);
+
+        return TicketResource::make($ticket);
     }
 
-    public function update(TicketUpdateRequest $request, Ticket $ticket): TicketResource
+    public function update(TicketUpdateRequest $request, string $id): TicketResource
     {
+        $ticket = Ticket::findOrFail((int) $id);
         $ticket->update($request->validated());
 
         return TicketResource::make($ticket->load('project'));
     }
 
-    public function destroy(Ticket $ticket): JsonResponse
+    public function destroy(string $id): JsonResponse
     {
+        $ticket = Ticket::findOrFail((int) $id);
         $ticket->delete();
 
         return response()->json(null, 204);
     }
 }
-
-

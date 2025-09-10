@@ -22,5 +22,3 @@ final class ProjectResource extends JsonResource
         ];
     }
 }
-
-

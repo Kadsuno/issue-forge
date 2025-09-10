@@ -20,7 +20,7 @@ final class AdminTokenMiddleware
 
         if ($configuredToken === '') {
             return response()->json([
-                'message' => 'API admin token not configured.'
+                'message' => 'API admin token not configured.',
             ], 503);
         }
 
@@ -39,5 +39,3 @@ final class AdminTokenMiddleware
         return $next($request);
     }
 }
-
-

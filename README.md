@@ -40,7 +40,7 @@ A modern, self‑hosted ticket system and Redmine alternative — built with Lar
 
 ### Setup
 
-```bash
+````bash
 # Clone the repository
 git clone <repository-url> issueforge
 cd issueforge
@@ -60,31 +60,35 @@ vendor/bin/phpunit --colors=always
 
 # JS/CSS
 npm run lint
-```
-
+````
 
 # Install dependencies
+
 ddev composer install
 ddev exec npm install
 
 # Environment
+
 cp .env.example .env
 ddev exec php artisan key:generate
 
 # Database
+
 ddev exec php artisan migrate
 ddev exec php artisan db:seed --class=AdminUserSeeder
 
 # Build assets
+
 ddev exec npm run build
-```
+
+````
 
 ### Development
 
 ```bash
 # Run Vite dev server with HMR inside DDEV
 ddev exec npm run dev
-```
+````
 
 ### Admin user
 

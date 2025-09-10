@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Api;
 
 use App\Models\Project;
-use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,6 +24,12 @@ final class ProjectsTicketsApiTest extends TestCase
 
     public function test_projects_crud_flow(): void
     {
+        // Set up admin token for this test
+        config()->set('api.admin_token', 'test-token');
+
+        // Create a user for project ownership
+        User::factory()->create();
+
         // index unauthorized
         $this->get('/api/v1/projects')->assertStatus(401);
 
@@ -51,6 +57,12 @@ final class ProjectsTicketsApiTest extends TestCase
 
     public function test_tickets_crud_flow(): void
     {
+        // Set up admin token for this test
+        config()->set('api.admin_token', 'test-token');
+
+        // Create a user first (though Project::factory() should handle this automatically)
+        User::factory()->create();
+
         $project = Project::factory()->create(['name' => 'P1']);
 
         // create
@@ -83,5 +95,3 @@ final class ProjectsTicketsApiTest extends TestCase
         $this->deleteJson('/api/v1/tickets/'.$id, [], $this->authHeader())->assertNoContent();
     }
 }
-
-

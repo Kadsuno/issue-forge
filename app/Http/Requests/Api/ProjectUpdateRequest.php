@@ -22,5 +22,3 @@ final class ProjectUpdateRequest extends FormRequest
         ];
     }
 }
-
-

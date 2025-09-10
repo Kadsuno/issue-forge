@@ -24,5 +24,3 @@ final class TicketUpdateRequest extends FormRequest
         ];
     }
 }
-
-

@@ -21,8 +21,7 @@ final class TicketStoreRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'status' => ['nullable', 'in:open,in_progress,resolved,closed'],
             'priority' => ['nullable', 'in:low,medium,high,urgent'],
+            'user_id' => ['nullable', 'integer', 'exists:users,id'],
         ];
     }
 }
-
-
