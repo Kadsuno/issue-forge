@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasColumn('tickets', 'slug')) {
+        if (! Schema::hasColumn('tickets', 'slug')) {
             Schema::table('tickets', function (Blueprint $table) {
                 $table->string('slug')->unique()->after('title');
             });
@@ -23,7 +23,7 @@ return new class extends Migration
                 $slug = $base;
                 $i = 1;
                 while (in_array($slug, $existing) || DB::table('tickets')->where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $i++;
+                    $slug = $base.'-'.$i++;
                 }
                 DB::table('tickets')->where('id', $t->id)->update(['slug' => $slug]);
                 $existing[] = $slug;

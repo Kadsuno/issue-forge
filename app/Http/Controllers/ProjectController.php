@@ -53,7 +53,7 @@ class ProjectController extends Controller
             'default_assignee_id' => $validated['default_assignee_id'] ?? null,
             'visibility' => $validated['visibility'] ?? 'team',
             'ticket_prefix' => $validated['ticket_prefix'] ?? null,
-            'color' => isset($validated['color']) ? (str_starts_with($validated['color'], '#') ? $validated['color'] : '#' . $validated['color']) : null,
+            'color' => isset($validated['color']) ? (str_starts_with($validated['color'], '#') ? $validated['color'] : '#'.$validated['color']) : null,
             'priority' => $validated['priority'] ?? 'medium',
         ]);
 
@@ -111,7 +111,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:projects,name,' . $project->id,
+            'name' => 'required|string|max:255|unique:projects,name,'.$project->id,
             'description' => 'nullable|string',
             'is_active' => 'nullable|boolean',
             'start_date' => 'nullable|date',
@@ -133,7 +133,7 @@ class ProjectController extends Controller
             'visibility' => $validated['visibility'] ?? ($project->visibility ?? 'team'),
             'ticket_prefix' => $validated['ticket_prefix'] ?? $project->ticket_prefix,
             'color' => isset($validated['color'])
-                ? (str_starts_with($validated['color'], '#') ? $validated['color'] : '#' . $validated['color'])
+                ? (str_starts_with($validated['color'], '#') ? $validated['color'] : '#'.$validated['color'])
                 : $project->color,
             'priority' => $validated['priority'] ?? ($project->priority ?? 'medium'),
         ]);

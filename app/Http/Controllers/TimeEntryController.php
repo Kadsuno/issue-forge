@@ -35,6 +35,7 @@ class TimeEntryController extends Controller
     {
         $ticket = $timeEntry->ticket;
         $timeEntry->delete();
+
         return redirect()->route('tickets.show', $ticket)->with('success', 'Time entry removed.');
     }
 

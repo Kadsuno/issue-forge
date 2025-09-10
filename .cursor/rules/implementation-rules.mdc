@@ -1,0 +1,11 @@
+---
+alwaysApply: false
+---
+1. Start DDEV.
+2. Switch in git to the dev branch.
+3. Create a new branch based on the dev branch with the prefix and name.
+4. Begin with the implementation.
+5. Check for linting errors for PHP, CSS and JavaScript.
+6. Create unit/function tests for PHP and JavaScript.
+7. Run the tests and adjust them if they fail. Repeat this until all tests are passed.
+8. Create a changelog to record the implementation. Use always the current date. You can search the web for the current date.

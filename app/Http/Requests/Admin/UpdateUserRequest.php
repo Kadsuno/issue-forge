@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Validate and authorize requests to update an existing User in the admin area.
@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . ($user?->id ?? 'NULL')],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.($user?->id ?? 'NULL')],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'is_admin' => ['sometimes', 'boolean'],
             'roles' => ['sometimes', 'array'],

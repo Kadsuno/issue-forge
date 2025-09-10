@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Ticket;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class ReportsController extends Controller
 {
@@ -48,6 +48,7 @@ class ReportsController extends Controller
             ->get()
             ->map(function ($row) {
                 $row->project = Project::find($row->project_id);
+
                 return $row;
             });
 

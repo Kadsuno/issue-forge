@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -25,21 +25,10 @@
 
     body {
         @apply bg-dark-950 text-slate-100 transition-colors duration-300;
-        background-image: radial-gradient(
-                at 40% 20%,
-                rgba(59, 130, 246, 0.1) 0px,
-                transparent 50%
-            ),
-            radial-gradient(
-                at 80% 0%,
-                rgba(217, 70, 239, 0.1) 0px,
-                transparent 50%
-            ),
-            radial-gradient(
-                at 0% 50%,
-                rgba(16, 185, 129, 0.1) 0px,
-                transparent 50%
-            );
+        background-image:
+            radial-gradient(at 40% 20%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+            radial-gradient(at 80% 0%, rgba(217, 70, 239, 0.1) 0px, transparent 50%),
+            radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
     }
 
     * {
@@ -60,7 +49,7 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        @apply bg-dark-600 rounded-full;
+        @apply rounded-full bg-dark-600;
     }
 
     ::-webkit-scrollbar-thumb:hover {
@@ -72,27 +61,27 @@
 @layer components {
     /* Button Components */
     .btn {
-        @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-950 disabled:opacity-50 disabled:cursor-not-allowed;
+        @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-950 disabled:cursor-not-allowed disabled:opacity-50;
     }
 
     .btn-primary {
-        @apply btn bg-primary-600 hover:bg-primary-700 text-white shadow-lg hover:shadow-xl hover:shadow-primary-500/25 focus:ring-primary-500 transform hover:scale-105 active:scale-95;
+        @apply btn transform bg-primary-600 text-white shadow-lg hover:scale-105 hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-500/25 focus:ring-primary-500 active:scale-95;
     }
 
     .btn-secondary {
-        @apply btn bg-dark-700 hover:bg-dark-600 text-slate-200 border border-dark-600 hover:border-dark-500 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95;
+        @apply btn transform border border-dark-600 bg-dark-700 text-slate-200 shadow-lg hover:scale-105 hover:border-dark-500 hover:bg-dark-600 hover:shadow-xl active:scale-95;
     }
 
     .btn-accent {
-        @apply btn bg-accent-600 hover:bg-accent-700 text-white shadow-lg hover:shadow-xl hover:shadow-accent-500/25 focus:ring-accent-500 transform hover:scale-105 active:scale-95;
+        @apply btn transform bg-accent-600 text-white shadow-lg hover:scale-105 hover:bg-accent-700 hover:shadow-xl hover:shadow-accent-500/25 focus:ring-accent-500 active:scale-95;
     }
 
     .btn-ghost {
-        @apply btn bg-transparent hover:bg-dark-800 text-slate-300 hover:text-white border border-transparent hover:border-dark-600;
+        @apply btn border border-transparent bg-transparent text-slate-300 hover:border-dark-600 hover:bg-dark-800 hover:text-white;
     }
 
     .btn-danger {
-        @apply btn bg-danger-600 hover:bg-danger-700 text-white shadow-lg hover:shadow-xl hover:shadow-danger-500/25 focus:ring-danger-500 transform hover:scale-105 active:scale-95;
+        @apply btn transform bg-danger-600 text-white shadow-lg hover:scale-105 hover:bg-danger-700 hover:shadow-xl hover:shadow-danger-500/25 focus:ring-danger-500 active:scale-95;
     }
 
     .btn-sm {
@@ -101,15 +90,15 @@
 
     /* Card Components */
     .card {
-        @apply bg-dark-800/50 backdrop-blur-xl border border-dark-700/50 rounded-xl shadow-dark overflow-hidden;
+        @apply overflow-hidden rounded-xl border border-dark-700/50 bg-dark-800/50 shadow-dark backdrop-blur-xl;
     }
 
     .card-glass {
-        @apply glass-dark rounded-xl shadow-glass backdrop-blur-xl border border-white/10;
+        @apply rounded-xl border border-white/10 shadow-glass backdrop-blur-xl glass-dark;
     }
 
     .card-hover {
-        @apply card transition-all duration-300 hover:shadow-dark-lg hover:scale-[1.02] hover:border-dark-600/50;
+        @apply card transition-all duration-300 hover:scale-[1.02] hover:border-dark-600/50 hover:shadow-dark-lg;
     }
 
     .card-glow {
@@ -118,41 +107,41 @@
 
     /* Input Components */
     .input {
-        @apply block w-full px-4 py-3 bg-dark-800/50 border border-dark-600 rounded-lg text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 backdrop-blur-sm;
+        @apply block w-full rounded-lg border border-dark-600 bg-dark-800/50 px-4 py-3 text-slate-100 placeholder-slate-400 backdrop-blur-sm transition-all duration-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500;
     }
 
     .input-error {
-        @apply input border-danger-500 focus:ring-danger-500 focus:border-danger-500;
+        @apply input border-danger-500 focus:border-danger-500 focus:ring-danger-500;
     }
 
     /* Badge Components */
     .badge {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+        @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium;
     }
 
     .badge-primary {
-        @apply badge bg-primary-500/20 text-primary-400 border border-primary-500/30;
+        @apply badge border border-primary-500/30 bg-primary-500/20 text-primary-400;
     }
 
     .badge-success {
-        @apply badge bg-success-500/20 text-success-400 border border-success-500/30;
+        @apply badge border border-success-500/30 bg-success-500/20 text-success-400;
     }
 
     .badge-warning {
-        @apply badge bg-warning-500/20 text-warning-400 border border-warning-500/30;
+        @apply badge border border-warning-500/30 bg-warning-500/20 text-warning-400;
     }
 
     .badge-danger {
-        @apply badge bg-danger-500/20 text-danger-400 border border-danger-500/30;
+        @apply badge border border-danger-500/30 bg-danger-500/20 text-danger-400;
     }
 
     /* Navigation Components */
     .nav-link {
-        @apply flex items-center px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-dark-700/50 rounded-lg transition-all duration-200;
+        @apply flex items-center rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all duration-200 hover:bg-dark-700/50 hover:text-white;
     }
 
     .nav-link-active {
-        @apply nav-link bg-primary-600/20 text-primary-400 border-r-2 border-primary-500;
+        @apply nav-link border-r-2 border-primary-500 bg-primary-600/20 text-primary-400;
     }
 
     /* Nav items spacing without relying on Tailwind gap utilities */
@@ -172,15 +161,15 @@
 
     /* Layout Components */
     .page-header {
-        @apply bg-dark-900/50 backdrop-blur-xl border-b border-dark-700/50 shadow-lg;
+        @apply border-b border-dark-700/50 bg-dark-900/50 shadow-lg backdrop-blur-xl;
     }
 
     .sidebar {
-        @apply bg-dark-900/80 backdrop-blur-xl border-r border-dark-700/50;
+        @apply border-r border-dark-700/50 bg-dark-900/80 backdrop-blur-xl;
     }
 
     .main-content {
-        @apply bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950 min-h-screen;
+        @apply min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950;
     }
 
     /* Animation Helpers */
@@ -193,7 +182,7 @@
     }
 
     .hover-lift {
-        @apply transition-transform duration-200 hover:transform hover:-translate-y-1;
+        @apply transition-transform duration-200 hover:-translate-y-1 hover:transform;
     }
 
     .hover-glow {
@@ -240,13 +229,15 @@
     }
 
     .glow-border::before {
-        content: "";
+        content: '';
         position: absolute;
         inset: -1px;
         padding: 1px;
         background: linear-gradient(45deg, #3b82f6, #d946ef, #10b981, #3b82f6);
         border-radius: inherit;
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
         mask-composite: subtract;
         animation: glow-border-rotate 2s linear infinite;
     }

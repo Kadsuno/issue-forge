@@ -35,6 +35,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::orderBy('name')->pluck('name');
+
         return view('admin.users.create', compact('roles'));
     }
 
@@ -52,7 +53,7 @@ class UserController extends Controller
             'is_admin' => (bool) ($validated['is_admin'] ?? false),
         ]);
 
-        if (!empty($validated['roles'])) {
+        if (! empty($validated['roles'])) {
             $user->syncRoles($validated['roles']);
         }
 
@@ -75,6 +76,7 @@ class UserController extends Controller
     {
         $roles = Role::orderBy('name')->pluck('name');
         $userRoleNames = $user->getRoleNames();
+
         return view('admin.users.edit', compact('user', 'roles', 'userRoleNames'));
     }
 
@@ -91,7 +93,7 @@ class UserController extends Controller
             'is_admin' => (bool) ($validated['is_admin'] ?? false),
         ];
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $updateData['password'] = Hash::make($validated['password']);
         }
 
