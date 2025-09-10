@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ReportsController;
-use App\Http\Controllers\NotificationController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
 
     // Project routes
     Route::resource('projects', ProjectController::class)->parameters([
-        'projects' => 'project:slug'
+        'projects' => 'project:slug',
     ]);
 
     // Ticket routes
@@ -93,4 +93,4 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

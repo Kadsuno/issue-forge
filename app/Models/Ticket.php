@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ticket extends Model
 {
@@ -35,34 +34,48 @@ class Ticket extends Model
      * Status constants
      */
     const STATUS_OPEN = 'open';
+
     const STATUS_IN_PROGRESS = 'in_progress';
+
     const STATUS_RESOLVED = 'resolved';
+
     const STATUS_CLOSED = 'closed';
 
     /**
      * Priority constants
      */
     const PRIORITY_LOW = 'low';
+
     const PRIORITY_MEDIUM = 'medium';
+
     const PRIORITY_HIGH = 'high';
+
     const PRIORITY_URGENT = 'urgent';
 
     /**
      * Type constants
      */
     const TYPE_BUG = 'bug';
+
     const TYPE_TASK = 'task';
+
     const TYPE_FEATURE = 'feature';
+
     const TYPE_IMPROVEMENT = 'improvement';
+
     const TYPE_CHORE = 'chore';
 
     /**
      * Severities
      */
     const SEVERITY_TRIVIAL = 'trivial';
+
     const SEVERITY_MINOR = 'minor';
+
     const SEVERITY_MAJOR = 'major';
+
     const SEVERITY_CRITICAL = 'critical';
+
     const SEVERITY_BLOCKER = 'blocker';
 
     /**
@@ -188,7 +201,7 @@ class Ticket extends Model
      */
     public function isOverdue(): bool
     {
-        return $this->due_date && $this->due_date->isPast() && !in_array($this->status, [self::STATUS_RESOLVED, self::STATUS_CLOSED]);
+        return $this->due_date && $this->due_date->isPast() && ! in_array($this->status, [self::STATUS_RESOLVED, self::STATUS_CLOSED]);
     }
 
     /**
@@ -225,6 +238,7 @@ class Ticket extends Model
     public function getNumberAttribute(): string
     {
         $prefix = optional($this->project)->ticket_prefix;
-        return $prefix ? ($prefix . '-' . $this->id) : ('#' . $this->id);
+
+        return $prefix ? ($prefix.'-'.$this->id) : ('#'.$this->id);
     }
 }

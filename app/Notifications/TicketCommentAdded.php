@@ -30,6 +30,7 @@ class TicketCommentAdded extends Notification
         if ($this->shouldSendMail($notifiable)) {
             $channels[] = 'mail';
         }
+
         return $channels;
     }
 
@@ -41,11 +42,11 @@ class TicketCommentAdded extends Notification
     public function toMail($notifiable): MailMessage
     {
         $ticket = $this->ticket->loadMissing(['project', 'user', 'assignedUser', 'parent']);
-        $url = route('tickets.show', $ticket) . '#comments';
-        $subject = 'New comment: ' . $ticket->number . ' — ' . $ticket->title;
+        $url = route('tickets.show', $ticket).'#comments';
+        $subject = 'New comment: '.$ticket->number.' — '.$ticket->title;
 
         $meta = [
-            'Ticket' => $ticket->number . ' — ' . $ticket->title,
+            'Ticket' => $ticket->number.' — '.$ticket->title,
             'Project' => optional($ticket->project)->name,
             'Status' => ucfirst((string) $ticket->status),
             'Priority' => ucfirst((string) $ticket->priority),
@@ -57,7 +58,7 @@ class TicketCommentAdded extends Notification
             'Estimate' => $this->formatMinutes($ticket->estimate_minutes),
             'Labels' => $ticket->labels ?: '—',
             'Parent' => optional($ticket->parent)->number
-                ? ($ticket->parent->number . ' — ' . $ticket->parent->title)
+                ? ($ticket->parent->number.' — '.$ticket->parent->title)
                 : '—',
             'Updated' => optional($ticket->updated_at)?->toDayDateTimeString(),
         ];
@@ -85,6 +86,7 @@ class TicketCommentAdded extends Notification
         }
         $h = intdiv($minutes, 60);
         $m = $minutes % 60;
+
         return sprintf('%d:%02d', $h, $m);
     }
 
@@ -102,9 +104,9 @@ class TicketCommentAdded extends Notification
             'project_id' => $this->ticket->project_id,
             'comment_id' => $this->comment->id,
             'comment_user_id' => $this->comment->user_id,
-            'message' => 'New comment from ' . $this->actorName,
+            'message' => 'New comment from '.$this->actorName,
             'snippet' => str($this->comment->body)->limit(140)->toString(),
-            'url' => route('tickets.show', $this->ticket) . '#comments',
+            'url' => route('tickets.show', $this->ticket).'#comments',
         ];
     }
 
@@ -114,17 +116,18 @@ class TicketCommentAdded extends Notification
     protected function shouldSendMail($notifiable): bool
     {
         $default = config('mail.default');
-        if (!$default) {
+        if (! $default) {
             return false;
         }
         $mailer = config("mail.mailers.$default");
         if (empty($mailer)) {
             return false;
         }
-        if (!config('mail.from.address')) {
+        if (! config('mail.from.address')) {
             return false;
         }
         $email = $notifiable->email ?? null;
-        return !empty($email);
+
+        return ! empty($email);
     }
 }

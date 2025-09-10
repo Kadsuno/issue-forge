@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -28,7 +27,7 @@ class AdminUserSeeder extends Seeder
         );
         $admin = User::where('email', 'admin@example.com')->first();
         $role = Role::firstOrCreate(['name' => 'admin']);
-        if (!$admin->hasRole('admin')) {
+        if (! $admin->hasRole('admin')) {
             $admin->assignRole($role);
         }
 

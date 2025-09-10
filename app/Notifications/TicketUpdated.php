@@ -14,7 +14,7 @@ class TicketUpdated extends Notification
     public function __construct(
         public Ticket $ticket,
         public string $message,
-        public array $changes = [],
+        public array $changes,
         public int $actorId,
         public string $actorName
     ) {}
@@ -31,6 +31,7 @@ class TicketUpdated extends Notification
         if ($this->shouldSendMail($notifiable)) {
             $channels[] = 'mail';
         }
+
         return $channels;
     }
 
@@ -43,19 +44,20 @@ class TicketUpdated extends Notification
     {
         $ticket = $this->ticket->loadMissing(['project', 'user', 'assignedUser', 'parent']);
         $url = route('tickets.show', $ticket);
-        $subject = 'Ticket updated: ' . $ticket->number . ' — ' . $ticket->title;
+        $subject = 'Ticket updated: '.$ticket->number.' — '.$ticket->title;
 
         $changesSummary = collect($this->changes)
             ->map(function (array $change): string {
                 $field = $change['field'] ?? 'field';
                 $old = array_key_exists('old', $change) ? ($change['old'] === null ? '—' : (string) $change['old']) : '—';
                 $new = array_key_exists('new', $change) ? ($change['new'] === null ? '—' : (string) $change['new']) : '—';
+
                 return "$field: $old → $new";
             })
             ->implode(', ');
 
         $meta = [
-            'Ticket' => $ticket->number . ' — ' . $ticket->title,
+            'Ticket' => $ticket->number.' — '.$ticket->title,
             'Project' => optional($ticket->project)->name,
             'Status' => ucfirst((string) $ticket->status),
             'Priority' => ucfirst((string) $ticket->priority),
@@ -67,7 +69,7 @@ class TicketUpdated extends Notification
             'Estimate' => $this->formatMinutes($ticket->estimate_minutes),
             'Labels' => $ticket->labels ?: '—',
             'Parent' => optional($ticket->parent)->number
-                ? ($ticket->parent->number . ' — ' . $ticket->parent->title)
+                ? ($ticket->parent->number.' — '.$ticket->parent->title)
                 : '—',
             'Updated' => optional($ticket->updated_at)?->toDayDateTimeString(),
         ];
@@ -112,18 +114,19 @@ class TicketUpdated extends Notification
     protected function shouldSendMail($notifiable): bool
     {
         $default = config('mail.default');
-        if (!$default) {
+        if (! $default) {
             return false;
         }
         $mailer = config("mail.mailers.$default");
         if (empty($mailer)) {
             return false;
         }
-        if (!config('mail.from.address')) {
+        if (! config('mail.from.address')) {
             return false;
         }
         $email = $notifiable->email ?? null;
-        return !empty($email);
+
+        return ! empty($email);
     }
 
     /**
@@ -136,6 +139,7 @@ class TicketUpdated extends Notification
         }
         $h = intdiv($minutes, 60);
         $m = $minutes % 60;
+
         return sprintf('%d:%02d', $h, $m);
     }
 }

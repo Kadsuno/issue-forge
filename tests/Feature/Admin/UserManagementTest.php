@@ -3,9 +3,9 @@
 namespace Tests\Feature\Admin;
 
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Database\Seeders\RolesAndPermissionsSeeder;
 
 class UserManagementTest extends TestCase
 {

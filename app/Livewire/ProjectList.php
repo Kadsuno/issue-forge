@@ -13,11 +13,14 @@ class ProjectList extends Component
     use WithPagination;
 
     public $showCreateForm = false;
+
     public $search = '';
 
     // Form fields
     public $name = '';
+
     public $description = '';
+
     public $is_active = true;
 
     /**
@@ -45,8 +48,8 @@ class ProjectList extends Component
             ])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%')
-                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                    $q->where('name', 'like', '%'.$this->search.'%')
+                        ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
             ->latest()
@@ -57,8 +60,8 @@ class ProjectList extends Component
 
     public function toggleCreateForm()
     {
-        $this->showCreateForm = !$this->showCreateForm;
-        if (!$this->showCreateForm) {
+        $this->showCreateForm = ! $this->showCreateForm;
+        if (! $this->showCreateForm) {
             $this->resetForm();
         }
     }
@@ -86,7 +89,7 @@ class ProjectList extends Component
     public function toggleProjectStatus($projectId)
     {
         $project = Project::findOrFail($projectId);
-        $project->update(['is_active' => !$project->is_active]);
+        $project->update(['is_active' => ! $project->is_active]);
 
         session()->flash('message', 'Project status updated!');
     }
