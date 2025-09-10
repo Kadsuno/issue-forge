@@ -16,6 +16,7 @@ class TicketCommentController extends Controller
     public function edit(TicketComment $comment)
     {
         $ticket = $comment->ticket()->with('project')->first();
+
         return view('comments.edit', compact('comment', 'ticket'));
     }
 
@@ -37,7 +38,7 @@ class TicketCommentController extends Controller
         $recipients = $ticket->watchers()->get()->merge([
             $ticket->user,
             $ticket->assignedUser,
-        ])->filter()->unique('id')->reject(fn($u) => $u->id === Auth::id());
+        ])->filter()->unique('id')->reject(fn ($u) => $u->id === Auth::id());
         foreach ($recipients as $recipient) {
             $recipient->notify(new TicketCommentAdded($ticket, $comment, Auth::user()->name));
         }
@@ -67,6 +68,7 @@ class TicketCommentController extends Controller
     {
         $ticket = $comment->ticket;
         $comment->delete();
+
         return redirect()->route('tickets.show', $ticket)->with('success', 'Comment deleted.');
     }
 }

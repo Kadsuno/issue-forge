@@ -55,10 +55,10 @@ class TicketController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:' . implode(',', array_keys(Ticket::getStatuses())),
-            'priority' => 'required|in:' . implode(',', array_keys(Ticket::getPriorities())),
-            'type' => 'nullable|in:' . implode(',', array_keys(Ticket::getTypes())),
-            'severity' => 'nullable|in:' . implode(',', array_keys(Ticket::getSeverities())),
+            'status' => 'required|in:'.implode(',', array_keys(Ticket::getStatuses())),
+            'priority' => 'required|in:'.implode(',', array_keys(Ticket::getPriorities())),
+            'type' => 'nullable|in:'.implode(',', array_keys(Ticket::getTypes())),
+            'severity' => 'nullable|in:'.implode(',', array_keys(Ticket::getSeverities())),
             'assigned_to' => 'nullable|exists:users,id',
             'due_date' => 'nullable|date|after:today',
             'estimate_minutes' => 'nullable|integer|min:0|max:100000',
@@ -81,7 +81,7 @@ class TicketController extends Controller
             $ticket->user_id,
             $ticket->assigned_to,
         ])));
-        if (!empty($watcherIds)) {
+        if (! empty($watcherIds)) {
             $ticket->watchers()->syncWithoutDetaching($watcherIds);
         }
 
@@ -89,11 +89,11 @@ class TicketController extends Controller
         $recipients = $ticket->watchers()->get()->merge([
             $ticket->user,
             $ticket->assignedUser,
-        ])->filter()->unique('id')->reject(fn($u) => $u->id === Auth::id());
+        ])->filter()->unique('id')->reject(fn ($u) => $u->id === Auth::id());
         foreach ($recipients as $recipient) {
             $recipient->notify(new \App\Notifications\TicketUpdated(
                 $ticket,
-                'Ticket created by ' . Auth::user()->name,
+                'Ticket created by '.Auth::user()->name,
                 [],
                 Auth::id(),
                 Auth::user()->name
@@ -136,10 +136,10 @@ class TicketController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:' . implode(',', array_keys(Ticket::getStatuses())),
-            'priority' => 'required|in:' . implode(',', array_keys(Ticket::getPriorities())),
-            'type' => 'nullable|in:' . implode(',', array_keys(Ticket::getTypes())),
-            'severity' => 'nullable|in:' . implode(',', array_keys(Ticket::getSeverities())),
+            'status' => 'required|in:'.implode(',', array_keys(Ticket::getStatuses())),
+            'priority' => 'required|in:'.implode(',', array_keys(Ticket::getPriorities())),
+            'type' => 'nullable|in:'.implode(',', array_keys(Ticket::getTypes())),
+            'severity' => 'nullable|in:'.implode(',', array_keys(Ticket::getSeverities())),
             'assigned_to' => 'nullable|exists:users,id',
             'due_date' => 'nullable|date|after:today',
             'estimate_minutes' => 'nullable|integer|min:0|max:100000',
@@ -158,7 +158,7 @@ class TicketController extends Controller
             $ticket->user_id,
             $ticket->assigned_to,
         ])));
-        if (!empty($watcherIds)) {
+        if (! empty($watcherIds)) {
             $ticket->watchers()->syncWithoutDetaching($watcherIds);
         }
 
@@ -172,6 +172,7 @@ class TicketController extends Controller
                 if ($key === 'assigned_to') {
                     $oldName = $oldValue ? (\App\Models\User::find($oldValue)?->name ?? (string) $oldValue) : null;
                     $newName = $newValue ? (\App\Models\User::find($newValue)?->name ?? (string) $newValue) : null;
+
                     return [
                         'field' => 'assignee',
                         'old' => $oldName ?? 'Unassigned',
@@ -188,11 +189,11 @@ class TicketController extends Controller
             $recipients = $ticket->watchers()->get()->merge([
                 $ticket->user,
                 $ticket->assignedUser,
-            ])->filter()->unique('id')->reject(fn($u) => $u->id === Auth::id());
+            ])->filter()->unique('id')->reject(fn ($u) => $u->id === Auth::id());
             foreach ($recipients as $recipient) {
                 $recipient->notify(new TicketUpdated(
                     $ticket,
-                    'Ticket updated by ' . Auth::user()->name,
+                    'Ticket updated by '.Auth::user()->name,
                     $changedSummary,
                     Auth::id(),
                     Auth::user()->name

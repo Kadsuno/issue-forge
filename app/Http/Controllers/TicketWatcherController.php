@@ -27,11 +27,11 @@ class TicketWatcherController extends Controller
                 ->merge([$ticket->user, $ticket->assignedUser])
                 ->filter()
                 ->unique('id')
-                ->reject(fn($u) => $u->id === (Auth::id() ?? 0));
+                ->reject(fn ($u) => $u->id === (Auth::id() ?? 0));
             foreach ($recipients as $recipient) {
                 $recipient->notify(new \App\Notifications\TicketUpdated(
                     $ticket,
-                    'Watcher added by ' . (Auth::user()->name ?? 'System'),
+                    'Watcher added by '.(Auth::user()->name ?? 'System'),
                     [['field' => 'watchers', 'old' => '—', 'new' => $addedUser->name]],
                     Auth::id() ?? 0,
                     Auth::user()->name ?? 'System'

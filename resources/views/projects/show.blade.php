@@ -13,11 +13,6 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-bold text-white">{{ $project->name }}</h2>
-                        @if ($project->description)
-                            <div class="text-sm text-slate-400 leading-relaxed">
-                                {!! Str::markdown($project->description, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -39,6 +34,9 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if ($project->description)
+                <x-description-card :content="Str::markdown($project->description, ['html_input' => 'strip', 'allow_unsafe_links' => false])" />
+            @endif
             <!-- Flash Messages -->
             @if (session('success'))
                 <div class="mb-6 card p-4 bg-success-500/10 border border-success-500/20 animate-fade-in-up">

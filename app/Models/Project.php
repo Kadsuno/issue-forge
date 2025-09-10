@@ -38,7 +38,7 @@ class Project extends Model
         parent::boot();
 
         static::creating(function ($project) {
-            if (!$project->slug) {
+            if (! $project->slug) {
                 $project->slug = Str::slug($project->name);
             }
         });

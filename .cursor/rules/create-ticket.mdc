@@ -1,0 +1,28 @@
+---
+alwaysApply: false
+---
+1. Create a ticket title to fit the issue.
+2. Create the description based on the issue with the following structure:
+
+Bug/Feature
+
+Enviroment (e.g. Live)
+
+System (e.g. Laravel v11.x)
+
+Affected Components
+
+Specification
+
+Code Examples
+
+Expected Result
+
+Hints/Risks
+
+Attachments
+
+4. Create the ticket as a markdown file in docs/tickets.
+5. Create a detailed plan based on your analysis and the ticket as a markdown file in docs/plans.
+
+Just create the ticket and the plan. Do not start with the implementation.
