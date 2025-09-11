@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'slug',
     ];
 
     /**
@@ -49,6 +51,35 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
         ];
+    }
+
+    /**
+     * Boot model hooks.
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (self $user): void {
+            if (empty($user->slug) && ! empty($user->name)) {
+                $base = Str::slug($user->name);
+                $slug = $base ?: 'user';
+                $suffix = 1;
+                while (static::where('slug', $slug)->exists()) {
+                    $suffix++;
+                    $slug = $base . '-' . $suffix;
+                }
+                $user->slug = $slug;
+            }
+        });
+    }
+
+    /**
+     * Bind users by slug in routes.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     /**

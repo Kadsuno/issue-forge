@@ -58,8 +58,10 @@ Route::middleware('auth')->group(function () {
         'projects' => 'project:slug',
     ]);
 
-    // Ticket routes
-    Route::resource('projects.tickets', TicketController::class)->shallow();
+    // Ticket routes (bind tickets by slug)
+    Route::resource('projects.tickets', TicketController::class)->parameters([
+        'tickets' => 'ticket:slug',
+    ])->shallow();
     Route::post('tickets/{ticket}/watchers', [\App\Http\Controllers\TicketWatcherController::class, 'store'])->name('tickets.watchers.store');
     Route::delete('tickets/{ticket}/watchers/{user}', [\App\Http\Controllers\TicketWatcherController::class, 'destroy'])->name('tickets.watchers.destroy');
     Route::post('tickets/{ticket}/time-entries', [\App\Http\Controllers\TimeEntryController::class, 'store'])->name('tickets.time.store');
@@ -89,8 +91,10 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes (policy-protected in controller)
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->parameters([
+            'users' => 'user:slug',
+        ]);
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
