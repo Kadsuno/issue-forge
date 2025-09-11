@@ -12,8 +12,12 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        // Root should redirect to dashboard first
+        $this->get('/')
+            ->assertRedirect(route('dashboard'));
 
-        $response->assertStatus(200);
+        // Dashboard requires auth → guests are redirected to login
+        $this->get('/dashboard')
+            ->assertRedirect(route('login'));
     }
 }

@@ -265,7 +265,7 @@
                         'shadow-[0_0_30px_-12px_rgba(239,68,68,0.6)]': t.type==='error'
                     }">
                 </div>
-                <div class="absolute inset-0 rounded-xl border"
+                <div class="absolute inset-0 -z-10 rounded-xl border"
                     :class="{
                         'border-dark-600/60 bg-dark-800/90': t.type==='info',
                         'border-success-700/40 bg-success-900/70': t.type==='success',

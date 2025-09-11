@@ -6,20 +6,20 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 ### 🎨 **Modern Color Palette**
 
--   **Primary Colors**: Blue shades (50–950) for primary actions
--   **Accent Colors**: Violet/Pink tones for accents and highlights
--   **Status Colors**: Success (Green), Warning (Orange), Danger (Red)
--   **Dark Colors**: Gray/Slate tones for dark backgrounds
--   **Gradient Support**: Automatic gradient utilities
+- **Primary Colors**: Blue shades (50–950) for primary actions
+- **Accent Colors**: Violet/Pink tones for accents and highlights
+- **Status Colors**: Success (Green), Warning (Orange), Danger (Red)
+- **Dark Colors**: Gray/Slate tones for dark backgrounds
+- **Gradient Support**: Automatic gradient utilities
 
 ### ⚡ **Animations & Transitions**
 
--   **Fade Animations**: `animate-fade-in`, `animate-fade-in-up`
--   **Slide Animations**: `animate-slide-in-right`, `animate-slide-in-left`
--   **Bounce Effects**: `animate-bounce-in`
--   **Glow Effects**: `animate-glow`, `hover-glow`
--   **Hover Transforms**: `hover-lift` for subtle motion
--   **Smooth Transitions**: Consistent easing across components
+- **Fade Animations**: `animate-fade-in`, `animate-fade-in-up`
+- **Slide Animations**: `animate-slide-in-right`, `animate-slide-in-left`
+- **Bounce Effects**: `animate-bounce-in`
+- **Glow Effects**: `animate-glow`, `hover-glow`
+- **Hover Transforms**: `hover-lift` for subtle motion
+- **Smooth Transitions**: Consistent easing across components
 
 ### 🎯 **Button System**
 
@@ -42,11 +42,11 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 **Features:**
 
--   Hover scale to 105%
--   Glow effects on hover
--   Active scale to 95%
--   Icon support
--   Multiple sizes
+- Hover scale to 105%
+- Glow effects on hover
+- Active scale to 95%
+- Icon support
+- Multiple sizes
 
 ### 🎴 **Card System**
 
@@ -66,11 +66,11 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 **Features:**
 
--   Glassmorphism with `backdrop-blur`
--   Hover animations and scaling
--   Glow effects on hover
--   Dark/Light theme support
--   Multiple shadow levels
+- Glassmorphism with `backdrop-blur`
+- Hover animations and scaling
+- Glow effects on hover
+- Dark/Light theme support
+- Multiple shadow levels
 
 ### 📝 **Form Elements**
 
@@ -92,11 +92,11 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 **Features:**
 
--   Consistent dark theme styles
--   Focus states highlighted with primary color
--   Error states in danger color
--   Styled placeholders
--   Backdrop blur effects
+- Consistent dark theme styles
+- Focus states highlighted with primary color
+- Error states in danger color
+- Styled placeholders
+- Backdrop blur effects
 
 ### 🏷️ **Badge System**
 
@@ -109,19 +109,19 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 **Features:**
 
--   Semi-transparent backgrounds
--   Matching border colors
--   Responsive sizes
--   Clear status indicators
+- Semi-transparent backgrounds
+- Matching border colors
+- Responsive sizes
+- Clear status indicators
 
 ### 🎭 **Navigation System**
 
--   **Fixed navigation** with backdrop blur
--   **Responsive mobile menu** with animations
--   **User avatar** with gradient ring
--   **Notification system** with dropdown
--   **Integrated search bar**
--   **Animated logo**
+- **Fixed navigation** with backdrop blur
+- **Responsive mobile menu** with animations
+- **User avatar** with gradient ring
+- **Notification system** with dropdown
+- **Integrated search bar**
+- **Animated logo**
 
 ### 📚 **Typography System**
 
@@ -137,11 +137,11 @@ A comprehensive, modern dark theme design system for the Laravel Ticket System, 
 
 **Features:**
 
--   Inter as default font
--   Gradient text effects
--   Text shadow utilities
--   Responsive typography scale
--   Optimized legibility for dark mode
+- Inter as default font
+- Gradient text effects
+- Text shadow utilities
+- Responsive typography scale
+- Optimized legibility for dark mode
 
 ### ✨ **Utility Classes**
 
@@ -187,11 +187,11 @@ npm run build
 
 This design system extends Tailwind CSS with:
 
--   Custom colors
--   Custom animations
--   Custom utilities
--   Dark mode support
--   Custom plugins
+- Custom colors
+- Custom animations
+- Custom utilities
+- Dark mode support
+- Custom plugins
 
 ### 3. **Dark Mode**
 
@@ -217,27 +217,27 @@ For enhanced interactivity:
 
 ### **Modern & Clean**
 
--   Minimal design
--   Clear hierarchy
--   Consistent spacing
+- Minimal design
+- Clear hierarchy
+- Consistent spacing
 
 ### **Animated & Responsive**
 
--   Smooth transitions
--   Subtle hover effects
--   Mobile-first approach
+- Smooth transitions
+- Subtle hover effects
+- Mobile-first approach
 
 ### **Accessible & Usable**
 
--   High contrast in dark mode
--   Clear focus states for keyboard navigation
--   Semantic HTML structure
+- High contrast in dark mode
+- Clear focus states for keyboard navigation
+- Semantic HTML structure
 
 ### **Performance Optimized**
 
--   CSS-only animations
--   Efficient selectors
--   Minimal bundle size
+- CSS-only animations
+- Efficient selectors
+- Minimal bundle size
 
 ## 📊 **Component Overview**
 
@@ -252,10 +252,10 @@ For enhanced interactivity:
 
 ## 🌐 **Browser Support**
 
--   ✅ Chrome/Edge 88+
--   ✅ Firefox 87+
--   ✅ Safari 14+
--   ✅ Mobile Browsers
+- ✅ Chrome/Edge 88+
+- ✅ Firefox 87+
+- ✅ Safari 14+
+- ✅ Mobile Browsers
 
 ## 📱 **Responsive Breakpoints**
 

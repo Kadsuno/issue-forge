@@ -59,11 +59,6 @@
                     <div class="flex-1">
                         <h1 class="text-2xl font-bold text-white mb-2"><span
                                 class="text-slate-500 mr-2">{{ $ticket->number }}</span>{{ $ticket->title }}</h1>
-                        @if ($ticket->description)
-                            <div class="prose prose-invert max-w-none">
-                                {!! Str::markdown($ticket->description, ['html_input' => 'strip', 'allow_unsafe_links' => false]) !!}
-                            </div>
-                        @endif
                     </div>
                     <div class="flex flex-wrap items-center gap-2 md:ml-6">
                         @php
@@ -94,6 +89,10 @@
                         </span>
                     </div>
                 </div>
+
+                @if ($ticket->description)
+                    <x-description-card :content="Str::markdown($ticket->description, ['html_input' => 'strip', 'allow_unsafe_links' => false])" />
+                @endif
 
                 <!-- Ticket Metadata -->
                 <div
@@ -878,6 +877,13 @@
 
                         #comment-form .cm-s-paper .cm-quote {
                             color: #cbd5e1 !important;
+                        }
+
+                        #comment-form .CodeMirror-cursor {
+                            background: #fff !important;
+                            border: none !important;
+                            width: 2px;
+                            opacity: 1;
                         }
                     </style>
                 </div>
