@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
@@ -32,6 +33,45 @@ class Ticket extends Model
         'due_date' => 'datetime',
         'estimate_minutes' => 'integer',
     ];
+
+    /**
+     * Boot model hooks.
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (self $ticket): void {
+            // Generate unique slug from title on creation
+            if (empty($ticket->slug)) {
+                $ticket->slug = static::generateUniqueSlug((string) $ticket->title);
+            }
+        });
+    }
+
+    /**
+     * Generate a globally-unique slug for tickets from the given title.
+     */
+    private static function generateUniqueSlug(string $title): string
+    {
+        $base = Str::slug($title) ?: 'ticket';
+        $slug = $base;
+        $suffix = 1;
+        while (static::where('slug', $slug)->exists()) {
+            $suffix++;
+            $slug = $base . '-' . $suffix;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Bind tickets by slug in routes.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * Status constants
@@ -242,6 +282,6 @@ class Ticket extends Model
     {
         $prefix = optional($this->project)->ticket_prefix;
 
-        return $prefix ? ($prefix.'-'.$this->id) : ('#'.$this->id);
+        return $prefix ? ($prefix . '-' . $this->id) : ('#' . $this->id);
     }
 }

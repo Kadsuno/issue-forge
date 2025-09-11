@@ -51,7 +51,7 @@
                         </svg>
                         {{ __('Projects') }}
                     </x-nav-link>
-                    @if (auth()->user()->isAdmin())
+                    @can('viewAny', \App\Models\User::class)
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"
                             class="nav-link hover-lift hover-glow text-slate-200/90 hover:text-white hover:bg-dark-700/50 md:px-3 lg:px-3 xl:px-4 {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@
                             </svg>
                             {{ __('Users') }}
                         </x-nav-link>
-                    @endif
+                    @endcan
                 </div>
             </div>
 
@@ -372,7 +372,7 @@
                 {{ __('Projects') }}
             </x-responsive-nav-link>
 
-            @if (auth()->user()->isAdmin())
+            @can('viewAny', \App\Models\User::class)
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')"
                     class="flex items-center px-4 py-3 text-slate-300 hover:text-white hover:bg-dark-700/50 rounded-lg transition-all duration-200">
                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -382,7 +382,7 @@
                     </svg>
                     {{ __('Users') }}
                 </x-responsive-nav-link>
-            @endif
+            @endcan
         </div>
 
         <!-- Mobile User Section -->
