@@ -11,11 +11,13 @@ A modern, self‑hosted ticket system and Redmine alternative — built with Lar
 ## ✨ Features
 
 - 🎫 **Projects & Tickets**: Organize work by project, track tasks and bugs
-- 👥 **Role-based access**: Admin and standard users with proper authorization
-- 💬 **Markdown everywhere**: Rich text for descriptions and comments (server-side rendered)
+- 🔗 **Human URLs**: Slugs for projects and tickets (web); API uses numeric ids
+- 🔎 **Global search**: Matches projects/tickets; supports ticket ids (`123`, `#123`, `PREFIX-123`)
+- 👥 **Role & policy based**: Spatie roles/permissions + policies (admins see Users nav)
+- 🔔 **Notifications JSON**: Session-auth JSON endpoints for in-app notifications
 - 🌙 **Modern dark UI**: Animated, glassmorphism-inspired, responsive
 - ⚡ **Reactive UI**: Livewire components for dynamic interactions
-- 🔐 **Secure admin area**: Only admins manage users
+- 🔐 **Token REST API**: Versioned API for Projects and Tickets (bearer token)
 - 📱 **Responsive**: Polished experience across devices
 
 ---
@@ -25,9 +27,9 @@ A modern, self‑hosted ticket system and Redmine alternative — built with Lar
 - **Backend**: Laravel 12, PHP 8.3
 - **Frontend**: Livewire 3, Blade, Alpine.js
 - **Styling**: Tailwind CSS, Tailwind Typography, custom dark design system
-- **Auth**: Laravel Breeze
+- **Auth**: Laravel Breeze, Spatie Permission
 - **Dev**: DDEV, Vite (HMR)
-- **DB**: SQLite / MySQL / PostgreSQL
+- **DB**: MariaDB/MySQL (SQLite/PostgreSQL compatible)
 
 ---
 
@@ -40,14 +42,37 @@ A modern, self‑hosted ticket system and Redmine alternative — built with Lar
 
 ### Setup
 
-````bash
-# Clone the repository
-git clone <repository-url> issueforge
-cd issueforge
+```bash
+# Clone
+git clone <repository-url> issue-forge
+cd issue-forge
 
 # Start DDEV
 ddev start
-## Testing & Linting
+
+# Install deps (PHP + Node)
+ddev composer install
+ddev exec npm install
+
+# Env
+cp .env.example .env
+ddev exec php artisan key:generate
+
+# Optional: enable API token auth
+echo "API_ADMIN_TOKEN=$(openssl rand -hex 24)" >> .env
+echo "API_VERSION=v1" >> .env
+ddev exec php artisan config:clear
+
+# DB
+ddev exec php artisan migrate --seed
+
+# Build assets (prod) or run dev server
+ddev exec npm run build
+# or
+ddev exec npm run dev
+```
+
+### Testing & Linting
 
 See `docs/TESTING_AND_LINTING.md` for full details.
 
@@ -60,39 +85,11 @@ vendor/bin/phpunit --colors=always
 
 # JS/CSS
 npm run lint
-````
-
-# Install dependencies
-
-ddev composer install
-ddev exec npm install
-
-# Environment
-
-cp .env.example .env
-ddev exec php artisan key:generate
-
-# Database
-
-ddev exec php artisan migrate
-ddev exec php artisan db:seed --class=AdminUserSeeder
-
-# Build assets
-
-ddev exec npm run build
-
-````
-
-### Development
-
-```bash
-# Run Vite dev server with HMR inside DDEV
-ddev exec npm run dev
-````
+```
 
 ### Admin user
 
-The seeder creates a default admin account for local development. Check `database/seeders/AdminUserSeeder.php` for credentials or create your own user via tinker.
+Seeders create a default user set for local development. You can create additional users via the UI or tinker.
 
 ---
 
@@ -102,19 +99,31 @@ The seeder creates a default admin account for local development. Check `databas
 app/
 ├── Http/
 │   ├── Controllers/
-│   │   ├── Admin/UserController.php    # User management
-│   │   ├── ProjectController.php       # Project CRUD
-│   │   └── TicketController.php        # Ticket CRUD
-│   └── Livewire/
-│       └── ProjectList.php             # Project listing
+│   │   ├── Admin/UserController.php        # User management (policy-protected)
+│   │   ├── Api/ProjectsController.php      # REST API (projects)
+│   │   ├── Api/TicketsController.php       # REST API (tickets)
+│   │   ├── NotificationController.php      # JSON notifications (web session)
+│   │   ├── ProjectController.php           # Web: Project CRUD
+│   │   └── TicketController.php            # Web: Ticket CRUD
+│   ├── Middleware/AdminTokenMiddleware.php # Bearer token guard for API
+│   └── Livewire/ProjectList.php            # Project listing
+├── Http/Requests/Api/                      # Form requests for API validation
+├── Http/Resources/                         # API Resources (Project*, Ticket*)
 ├── Models/
-│   ├── User.php                        # User with admin flag
-│   ├── Project.php                     # Project model
-│   └── Ticket.php                      # Ticket model
+│   ├── User.php                            # Slug from name (web), roles/permissions
+│   ├── Project.php                         # Slug (web), scope helpers
+│   └── Ticket.php                          # Slug from title (web), ticket number helper
+├── Policies/                               # User policy for admin area
+config/api.php                               # API version + admin token
+routes/
+├── web.php                                 # Web routes (auth)
+└── api.php                                 # Versioned API (/api/v1)
 resources/
-├── css/app.css                         # Custom design system
-├── views/                              # Blade views (admin, projects, tickets, livewire)
-└── js/app.js                           # Frontend bootstrap
+├── css/app.css                             # Custom dark design system
+├── views/                                  # Blade views (admin, projects, tickets)
+└── js/app.js                               # Frontend bootstrap
+docs/
+└── api.md                                  # Full API documentation
 ```
 
 ---
@@ -136,7 +145,8 @@ Available utility classes (non-exhaustive): `btn-primary`, `btn-secondary`, `btn
 ## 🔐 Security
 
 - **No public signup** — only admins create users
-- **Authorization** via policies and middleware
+- **Authorization** via policies and Spatie roles/permissions
+- **API token** via `API_ADMIN_TOKEN` (Bearer), middleware `token.admin`
 - **CSRF** protection enabled by default
 - **Password hashing** using Laravel defaults (bcrypt/argon2)
 - **Validation** via Form Requests
@@ -145,34 +155,36 @@ Available utility classes (non-exhaustive): `btn-primary`, `btn-secondary`, `btn
 
 ## 📊 User Management
 
-### Admin capabilities
-
-- Create, edit, delete users
-- Grant/revoke admin privileges
-- Reset passwords
-- See basic stats
-
-### Access control
-
-```php
-// Admin routes example
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::resource('users', UserController::class);
-});
-```
+- Admins see the `Users` navigation and can manage users
+- Routes are policy-protected via `UserPolicy` (`authorizeResource` in controller)
 
 ---
 
 ## 🎯 Roadmap
 
-- [ ] Ticket comments and discussions
+- [x] Token-protected REST API (projects, tickets)
+- [x] Search enhancements (ticket id/number)
+- [ ] Ticket comments & discussions
 - [ ] File attachments
 - [ ] Extended workflow states
-- [ ] Notifications (email/browser)
-- [ ] REST API endpoints
-- [ ] Advanced search
+- [ ] Email notifications
+- [ ] Advanced search and filters
 - [ ] Reports & analytics
 - [ ] Mobile app
+
+---
+
+## 🔌 REST API (Quick)
+
+Full docs in `docs/api.md`.
+
+```bash
+export BASE=https://issue-forge.ddev.site/api/v1
+export TOKEN=your-long-random-token
+AUTH=(-H "Authorization: Bearer $TOKEN" -H "Accept: application/json" -H "Content-Type: application/json")
+
+curl -s "${AUTH[@]}" "$BASE/projects?sort=-id" | jq
+```
 
 ---
 

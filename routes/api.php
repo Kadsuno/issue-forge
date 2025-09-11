@@ -8,6 +8,8 @@ Route::prefix(config('api.version', 'v1'))
     ->middleware(['api', 'throttle:api', 'token.admin'])
     ->name('api.')
     ->group(function (): void {
-        Route::apiResource('projects', ProjectsController::class);
+        Route::apiResource('projects', ProjectsController::class)->parameters([
+            'projects' => 'project:id',
+        ]);
         Route::apiResource('tickets', TicketsController::class);
     });

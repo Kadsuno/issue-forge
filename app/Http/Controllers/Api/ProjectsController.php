@@ -15,7 +15,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class ProjectsController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(): ProjectCollection
     {
         $query = Project::query();
 
