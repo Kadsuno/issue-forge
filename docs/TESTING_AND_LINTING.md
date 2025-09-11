@@ -3,10 +3,12 @@
 This project runs all PHP and JS/CSS tooling inside DDEV. The commands below assume you are in the project root.
 
 #### Prerequisites
+
 - DDEV installed and configured
 - Project started: `ddev start`
 
 #### One-time setup (JS/CSS)
+
 If you’ve just pulled the repo or changed node deps:
 
 ```bash
@@ -28,6 +30,7 @@ ddev exec vendor/bin/phpunit tests/Feature/ProjectAndTicketDescriptionPlacementT
 ```
 
 Common issues:
+
 - SQLite + migrations: prefer idempotent migrations (drop indices before dropping columns, guard with `Schema::hasColumn`).
 
 #### PHP Linting/Formatting (Pint)
@@ -69,6 +72,7 @@ ddev npm run format
 ```
 
 Notes:
+
 - ESLint uses flat config `eslint.config.js` (ESLint v9+). The legacy `.eslintrc.cjs` is retained for editor compatibility but unused by CLI.
 - Stylelint config is tailored to Tailwind and our custom utilities. Strict rules that conflict with Tailwind (e.g., color function notation) are disabled to reduce noise.
 - Prettier formats Markdown, YAML, JSON, CSS, and JS. Tailwind class sorting is enabled via `prettier-plugin-tailwindcss`.
@@ -86,8 +90,7 @@ ddev exec npm run format:check
 ```
 
 #### Troubleshooting
+
 - npm ETARGET / peer conflicts: clear lockfile and `node_modules`, ensure package versions exist, and prefer the ranges in `package.json`.
 - ESLint “no config” error: ensure `eslint.config.js` is present (flat config for v9+).
 - DDEV not running: `ddev start -y` before executing any commands.
-
-
