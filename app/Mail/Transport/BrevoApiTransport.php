@@ -42,20 +42,24 @@ final class BrevoApiTransport extends AbstractTransport
 
         // Set recipients
         $to = array_map(function (Address $address) {
-            return [
-                'email' => $address->getAddress(),
-                'name' => $address->getName(),
-            ];
+            $recipient = ['email' => $address->getAddress()];
+            if ($address->getName()) {
+                $recipient['name'] = $address->getName();
+            }
+
+            return $recipient;
         }, $email->getTo());
         $sendSmtpEmail->setTo($to);
 
         // Set CC
         if (count($email->getCc()) > 0) {
             $cc = array_map(function (Address $address) {
-                return [
-                    'email' => $address->getAddress(),
-                    'name' => $address->getName(),
-                ];
+                $recipient = ['email' => $address->getAddress()];
+                if ($address->getName()) {
+                    $recipient['name'] = $address->getName();
+                }
+
+                return $recipient;
             }, $email->getCc());
             $sendSmtpEmail->setCc($cc);
         }
@@ -63,10 +67,12 @@ final class BrevoApiTransport extends AbstractTransport
         // Set BCC
         if (count($email->getBcc()) > 0) {
             $bcc = array_map(function (Address $address) {
-                return [
-                    'email' => $address->getAddress(),
-                    'name' => $address->getName(),
-                ];
+                $recipient = ['email' => $address->getAddress()];
+                if ($address->getName()) {
+                    $recipient['name'] = $address->getName();
+                }
+
+                return $recipient;
             }, $email->getBcc());
             $sendSmtpEmail->setBcc($bcc);
         }
@@ -78,10 +84,11 @@ final class BrevoApiTransport extends AbstractTransport
         $replyTo = $email->getReplyTo();
         if (count($replyTo) > 0) {
             $replyToAddress = $replyTo[0];
-            $sendSmtpEmail->setReplyTo([
-                'email' => $replyToAddress->getAddress(),
-                'name' => $replyToAddress->getName(),
-            ]);
+            $replyToData = ['email' => $replyToAddress->getAddress()];
+            if ($replyToAddress->getName()) {
+                $replyToData['name'] = $replyToAddress->getName();
+            }
+            $sendSmtpEmail->setReplyTo($replyToData);
         }
 
         // Set HTML and text content
