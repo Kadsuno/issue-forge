@@ -18,8 +18,14 @@
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="card p-4 sm:p-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 150)">
+            <!-- Loading Skeleton -->
+            <div x-show="loading" x-transition:leave="animate-fade-out">
+                <x-skeleton-list :items="5" />
+            </div>
+
+            <!-- Actual Content -->
+            <div class="card p-4 sm:p-6" x-show="!loading" x-transition:enter="animate-fade-in-up">
                 @if ($tickets->count() > 0)
                     <div class="divide-y divide-dark-700/50">
                         @foreach ($tickets as $ticket)

@@ -4,155 +4,141 @@
 # update it, for example if you add `additional_hostnames`, etc.
 
 http:
-  routers:
-    laravel-ticket-system-phpmyadmin-80-http:
-      entrypoints:
-        - http-8036
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-phpmyadmin-80"
-      ruleSyntax: v3
-      tls: false
-      # middlewares:
-      #   - "laravel-ticket-system-redirectHttps"
-    laravel-ticket-system-web-80-http:
-      entrypoints:
-        - http-33000
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-80"
-      ruleSyntax: v3
-      tls: false
-      # middlewares:
-      #   - "laravel-ticket-system-redirectHttps"
-    laravel-ticket-system-web-8025-http:
-      entrypoints:
-        - http-8025
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-8025"
-      ruleSyntax: v3
-      tls: false
-      # middlewares:
-      #   - "laravel-ticket-system-redirectHttps"
-    laravel-ticket-system-web-5173-http:
-      entrypoints:
-        - http-5173
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-5173"
-      ruleSyntax: v3
-      tls: false
-      # middlewares:
-      #   - "laravel-ticket-system-redirectHttps"
-    laravel-ticket-system-xhgui-80-http:
-      entrypoints:
-        - http-8143
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-xhgui-80"
-      ruleSyntax: v3
-      tls: false
-      # middlewares:
-      #   - "laravel-ticket-system-redirectHttps"
-    
-    
-    laravel-ticket-system-phpmyadmin-80-https:
-      entrypoints:
-        - http-8037
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-phpmyadmin-80"
-      ruleSyntax: v3
-      
-      tls: true
-      
-    
-    
-    
-    laravel-ticket-system-web-80-https:
-      entrypoints:
-        - http-443
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-80"
-      ruleSyntax: v3
-      
-      tls: true
-      
-    laravel-ticket-system-web-8025-https:
-      entrypoints:
-        - http-8026
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-8025"
-      ruleSyntax: v3
-      
-      tls: true
-      
-    laravel-ticket-system-web-5173-https:
-      entrypoints:
-        - http-5174
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-web-5173"
-      ruleSyntax: v3
-      
-      tls: true
-      
-    
-    laravel-ticket-system-xhgui-80-https:
-      entrypoints:
-        - http-8142
-      rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
-      
-      service: "laravel-ticket-system-xhgui-80"
-      ruleSyntax: v3
-      
-      tls: true
-      
-    
+    routers:
+        laravel-ticket-system-phpmyadmin-80-http:
+            entrypoints:
+                - http-8036
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
 
-  middlewares:
-    laravel-ticket-system-redirectHttps:
-      redirectScheme:
-        scheme: https
-        permanent: true
+            service: 'laravel-ticket-system-phpmyadmin-80'
+            ruleSyntax: v3
+            tls: false
+            # middlewares:
+            #   - "laravel-ticket-system-redirectHttps"
+        laravel-ticket-system-web-80-http:
+            entrypoints:
+                - http-33000
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
 
-  services:
-    laravel-ticket-system-phpmyadmin-80:
-      loadbalancer:
-        servers:
-          - url: http://ddev-laravel-ticket-system-phpmyadmin:80
-        
-    
-    laravel-ticket-system-web-80:
-      loadbalancer:
-        servers:
-          - url: http://ddev-laravel-ticket-system-web:80
-        
-    laravel-ticket-system-web-8025:
-      loadbalancer:
-        servers:
-          - url: http://ddev-laravel-ticket-system-web:8025
-        
-    laravel-ticket-system-web-5173:
-      loadbalancer:
-        servers:
-          - url: http://ddev-laravel-ticket-system-web:5173
-        
-    
-    
-    
-    laravel-ticket-system-xhgui-80:
-      loadbalancer:
-        servers:
-          - url: http://ddev-laravel-ticket-system-xhgui:80
-        
-    
-    
+            service: 'laravel-ticket-system-web-80'
+            ruleSyntax: v3
+            tls: false
+            # middlewares:
+            #   - "laravel-ticket-system-redirectHttps"
+        laravel-ticket-system-web-8025-http:
+            entrypoints:
+                - http-8025
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-web-8025'
+            ruleSyntax: v3
+            tls: false
+            # middlewares:
+            #   - "laravel-ticket-system-redirectHttps"
+        laravel-ticket-system-web-5173-http:
+            entrypoints:
+                - http-5173
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-web-5173'
+            ruleSyntax: v3
+            tls: false
+            # middlewares:
+            #   - "laravel-ticket-system-redirectHttps"
+        laravel-ticket-system-xhgui-80-http:
+            entrypoints:
+                - http-8143
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-xhgui-80'
+            ruleSyntax: v3
+            tls: false
+            # middlewares:
+            #   - "laravel-ticket-system-redirectHttps"
+
+        laravel-ticket-system-phpmyadmin-80-https:
+            entrypoints:
+                - http-8037
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-phpmyadmin-80'
+            ruleSyntax: v3
+
+            tls: true
+
+        laravel-ticket-system-web-80-https:
+            entrypoints:
+                - http-443
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-web-80'
+            ruleSyntax: v3
+
+            tls: true
+
+        laravel-ticket-system-web-8025-https:
+            entrypoints:
+                - http-8026
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-web-8025'
+            ruleSyntax: v3
+
+            tls: true
+
+        laravel-ticket-system-web-5173-https:
+            entrypoints:
+                - http-5174
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-web-5173'
+            ruleSyntax: v3
+
+            tls: true
+
+        laravel-ticket-system-xhgui-80-https:
+            entrypoints:
+                - http-8142
+            rule: HostRegexp(`^laravel-ticket-system\.ddev\.site$`)
+
+            service: 'laravel-ticket-system-xhgui-80'
+            ruleSyntax: v3
+
+            tls: true
+
+    middlewares:
+        laravel-ticket-system-redirectHttps:
+            redirectScheme:
+                scheme: https
+                permanent: true
+
+    services:
+        laravel-ticket-system-phpmyadmin-80:
+            loadbalancer:
+                servers:
+                    - url: http://ddev-laravel-ticket-system-phpmyadmin:80
+
+        laravel-ticket-system-web-80:
+            loadbalancer:
+                servers:
+                    - url: http://ddev-laravel-ticket-system-web:80
+
+        laravel-ticket-system-web-8025:
+            loadbalancer:
+                servers:
+                    - url: http://ddev-laravel-ticket-system-web:8025
+
+        laravel-ticket-system-web-5173:
+            loadbalancer:
+                servers:
+                    - url: http://ddev-laravel-ticket-system-web:5173
+
+        laravel-ticket-system-xhgui-80:
+            loadbalancer:
+                servers:
+                    - url: http://ddev-laravel-ticket-system-xhgui:80
 
 tls:
-  certificates:
-    - certFile: /mnt/ddev-global-cache/traefik/certs/laravel-ticket-system.crt
-      keyFile: /mnt/ddev-global-cache/traefik/certs/laravel-ticket-system.key
+    certificates:
+        - certFile: /mnt/ddev-global-cache/traefik/certs/laravel-ticket-system.crt
+          keyFile: /mnt/ddev-global-cache/traefik/certs/laravel-ticket-system.key

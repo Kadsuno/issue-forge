@@ -12,6 +12,7 @@ IssueForge uses different email configurations for each environment:
 ## Selected Provider: Brevo (Sendinblue)
 
 **Why Brevo?**
+
 - Free tier: 300 emails/day (~9,000/month)
 - EU-based (France) with full GDPR compliance
 - Supports both SMTP and HTTP API
@@ -39,10 +40,10 @@ IssueForge uses different email configurations for each environment:
 2. Navigate to **Settings** → **SMTP & API**
 3. Click **SMTP** tab
 4. Note your **SMTP server** credentials:
-   - **Server**: `smtp-relay.brevo.com`
-   - **Port**: `587` (recommended) or `465` (SSL)
-   - **Login**: Your Brevo email address
-   - **SMTP Key**: Generate a new SMTP key (this is your password)
+    - **Server**: `smtp-relay.brevo.com`
+    - **Port**: `587` (recommended) or `465` (SSL)
+    - **Login**: Your Brevo email address
+    - **SMTP Key**: Generate a new SMTP key (this is your password)
 
 5. **Important**: Save the SMTP key immediately - it's only shown once!
 
@@ -64,6 +65,7 @@ To ensure high deliverability and avoid spam filters, verify your sending domain
 Brevo will provide you with DNS records to add to your domain. You'll need to add:
 
 #### SPF Record
+
 Authenticates your domain to send emails via Brevo.
 
 **Type**: TXT  
@@ -71,11 +73,13 @@ Authenticates your domain to send emails via Brevo.
 **Value**: `v=spf1 include:spf.brevo.com ~all`
 
 If you already have an SPF record, add `include:spf.brevo.com` to the existing record:
+
 ```
 v=spf1 include:spf.brevo.com include:other-service.com ~all
 ```
 
 #### DKIM Record
+
 Adds a digital signature to verify email authenticity.
 
 **Type**: TXT  
@@ -83,6 +87,7 @@ Adds a digital signature to verify email authenticity.
 **Value**: Brevo will provide the full DKIM key (starts with `v=DKIM1`)
 
 #### DMARC Record (Recommended)
+
 Protects your domain from spoofing.
 
 **Type**: TXT  
@@ -90,6 +95,7 @@ Protects your domain from spoofing.
 **Value**: `v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com`
 
 For stricter policy after testing:
+
 ```
 v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com; pct=100
 ```
@@ -103,6 +109,7 @@ After adding DNS records (propagation can take 24-48 hours):
 3. Brevo will check the DNS records
 
 **Verify DNS propagation** using command line:
+
 ```bash
 # Check SPF
 dig TXT yourdomain.com +short
@@ -115,6 +122,7 @@ dig TXT _dmarc.yourdomain.com +short
 ```
 
 Or use online tools:
+
 - [MXToolbox](https://mxtoolbox.com/SuperTool.aspx)
 - [DNS Checker](https://dnschecker.org/)
 
@@ -127,14 +135,15 @@ Or use online tools:
 Mailpit is pre-configured in DDEV and runs automatically.
 
 **Environment variables** (set in `.ddev/config.yaml`):
+
 ```yaml
 web_environment:
-  - MAIL_MAILER=smtp
-  - MAIL_HOST=127.0.0.1
-  - MAIL_PORT=1025
-  - MAIL_ENCRYPTION=null
-  - MAIL_FROM_ADDRESS=dev@issue-forge.ddev.site
-  - MAIL_FROM_NAME=IssueForge Dev
+    - MAIL_MAILER=smtp
+    - MAIL_HOST=127.0.0.1
+    - MAIL_PORT=1025
+    - MAIL_ENCRYPTION=null
+    - MAIL_FROM_ADDRESS=dev@issue-forge.ddev.site
+    - MAIL_FROM_NAME=IssueForge Dev
 ```
 
 **Access Mailpit UI**: [http://issue-forge.ddev.site:8025](http://issue-forge.ddev.site:8025)
@@ -161,17 +170,20 @@ BREVO_API_KEY=your-api-key-here
 ```
 
 **Security Notes**:
+
 - Never commit `.env` to version control
 - Use your CI/CD platform's secrets management for these values
 - Rotate SMTP keys periodically
 - Use different SMTP keys for staging and production
 
 **After updating `.env`**, clear the config cache:
+
 ```bash
 php artisan config:clear
 ```
 
 Or in DDEV:
+
 ```bash
 ddev exec php artisan config:clear
 ```
@@ -184,18 +196,20 @@ ddev exec php artisan config:clear
 
 1. Start DDEV: `ddev start`
 2. Send a test email using Tinker:
-   ```bash
-   ddev exec php artisan tinker
-   ```
+
+    ```bash
+    ddev exec php artisan tinker
+    ```
 
 3. In Tinker, send a test notification:
-   ```php
-   $user = App\Models\User::first();
-   $ticket = App\Models\Ticket::first();
-   $comment = $ticket->comments()->first();
-   
-   $user->notify(new App\Notifications\TicketCommentAdded($ticket, $comment, 'Test User'));
-   ```
+
+    ```php
+    $user = App\Models\User::first();
+    $ticket = App\Models\Ticket::first();
+    $comment = $ticket->comments()->first();
+
+    $user->notify(new App\Notifications\TicketCommentAdded($ticket, $comment, 'Test User'));
+    ```
 
 4. Open Mailpit: [http://issue-forge.ddev.site:8025](http://issue-forge.ddev.site:8025)
 5. Verify the email appears with correct content and dark theme styling
@@ -207,24 +221,27 @@ ddev exec php artisan config:clear
 1. Ensure `.env` is configured with Brevo credentials
 2. Clear config cache: `php artisan config:clear`
 3. Send a test email:
-   ```bash
-   php artisan tinker
-   ```
-   ```php
-   Mail::raw('Test email from IssueForge', function ($message) {
-       $message->to('your-verified-email@example.com')
-               ->subject('IssueForge Test Email');
-   });
-   ```
+
+    ```bash
+    php artisan tinker
+    ```
+
+    ```php
+    Mail::raw('Test email from IssueForge', function ($message) {
+        $message->to('your-verified-email@example.com')
+                ->subject('IssueForge Test Email');
+    });
+    ```
 
 4. Check your inbox for the email
 5. Verify in Brevo dashboard:
-   - Go to **Statistics** → **Email**
-   - Check delivery status, opens, clicks
+    - Go to **Statistics** → **Email**
+    - Check delivery status, opens, clicks
 
 ### View Logs
 
 **Laravel logs**:
+
 ```bash
 # DDEV
 ddev exec tail -f storage/logs/laravel.log
@@ -234,6 +251,7 @@ tail -f storage/logs/laravel.log
 ```
 
 **Brevo dashboard**:
+
 - **Statistics** → **Email** for delivery metrics
 - **Logs** → **Email Activity** for detailed send logs
 
@@ -243,25 +261,26 @@ tail -f storage/logs/laravel.log
 
 Add these secrets to your CI/CD platform (GitHub Actions, GitLab CI, etc.):
 
-| Secret Name | Description | Example Value |
-|-------------|-------------|---------------|
-| `MAIL_USERNAME` | Brevo SMTP login email | `your-email@example.com` |
-| `MAIL_PASSWORD` | Brevo SMTP key | `xkeysib-...` |
-| `MAIL_FROM_ADDRESS` | Verified sender email | `no-reply@yourdomain.com` |
-| `MAIL_FROM_NAME` | Sender name | `IssueForge` |
-| `BREVO_API_KEY` | (Optional) Brevo API key | `xkeysib-...` |
+| Secret Name         | Description              | Example Value             |
+| ------------------- | ------------------------ | ------------------------- |
+| `MAIL_USERNAME`     | Brevo SMTP login email   | `your-email@example.com`  |
+| `MAIL_PASSWORD`     | Brevo SMTP key           | `xkeysib-...`             |
+| `MAIL_FROM_ADDRESS` | Verified sender email    | `no-reply@yourdomain.com` |
+| `MAIL_FROM_NAME`    | Sender name              | `IssueForge`              |
+| `BREVO_API_KEY`     | (Optional) Brevo API key | `xkeysib-...`             |
 
 **GitHub Actions Example**:
+
 ```yaml
 env:
-  MAIL_MAILER: smtp
-  MAIL_HOST: smtp-relay.brevo.com
-  MAIL_PORT: 587
-  MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-  MAIL_ENCRYPTION: tls
-  MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
-  MAIL_FROM_NAME: IssueForge
+    MAIL_MAILER: smtp
+    MAIL_HOST: smtp-relay.brevo.com
+    MAIL_PORT: 587
+    MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+    MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+    MAIL_ENCRYPTION: tls
+    MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+    MAIL_FROM_NAME: IssueForge
 ```
 
 ---
@@ -271,14 +290,17 @@ env:
 ### Email Not Sending
 
 **Check 1: Config Cache**
+
 ```bash
 ddev exec php artisan config:clear
 ```
 
 **Check 2: Environment Variables**
+
 ```bash
 ddev exec php artisan tinker
 ```
+
 ```php
 config('mail.default');
 config('mail.from.address');
@@ -286,11 +308,13 @@ config('mail.mailers.smtp');
 ```
 
 **Check 3: Laravel Logs**
+
 ```bash
 ddev exec tail -n 50 storage/logs/laravel.log
 ```
 
 **Check 4: Brevo Dashboard**
+
 - Go to **Logs** → **Email Activity**
 - Check for rejected or bounced emails
 - Verify SMTP credentials are correct
@@ -323,9 +347,9 @@ ddev exec tail -n 50 storage/logs/laravel.log
 - Check firewall rules allow outbound SMTP (port 587)
 - Try alternative port (465 with SSL encryption)
 - Verify server can reach `smtp-relay.brevo.com`
-  ```bash
-  telnet smtp-relay.brevo.com 587
-  ```
+    ```bash
+    telnet smtp-relay.brevo.com 587
+    ```
 
 ### Local Development Issues
 
@@ -341,9 +365,11 @@ ddev exec tail -n 50 storage/logs/laravel.log
 IssueForge uses custom dark-themed email templates located in `resources/views/emails/`.
 
 **Current templates**:
+
 - `ticket_commented.blade.php` - Notification when a comment is added to a ticket
 
 **Template features**:
+
 - Modern dark theme consistent with website design
 - Responsive layout
 - Inline CSS for maximum email client compatibility
@@ -351,6 +377,7 @@ IssueForge uses custom dark-themed email templates located in `resources/views/e
 - Call-to-action button with gradient styling
 
 **Testing templates**:
+
 1. Send test emails in development via Mailpit
 2. Preview in multiple email clients (Gmail, Outlook, Apple Mail, etc.)
 3. Use [Litmus](https://www.litmus.com/) or [Email on Acid](https://www.emailonacid.com/) for comprehensive testing
@@ -372,13 +399,14 @@ IssueForge uses custom dark-themed email templates located in `resources/views/e
 1. Log into Brevo dashboard
 2. Go to **Settings** → **Account**
 3. View **Usage** section for:
-   - Daily emails sent
-   - Remaining quota
-   - Historical usage stats
+    - Daily emails sent
+    - Remaining quota
+    - Historical usage stats
 
 ### Upgrading
 
 If you exceed the free tier:
+
 - **Lite plan**: $25/month for 10,000 emails/month
 - **Premium plan**: Custom pricing for higher volumes
 - Pay-as-you-go available
@@ -492,17 +520,20 @@ Mail::to($user)->queue(new NewsletterEmail());
 ### Troubleshooting API
 
 **Invalid API Key Error:**
+
 - Verify your API key is correct in `.env`
 - Ensure no extra spaces or quotes
 - Check key starts with `xkeysib-`
 - Generate a new key if needed
 
 **Sender Domain Not Verified:**
+
 - Complete domain verification in Brevo dashboard
 - Add SPF, DKIM, and DMARC records
 - Wait up to 48 hours for DNS propagation
 
 **Rate Limits:**
+
 - Free tier: 300 emails/day
 - Check current usage in Brevo dashboard
 - Upgrade if you need more capacity
@@ -527,7 +558,6 @@ Mail::to($user)->queue(new NewsletterEmail());
 ✅ **Free tier**: 300 emails/day (~9,000/month)  
 ✅ **EU-based**: GDPR-compliant  
 ✅ **Security**: TLS encryption, SPF/DKIM/DMARC  
-✅ **Monitoring**: Dashboard, logs, deliverability metrics  
+✅ **Monitoring**: Dashboard, logs, deliverability metrics
 
 For questions or issues, refer to the troubleshooting section or contact the development team.
-

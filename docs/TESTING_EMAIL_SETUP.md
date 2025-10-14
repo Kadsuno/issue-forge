@@ -6,22 +6,24 @@ This document provides instructions for testing the email configuration after th
 
 - DDEV must be running properly
 - If you encounter router issues, try:
-  ```bash
-  ddev poweroff
-  docker stop ddev-router && docker rm ddev-router
-  ddev start
-  ```
+    ```bash
+    ddev poweroff
+    docker stop ddev-router && docker rm ddev-router
+    ddev start
+    ```
 
 ## Running Tests
 
 ### 1. PHP Linting (Pint)
 
 Check code formatting:
+
 ```bash
 ddev exec vendor/bin/pint --test
 ```
 
 Auto-fix formatting issues:
+
 ```bash
 ddev exec vendor/bin/pint
 ```
@@ -29,11 +31,13 @@ ddev exec vendor/bin/pint
 ### 2. Run Email Configuration Tests
 
 Run all email-related tests:
+
 ```bash
 ddev exec vendor/bin/phpunit --filter EmailConfigurationTest --colors=always
 ```
 
 Run specific test:
+
 ```bash
 ddev exec vendor/bin/phpunit tests/Feature/EmailConfigurationTest.php --colors=always
 ```
@@ -49,28 +53,32 @@ ddev exec vendor/bin/phpunit --colors=always
 #### Test with Mailpit (Development)
 
 1. Ensure DDEV is running:
-   ```bash
-   ddev start
-   ```
+
+    ```bash
+    ddev start
+    ```
 
 2. Access Mailpit UI:
-   ```
-   http://issue-forge.ddev.site:8025
-   ```
+
+    ```
+    http://issue-forge.ddev.site:8025
+    ```
 
 3. Send a test email via Tinker:
-   ```bash
-   ddev exec php artisan tinker
-   ```
-   
-   Then in Tinker:
-   ```php
-   $user = App\Models\User::first();
-   $ticket = App\Models\Ticket::first();
-   $comment = $ticket->comments()->first();
-   
-   $user->notify(new App\Notifications\TicketCommentAdded($ticket, $comment, 'Test User'));
-   ```
+
+    ```bash
+    ddev exec php artisan tinker
+    ```
+
+    Then in Tinker:
+
+    ```php
+    $user = App\Models\User::first();
+    $ticket = App\Models\Ticket::first();
+    $comment = $ticket->comments()->first();
+
+    $user->notify(new App\Notifications\TicketCommentAdded($ticket, $comment, 'Test User'));
+    ```
 
 4. Check Mailpit UI to see the email
 
@@ -79,26 +87,28 @@ ddev exec vendor/bin/phpunit --colors=always
 1. Configure `.env` with Brevo credentials (see `docs/EMAIL_SETUP.md`)
 
 2. Clear config cache:
-   ```bash
-   php artisan config:clear
-   ```
+
+    ```bash
+    php artisan config:clear
+    ```
 
 3. Send test email:
-   ```bash
-   php artisan tinker
-   ```
-   
-   ```php
-   Mail::raw('Test email from IssueForge', function ($message) {
-       $message->to('your-verified-email@example.com')
-               ->subject('IssueForge Test Email');
-   });
-   ```
+
+    ```bash
+    php artisan tinker
+    ```
+
+    ```php
+    Mail::raw('Test email from IssueForge', function ($message) {
+        $message->to('your-verified-email@example.com')
+                ->subject('IssueForge Test Email');
+    });
+    ```
 
 4. Check:
-   - Your email inbox
-   - Brevo dashboard (Statistics → Email)
-   - Laravel logs: `tail -f storage/logs/laravel.log`
+    - Your email inbox
+    - Brevo dashboard (Statistics → Email)
+    - Laravel logs: `tail -f storage/logs/laravel.log`
 
 ## Troubleshooting
 
@@ -169,4 +179,3 @@ After all tests pass:
 3. Configure production environment variables
 4. Test email delivery in staging environment
 5. Monitor email deliverability in Brevo dashboard
-

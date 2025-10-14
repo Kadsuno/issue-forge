@@ -24,6 +24,7 @@ ddev exec php artisan config:clear
 ```
 
 If the token is missing or invalid:
+
 - 401 Unauthorized → no/malformed `Authorization` header
 - 403 Forbidden → token provided but does not match `API_ADMIN_TOKEN`
 - 503 Service Unavailable → token not configured (empty)
@@ -31,16 +32,16 @@ If the token is missing or invalid:
 ## Headers
 
 - Always send:
-  - `Accept: application/json`
-  - `Content-Type: application/json` for requests with a body
+    - `Accept: application/json`
+    - `Content-Type: application/json` for requests with a body
 
 ## Pagination, Sorting, Search
 
 - Pagination: standard Laravel pagination. Use `?page=N`.
 - Sorting: `?sort=field1,-field2` (leading `-` = DESC). Defaults to `-id` for index endpoints.
 - Search:
-  - Projects: `?search=...` (matches `name`)
-  - Tickets: `?search=...` (matches `title`/`description`)
+    - Projects: `?search=...` (matches `name`)
+    - Tickets: `?search=...` (matches `title`/`description`)
 
 ## Quickstart (curl)
 
@@ -66,28 +67,40 @@ curl -s "${AUTH[@]}" -X POST "$BASE/projects" \
 Base path: `/projects`
 
 #### GET /projects
+
 List projects.
 
 Query params:
+
 - `search` (string)
 - `sort` (comma-separated, e.g., `-id,name`)
 - `page` (int)
 
 Response 200 body (excerpt):
+
 ```json
 {
-  "data": [
-    { "id": 123, "name": "Demo", "description": "...", "status": "active", "created_at": "2025-09-11T20:00:00+00:00", "updated_at": "2025-09-11T20:00:00+00:00" }
-  ],
-  "links": { "first": "...", "last": "...", "prev": null, "next": "..." },
-  "meta": { "current_page": 1, "from": 1, "to": 1, "total": 1 }
+    "data": [
+        {
+            "id": 123,
+            "name": "Demo",
+            "description": "...",
+            "status": "active",
+            "created_at": "2025-09-11T20:00:00+00:00",
+            "updated_at": "2025-09-11T20:00:00+00:00"
+        }
+    ],
+    "links": { "first": "...", "last": "...", "prev": null, "next": "..." },
+    "meta": { "current_page": 1, "from": 1, "to": 1, "total": 1 }
 }
 ```
 
 #### POST /projects
+
 Create a project.
 
 Request JSON:
+
 - `name` (string, required, max 120)
 - `description` (string, optional)
 - `status` ("active" | "archived", optional)
@@ -96,14 +109,17 @@ Request JSON:
 Response 201 body: `ProjectResource` (see fields below)
 
 #### GET /projects/{id}
+
 Show a project by numeric id.
 
 Response 200 body: `ProjectResource`
 
 #### PATCH /projects/{id}
+
 Update a project.
 
 Body (any subset):
+
 - `name` (string, max 120)
 - `description` (string|null)
 - `status` ("active" | "archived")
@@ -111,11 +127,13 @@ Body (any subset):
 Response 200 body: `ProjectResource`
 
 #### DELETE /projects/{id}
+
 Delete a project.
 
 Response 204 body: empty
 
 #### ProjectResource fields
+
 - `id` (number)
 - `name` (string)
 - `description` (string|null)
@@ -130,9 +148,11 @@ Response 204 body: empty
 Base path: `/tickets`
 
 #### GET /tickets
+
 List tickets.
 
 Query params:
+
 - `project_id` (int) — filter by project
 - `status` ("open" | "in_progress" | "resolved" | "closed")
 - `search` (string)
@@ -140,20 +160,32 @@ Query params:
 - `page` (int)
 
 Response 200 body (excerpt):
+
 ```json
 {
-  "data": [
-    { "id": 456, "project_id": 123, "title": "Fix login", "description": "...", "status": "open", "priority": "medium", "created_at": "...", "updated_at": "..." }
-  ],
-  "links": { },
-  "meta": { }
+    "data": [
+        {
+            "id": 456,
+            "project_id": 123,
+            "title": "Fix login",
+            "description": "...",
+            "status": "open",
+            "priority": "medium",
+            "created_at": "...",
+            "updated_at": "..."
+        }
+    ],
+    "links": {},
+    "meta": {}
 }
 ```
 
 #### POST /tickets
+
 Create a ticket.
 
 Request JSON:
+
 - `project_id` (int, required)
 - `title` (string, required, max 200)
 - `description` (string|null)
@@ -164,14 +196,17 @@ Request JSON:
 Response 201 body: `TicketResource`
 
 #### GET /tickets/{id}
+
 Show a ticket by numeric id.
 
 Response 200 body: `TicketResource`
 
 #### PATCH /tickets/{id}
+
 Update a ticket.
 
 Body (any subset):
+
 - `project_id` (int)
 - `title` (string, max 200)
 - `description` (string|null)
@@ -181,11 +216,13 @@ Body (any subset):
 Response 200 body: `TicketResource`
 
 #### DELETE /tickets/{id}
+
 Delete a ticket.
 
 Response 204 body: empty
 
 #### TicketResource fields
+
 - `id` (number)
 - `project_id` (number)
 - `title` (string)
@@ -207,12 +244,13 @@ Response 204 body: empty
 - 500 Server Error — unexpected error (see logs)
 
 Validation errors (example):
+
 ```json
 {
-  "message": "The given data was invalid.",
-  "errors": {
-    "name": ["The name field is required."]
-  }
+    "message": "The given data was invalid.",
+    "errors": {
+        "name": ["The name field is required."]
+    }
 }
 ```
 
@@ -234,6 +272,7 @@ ddev exec tail -f storage/logs/laravel.log
 ---
 
 ## Notes
+
 - API uses numeric ids for resources (web uses slugs for some routes).
 - `user_id` is optional on create in development; production should specify an explicit user.
 - Sorting and pagination can be combined: `?sort=-id&page=2`.

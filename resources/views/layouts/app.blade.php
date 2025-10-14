@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- View Transitions API -->
+    <meta name="view-transition" content="same-origin">
 
     <title>{{ config('app.name', 'IssueForge') }}</title>
 
@@ -37,21 +40,32 @@
 </head>
 
 <body class="font-sans antialiased main-content">
-    <div class="min-h-screen relative">
-        <!-- Background Effects -->
-        <div class="fixed inset-0 overflow-hidden pointer-events-none">
-            <div
-                class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-transparent rounded-full blur-3xl animate-pulse-slow">
+    <!-- Skip to main content (Accessibility) -->
+    <a href="#main-content" class="skip-link">
+        Skip to main content
+    </a>
+    
+    <!-- Scroll Progress Indicator (created by JS) -->
+    
+    <div class="min-h-screen relative" role="document">
+        <!-- Background Effects - Enhanced with mesh gradients -->
+        <div class="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/15 to-transparent rounded-full blur-3xl animate-pulse-slow"
+                data-parallax data-parallax-speed="0.3">
             </div>
-            <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-accent-500/10 to-transparent rounded-full blur-3xl animate-pulse-slow"
-                style="animation-delay: 1s;"></div>
+            <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-accent-500/15 to-transparent rounded-full blur-3xl animate-pulse-slow"
+                style="animation-delay: 1s;" data-parallax data-parallax-speed="0.5">
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-success-500/10 to-transparent rounded-full blur-3xl animate-pulse-slow"
+                style="animation-delay: 2s;" data-parallax data-parallax-speed="0.4">
+            </div>
         </div>
 
         @include('layouts.navigation')
 
         <!-- Page Heading -->
         @isset($header)
-            <header class="page-header relative z-10">
+            <header class="page-header relative z-10" role="banner">
                 <div class="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
                     <div class="animate-fade-in-up">
                         {{ $header }}
@@ -61,14 +75,14 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="relative z-10">
+        <main id="main-content" class="relative z-10" role="main" tabindex="-1">
             <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
                 {{ $slot }}
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="relative z-10 mt-12 border-t border-dark-700/50">
+        <footer class="relative z-10 mt-12 border-t border-dark-700/50" role="contentinfo">
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 md:pb-8 flex flex-col md:flex-col lg:flex-row items-center md:items-center lg:items-center md:justify-center lg:justify-between gap-4 md:gap-2 lg:gap-0 text-sm">
                 <div class="text-slate-400">
