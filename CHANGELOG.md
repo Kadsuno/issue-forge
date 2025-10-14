@@ -2,6 +2,12 @@
 
 ### Fixed
 
+- **Tailwind Utility Registration with Nested Selectors**: Fixed utilities with nested selectors failing to register
+    - Separated utilities with nested selectors (`&::before`, `&:focus-visible`) into `addComponents()`
+    - `addUtilities()` now only contains simple utilities without nesting
+    - Affected utilities: `.noise-texture`, `.focus-ring`, `.focus-ring-accent`
+    - Fixed syntax prevents build errors when these utilities are used in templates
+    - Tailwind now correctly processes pseudo-elements and pseudo-classes in these utilities
 - **Skeleton Loaders CLS Issue**: Fixed Cumulative Layout Shift (CLS) caused by `rand()` in skeleton components
     - Replaced random dimensions with fixed, predictable Tailwind utility classes
     - skeleton-card: Now uses fixed `h-20` instead of `rand(60, 100)px`

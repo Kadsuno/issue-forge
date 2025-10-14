@@ -341,7 +341,7 @@ export default {
     plugins: [
         forms({ strategy: 'class' }),
         typography(),
-        function ({ addUtilities, addBase }) {
+        function ({ addUtilities, addComponents, addBase }) {
             // Base layer for CSS variables and foundational styles
             addBase({
                 ':root': {
@@ -350,6 +350,7 @@ export default {
                 },
             });
 
+            // Simple utilities without nested selectors
             const newUtilities = {
                 // Multi-layer glassmorphism
                 '.glass': {
@@ -447,20 +448,6 @@ export default {
                     'border-radius': '0.5rem',
                 },
 
-                // Noise texture overlay
-                '.noise-texture': {
-                    position: 'relative',
-                    '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        inset: '0',
-                        'background-image': 'url(/noise.svg)',
-                        'background-repeat': 'repeat',
-                        opacity: '0.05',
-                        'pointer-events': 'none',
-                    },
-                },
-
                 // Mesh gradient backgrounds
                 '.mesh-gradient': {
                     background:
@@ -511,8 +498,25 @@ export default {
                 '.contain-strict': {
                     contain: 'strict',
                 },
+            };
 
-                // Focus visible (accessibility)
+            // Components with nested selectors (requires addComponents)
+            const newComponents = {
+                // Noise texture overlay (requires ::before pseudo-element)
+                '.noise-texture': {
+                    position: 'relative',
+                    '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        inset: '0',
+                        'background-image': 'url(/noise.svg)',
+                        'background-repeat': 'repeat',
+                        opacity: '0.05',
+                        'pointer-events': 'none',
+                    },
+                },
+
+                // Focus visible (accessibility - requires :focus-visible pseudo-class)
                 '.focus-ring': {
                     '&:focus-visible': {
                         outline: '2px solid rgba(59, 130, 246, 0.6)',
@@ -528,7 +532,9 @@ export default {
                     },
                 },
             };
+
             addUtilities(newUtilities);
+            addComponents(newComponents);
         },
     ],
 };
