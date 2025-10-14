@@ -39,9 +39,15 @@ class AppServiceProvider extends ServiceProvider
     protected function configureMailTransports(): void
     {
         Mail::extend('brevo', function (array $config) {
-            return new BrevoApiTransport(
-                apiKey: $config['api_key'] ?? config('services.brevo.api_key')
-            );
+            $apiKey = $config['api_key'] ?? config('services.brevo.api_key');
+
+            if (empty($apiKey)) {
+                throw new \RuntimeException(
+                    'Brevo API key is not configured. Please set BREVO_API_KEY in your .env file.'
+                );
+            }
+
+            return new BrevoApiTransport(apiKey: $apiKey);
         });
     }
 

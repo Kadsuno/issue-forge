@@ -228,4 +228,21 @@ final class EmailConfigurationTest extends TestCase
             'Mail port should be one of the common SMTP ports'
         );
     }
+
+    /**
+     * Test that Brevo transport throws exception when API key is missing.
+     */
+    public function test_brevo_transport_requires_api_key(): void
+    {
+        // Temporarily set mailer to brevo without API key
+        Config::set('mail.default', 'brevo');
+        Config::set('services.brevo.api_key', null);
+        Config::set('mail.mailers.brevo.api_key', null);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Brevo API key is not configured');
+
+        // This should throw exception when trying to create the transport
+        Mail::mailer('brevo');
+    }
 }
