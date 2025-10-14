@@ -10,7 +10,7 @@
     </div>
     <div class="space-y-3">
         @for ($i = 0; $i < $rows; $i++)
-            <div class="skeleton-box" style="height: {{ rand(60, 100) }}px;"></div>
+            <div class="skeleton-box h-20"></div>
         @endfor
     </div>
 </div>

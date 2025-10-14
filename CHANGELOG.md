@@ -1,5 +1,17 @@
 ## 2025-10-14
 
+### Fixed
+
+- **Skeleton Loaders CLS Issue**: Fixed Cumulative Layout Shift (CLS) caused by `rand()` in skeleton components
+    - Replaced random dimensions with fixed, predictable Tailwind utility classes
+    - skeleton-card: Now uses fixed `h-20` instead of `rand(60, 100)px`
+    - skeleton-list: Uses cycling array of widths (`w-3/4`, `w-4/5`, `w-5/6`) instead of `rand(60, 90)%`
+    - skeleton-table: Uses predictable width arrays for headers and cells instead of `rand()` values
+    - Eliminates layout shift on each render, improving Core Web Vitals scores
+    - Provides consistent, professional appearance across all page loads
+    - Uses Tailwind classes instead of inline styles for better performance
+    - Updated documentation with CLS prevention best practices
+
 ### Added
 
 - **Design System Modernization to 2025 Standards**: Comprehensive upgrade with cutting-edge visual effects and animations
