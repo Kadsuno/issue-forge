@@ -50,59 +50,95 @@ document.addEventListener('click', createRipple);
 /**
  * Magnetic Cursor Effect
  * Buttons follow the cursor when hovering nearby
+ * Uses event delegation to support dynamically added elements
  */
-const magneticElements = document.querySelectorAll('.magnetic, .btn-primary, .btn-accent');
+let currentMagneticElement = null;
 
-magneticElements.forEach((element) => {
-    element.addEventListener('mousemove', (e) => {
-        const rect = element.getBoundingClientRect();
+document.addEventListener(
+    'mouseover',
+    (e) => {
+        const magneticElement = e.target.closest('.magnetic, .btn-primary, .btn-accent');
+        if (magneticElement && magneticElement !== currentMagneticElement) {
+            currentMagneticElement = magneticElement;
+        }
+    },
+    true,
+);
+
+document.addEventListener('mousemove', (e) => {
+    if (currentMagneticElement && currentMagneticElement.contains(e.target)) {
+        const rect = currentMagneticElement.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
         const deltaX = (e.clientX - centerX) * 0.2;
         const deltaY = (e.clientY - centerY) * 0.2;
 
-        element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    });
-
-    element.addEventListener('mouseleave', () => {
-        element.style.transform = 'translate(0, 0)';
-    });
+        currentMagneticElement.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    }
 });
+
+document.addEventListener(
+    'mouseout',
+    (e) => {
+        const magneticElement = e.target.closest('.magnetic, .btn-primary, .btn-accent');
+        if (magneticElement && !magneticElement.contains(e.relatedTarget)) {
+            magneticElement.style.transform = 'translate(0, 0)';
+            if (currentMagneticElement === magneticElement) {
+                currentMagneticElement = null;
+            }
+        }
+    },
+    true,
+);
 
 /**
  * Card Tilt Effect
  * 3D tilt effect on card hover
+ * Uses event delegation to support dynamically added elements and prevent duplicate listeners
  */
-function initTiltEffect() {
-    const tiltCards = document.querySelectorAll('.tilt, .card-hover');
+let currentTiltCard = null;
 
-    tiltCards.forEach((card) => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+document.addEventListener(
+    'mouseover',
+    (e) => {
+        const tiltCard = e.target.closest('.tilt, .card-hover');
+        if (tiltCard && tiltCard !== currentTiltCard) {
+            currentTiltCard = tiltCard;
+        }
+    },
+    true,
+);
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+document.addEventListener('mousemove', (e) => {
+    if (currentTiltCard && currentTiltCard.contains(e.target)) {
+        const rect = currentTiltCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-        });
-    });
-}
+        currentTiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    }
+});
 
-// Initialize tilt effect on page load and after dynamic content
-initTiltEffect();
-
-// Re-initialize after Livewire updates
-document.addEventListener('livewire:navigated', initTiltEffect);
+document.addEventListener(
+    'mouseout',
+    (e) => {
+        const tiltCard = e.target.closest('.tilt, .card-hover');
+        if (tiltCard && !tiltCard.contains(e.relatedTarget)) {
+            tiltCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            if (currentTiltCard === tiltCard) {
+                currentTiltCard = null;
+            }
+        }
+    },
+    true,
+);
 
 /**
  * Scroll-Triggered Animations
@@ -353,10 +389,10 @@ console.log(
 
 /**
  * Export functions for use in other modules
+ * Note: Magnetic cursor and tilt effects use event delegation, no initialization needed
  */
 window.DesignSystem = {
     createRipple,
-    initTiltEffect,
     staggerListItems,
     enhanceFormInputs,
     hideSkeletons,

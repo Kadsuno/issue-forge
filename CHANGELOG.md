@@ -2,6 +2,14 @@
 
 ### Fixed
 
+- **Interactive Effects with Dynamic Content**: Fixed inconsistent behavior of interactive effects with dynamically loaded content
+    - **Magnetic Cursor Effect**: Now uses event delegation to automatically work with Livewire/dynamic content
+    - **Card Tilt Effect**: Refactored to use event delegation, eliminating duplicate event listeners
+    - Prevents memory leaks from accumulating event listeners on Livewire navigation
+    - Both effects now track current hovered element to ensure proper cleanup
+    - Uses `mouseover`/`mouseout` with proper `relatedTarget` checking for accurate hover detection
+    - No re-initialization needed - effects work immediately on all dynamically added elements
+    - Removed `initTiltEffect()` function and Livewire navigation listener (no longer needed)
 - **Tailwind Utility Registration with Nested Selectors**: Fixed utilities with nested selectors failing to register
     - Separated utilities with nested selectors (`&::before`, `&:focus-visible`) into `addComponents()`
     - `addUtilities()` now only contains simple utilities without nesting
