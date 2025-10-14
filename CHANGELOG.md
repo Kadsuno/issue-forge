@@ -9,11 +9,15 @@
   - Added Brevo API configuration to `config/services.php` for optional HTTP API fallback
   - Added comprehensive email configuration feature tests covering SMTP settings, notifications, and environment checks
   - Environment variable support for MAIL_EHLO_DOMAIN and MAIL_VERIFY_PEER
+  - Implemented custom Brevo API mail transport (`BrevoApiTransport`) to bypass firewall restrictions
+  - Installed `getbrevo/brevo-php` SDK for HTTP API integration
+  - Registered custom mail transport in `AppServiceProvider` for seamless Laravel Mail integration
 
 ### Changed
 
 - Enhanced SMTP mailer configuration with explicit `encryption` parameter and SSL verification
-- Mail configuration now properly supports both development (Mailpit) and production (Brevo SMTP) environments
+- Mail configuration now properly supports both development (Mailpit) and production (Brevo SMTP/API) environments
+- Updated documentation to recommend Brevo API for production (bypasses SMTP port blocking)
 
 ### Fixed
 
