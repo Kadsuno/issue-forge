@@ -59,7 +59,7 @@ class Ticket extends Model
         $suffix = 1;
         while (static::where('slug', $slug)->exists()) {
             $suffix++;
-            $slug = $base . '-' . $suffix;
+            $slug = $base.'-'.$suffix;
         }
 
         return $slug;
@@ -282,6 +282,6 @@ class Ticket extends Model
     {
         $prefix = optional($this->project)->ticket_prefix;
 
-        return $prefix ? ($prefix . '-' . $this->id) : ('#' . $this->id);
+        return $prefix ? ($prefix.'-'.$this->id) : ('#'.$this->id);
     }
 }

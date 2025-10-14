@@ -67,7 +67,7 @@ class User extends Authenticatable
                 $suffix = 1;
                 while (static::where('slug', $slug)->exists()) {
                     $suffix++;
-                    $slug = $base . '-' . $suffix;
+                    $slug = $base.'-'.$suffix;
                 }
                 $user->slug = $slug;
             }

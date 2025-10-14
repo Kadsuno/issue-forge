@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 return new class extends Migration
@@ -22,11 +22,11 @@ return new class extends Migration
         $users = DB::table('users')->select('id', 'name')->get();
         foreach ($users as $u) {
             $base = Str::slug((string) $u->name);
-            $slug = $base ?: 'user-' . $u->id;
+            $slug = $base ?: 'user-'.$u->id;
             $suffix = 1;
             while (DB::table('users')->where('slug', $slug)->where('id', '!=', $u->id)->exists()) {
                 $suffix++;
-                $slug = $base . '-' . $suffix;
+                $slug = $base.'-'.$suffix;
             }
             DB::table('users')->where('id', $u->id)->update(['slug' => $slug]);
         }
