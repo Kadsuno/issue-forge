@@ -270,9 +270,9 @@
             </div>
 
             <!-- Recent Activity Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 100)">
                 <!-- Recent Projects -->
-                <div class="card p-6">
+                <div class="card p-6" x-show="!loading" x-transition:enter="animate-fade-in-up">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center space-x-3">
                             <div
@@ -291,7 +291,7 @@
                     </div>
 
                     @if ($recentProjects->count() > 0)
-                        <div class="space-y-4">
+                        <div class="space-y-4" data-stagger>
                             @foreach ($recentProjects as $project)
                                 <a href="{{ route('projects.show', $project) }}"
                                     class="flex items-center justify-between p-4 bg-dark-800/30 rounded-lg border border-dark-600/30 hover:bg-dark-700/30 transition-colors duration-200">
@@ -327,8 +327,13 @@
                     @endif
                 </div>
 
+                <!-- Recent Projects Skeleton -->
+                <div x-show="loading" x-transition:leave="animate-fade-out">
+                    <x-skeleton-list :items="3" />
+                </div>
+
                 <!-- Recent Tickets -->
-                <div class="card p-6">
+                <div class="card p-6" x-show="!loading" x-transition:enter="animate-fade-in-up">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center space-x-3">
                             <div
@@ -347,7 +352,7 @@
                     </div>
 
                     @if ($recentTickets->count() > 0)
-                        <div class="space-y-3">
+                        <div class="space-y-3" data-stagger>
                             @foreach ($recentTickets as $ticket)
                                 <a href="{{ route('tickets.show', $ticket) }}"
                                     class="flex items-center justify-between p-3 bg-dark-800/30 rounded-lg border border-dark-600/30 hover:bg-dark-700/30 transition-colors duration-200">
@@ -379,6 +384,11 @@
                                 Projects</a>
                         </div>
                     @endif
+                </div>
+
+                <!-- Recent Tickets Skeleton -->
+                <div x-show="loading" x-transition:leave="animate-fade-out">
+                    <x-skeleton-list :items="4" />
                 </div>
             </div>
         </div>

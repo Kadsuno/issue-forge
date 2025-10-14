@@ -26,6 +26,14 @@
         - Shimmer effect for skeleton loaders
         - Loading spinner with spring animations
         - Smooth skeleton hide transitions
+        - **Integrated skeleton loaders across the application**:
+            - Projects List (Livewire): Shows 3 skeleton cards during search/pagination
+            - Dashboard: Skeleton lists for recent projects (3 items) and tickets (4 items)
+            - Tickets Index: Skeleton table (8 rows × 10 cols) during page load
+            - My Tickets: Skeleton list (5 items) during page load
+            - Strategic delay timings (100-200ms) prevent jarring flashes on fast loads
+            - Smooth fade-in/fade-out transitions with Alpine.js and Livewire
+            - Created comprehensive documentation (`docs/SKELETON_LOADERS.md`)
     - **Typography System Upgrade**:
         - Fluid typography with CSS `clamp()` for responsive scaling (9 fluid size variants)
         - Enhanced heading hierarchy with optimized letter spacing for dark mode
