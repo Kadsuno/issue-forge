@@ -399,46 +399,113 @@ Brevo is GDPR-compliant with EU data centers. Additional steps:
 
 ## 10. Alternative Configuration (Brevo API)
 
-For HTTP API fallback (optional), Brevo provides a PHP SDK.
+**Use the Brevo API when SMTP ports (587/465) are blocked by your hosting provider.**
 
-### Install SDK
+The API transport bypasses all firewall restrictions and is recommended for production environments with strict outbound port filtering.
+
+### Step 1: Get Your Brevo API Key
+
+1. Log into [Brevo dashboard](https://app.brevo.com)
+2. Go to **Settings** → **SMTP & API**
+3. Click **API Keys** tab
+4. Click **Generate a new API key**
+5. Give it a name (e.g., "IssueForge Production")
+6. Copy the API key (starts with `xkeysib-`)
+
+### Step 2: Configure Environment
+
+Update your `.env` file:
+
+```env
+# Change mailer from smtp to brevo
+MAIL_MAILER=brevo
+
+# Add your Brevo API key
+BREVO_API_KEY=xkeysib-your-api-key-here
+
+# Keep these for sender information
+MAIL_FROM_ADDRESS=support@yourdomain.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+**Important:** Remove or comment out SMTP-specific variables:
+
+```env
+# These are not needed when using API
+# MAIL_HOST=smtp-relay.brevo.com
+# MAIL_PORT=587
+# MAIL_USERNAME=...
+# MAIL_PASSWORD=...
+# MAIL_ENCRYPTION=tls
+```
+
+### Step 3: Clear Configuration Cache
 
 ```bash
-ddev composer require getbrevo/brevo-php
+php artisan config:clear
 ```
 
-### Configure API Key
+### Step 4: Test Email Sending
 
-Add to `.env`:
-```env
-BREVO_API_KEY=xkeysib-your-api-key-here
+```bash
+php artisan tinker
 ```
 
-Add to `config/services.php`:
-```php
-'brevo' => [
-    'api_key' => env('BREVO_API_KEY'),
-],
-```
-
-### Usage Example
+Then in Tinker:
 
 ```php
-use Brevo\Client\Configuration;
-use Brevo\Client\Api\TransactionalEmailsApi;
-
-$config = Configuration::getDefaultConfiguration()->setApiKey('api-key', config('services.brevo.api_key'));
-$api = new TransactionalEmailsApi(new GuzzleHttp\Client(), $config);
-
-$sendSmtpEmail = new \Brevo\Client\Model\SendSmtpEmail([
-    'subject' => 'Test Email',
-    'sender' => ['name' => 'IssueForge', 'email' => 'no-reply@yourdomain.com'],
-    'to' => [['email' => 'recipient@example.com', 'name' => 'Recipient']],
-    'htmlContent' => '<html><body><h1>Test</h1></body></html>',
-]);
-
-$result = $api->sendTransacEmail($sendSmtpEmail);
+Mail::raw('Test email from IssueForge via API', function ($message) {
+    $message->to('your-email@example.com')
+            ->subject('IssueForge API Test Email');
+});
 ```
+
+You should receive the email within seconds. Check Brevo dashboard for delivery status.
+
+### Advantages of API vs SMTP
+
+✅ **No Firewall Issues** - Works on any server, no port restrictions  
+✅ **Faster** - Direct API calls, no SMTP handshake overhead  
+✅ **More Reliable** - Better error handling and retry logic  
+✅ **Detailed Logs** - Better tracking in Brevo dashboard  
+✅ **No Authentication** - Uses API key only, simpler configuration
+
+### Production Recommendation
+
+For production deployments, **always use the Brevo API** (`MAIL_MAILER=brevo`) instead of SMTP. It's more reliable and bypasses common hosting restrictions.
+
+### API Usage in Code
+
+The API transport is fully compatible with Laravel's Mail facade - no code changes needed! All your existing mail/notification code works exactly the same:
+
+```php
+// Notifications work seamlessly
+$user->notify(new TicketCommentAdded($ticket, $comment, $actorName));
+
+// Mail facade works the same
+Mail::to($user)->send(new WelcomeEmail());
+
+// Queue emails work too
+Mail::to($user)->queue(new NewsletterEmail());
+```
+
+### Troubleshooting API
+
+**Invalid API Key Error:**
+- Verify your API key is correct in `.env`
+- Ensure no extra spaces or quotes
+- Check key starts with `xkeysib-`
+- Generate a new key if needed
+
+**Sender Domain Not Verified:**
+- Complete domain verification in Brevo dashboard
+- Add SPF, DKIM, and DMARC records
+- Wait up to 48 hours for DNS propagation
+
+**Rate Limits:**
+- Free tier: 300 emails/day
+- Check current usage in Brevo dashboard
+- Upgrade if you need more capacity
 
 ---
 

@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Mail\Transport\BrevoApiTransport;
 use App\Models\User;
 use App\Policies\UserPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +30,19 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
 
         $this->configureRateLimiting();
+        $this->configureMailTransports();
+    }
+
+    /**
+     * Configure custom mail transports.
+     */
+    protected function configureMailTransports(): void
+    {
+        Mail::extend('brevo', function (array $config) {
+            return new BrevoApiTransport(
+                apiKey: $config['api_key'] ?? config('services.brevo.api_key')
+            );
+        });
     }
 
     /**
