@@ -25,7 +25,7 @@ final class ProjectAndTicketDescriptionPlacementTest extends TestCase
             'is_active' => true,
         ]);
 
-        $response = $this->get(route('projects.show', $project->id));
+        $response = $this->get(route('projects.show', $project));
         $response->assertOk();
 
         // Page should render description within a card container after header
