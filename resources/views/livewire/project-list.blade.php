@@ -82,8 +82,15 @@
         </div>
     </div>
 
+    <!-- Loading Skeleton (shown during wire:loading) -->
+    <div wire:loading wire:target="search,gotoPage,previousPage,nextPage" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <x-skeleton-card :rows="3" />
+        <x-skeleton-card :rows="3" />
+        <x-skeleton-card :rows="3" />
+    </div>
+
     <!-- Projects Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div wire:loading.remove wire:target="search,gotoPage,previousPage,nextPage" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse ($projects as $project)
             <div class="card-hover p-6 group animate-fade-in-up" style="animation-delay: {{ $loop->index * 0.1 }}s;">
                 <div class="flex items-center justify-between mb-4">

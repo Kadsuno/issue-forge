@@ -24,8 +24,14 @@
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="card p-0 overflow-hidden">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 200)">
+            <!-- Loading Skeleton -->
+            <div x-show="loading" x-transition:leave="animate-fade-out">
+                <x-skeleton-table :rows="8" :cols="10" />
+            </div>
+
+            <!-- Actual Content -->
+            <div class="card p-0 overflow-hidden" x-show="!loading" x-transition:enter="animate-fade-in-up">
                 @if ($tickets->count() > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full text-sm">
