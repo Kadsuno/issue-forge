@@ -27,10 +27,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 
-    <!-- Alpine is bundled via Vite in resources/js/app.js -->
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <!-- Alpine.js and SimpleMDE are bundled via Vite in resources/js/app.js -->
 </head>
 
 <body class="font-sans antialiased main-content">

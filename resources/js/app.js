@@ -3,6 +3,13 @@ import './bootstrap';
 // Alpine.js is bundled with Livewire 3, no need to import it separately
 
 // ============================================
+// EasyMDE Markdown Editor (SimpleMDE maintained fork)
+// ============================================
+import EasyMDE from 'easymde';
+window.SimpleMDE = EasyMDE; // Keep SimpleMDE name for backward compatibility
+window.EasyMDE = EasyMDE;
+
+// ============================================
 // Modern Design System Enhancements
 // ============================================
 
