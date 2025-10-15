@@ -20,10 +20,7 @@
     <meta name="theme-color" content="#6366f1">
     <meta name="msapplication-TileColor" content="#6366f1">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts are loaded via app.css for better caching -->
 
     <!-- Scripts (Alpine is bundled via Vite in resources/js/app.js) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

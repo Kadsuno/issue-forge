@@ -11,5 +11,7 @@ Route::prefix(config('api.version', 'v1'))
         Route::apiResource('projects', ProjectsController::class)->parameters([
             'projects' => 'project:id',
         ]);
-        Route::apiResource('tickets', TicketsController::class);
+        Route::apiResource('tickets', TicketsController::class)->parameters([
+            'tickets' => 'ticket:id',
+        ]);
     });

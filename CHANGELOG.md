@@ -1,4 +1,155 @@
-## 2025-10-15
+## 2025-10-15 (Part 3) - UX, Accessibility, Type Safety & Testing
+
+### Added
+
+- **Global Livewire Loading Indicator**: Added animated progress bar at page top
+    - Shows gradient animation during Livewire requests
+    - Uses `wire:loading.delay.longer` to avoid flashing on fast requests
+    - Provides visual feedback for async operations
+- **Button Loading States**: Added spinner indicators to interactive buttons
+    - Toggle status buttons show loading spinner during state change
+    - "Create First Project" button disables with spinner during action
+    - Prevents duplicate requests with disabled state
+- **ARIA Labels**: Enhanced accessibility for screen readers
+    - Added descriptive aria-label to search inputs
+    - Added context-aware labels to toggle buttons (includes project name)
+    - Marked decorative SVG icons with aria-hidden
+- **Unit Tests for Models**: Created comprehensive test coverage
+    - tests/Unit/Models/ProjectTest.php: 15 tests for Project model
+    - tests/Unit/Models/TicketTest.php: 18 tests for Ticket model
+    - tests/Unit/Models/UserTest.php: 12 tests for User model
+    - Tests cover slug generation, relationships, type casts, fillable attributes
+- **EasyMDE Bundled**: Replaced CDN-loaded SimpleMDE with npm-bundled EasyMDE
+    - Installed EasyMDE (maintained SimpleMDE fork) via npm
+    - Bundled via Vite for better caching and offline support
+    - Exposed as both `window.SimpleMDE` and `window.EasyMDE` for compatibility
+    - CSS imported in app.css for consistent loading
+- **Comprehensive Type Hints**: Added strict typing to main controllers
+    - Added `declare(strict_types=1)` to ProjectController and TicketController
+    - All 14 controller methods now have explicit return types
+    - Made controllers final classes to prevent inheritance
+    - Enhanced IDE support and type safety
+
+### Changed
+
+- **Font Loading**: Fixed Google Fonts duplicate loading across layouts
+    - Removed font links from `app.blade.php` and `guest.blade.php`
+    - Consolidated to single CSS import in `app.css`
+    - Improves caching and reduces redundant requests
+- **SimpleMDE/EasyMDE**: Migrated from CDN to npm bundle
+    - Removed `https://cdn.jsdelivr.net/simplemde` script/link tags
+    - All assets now served locally through Vite
+    - No external dependencies at runtime
+
+### Fixed
+
+- **Alpine.js Duplicate**: Removed manual Alpine.js import (Livewire bundles it)
+- **SimpleMDE Dependencies**: Switched to EasyMDE to avoid CodeMirror resolution issues
+- **Tailwind CSS Version Conflict**: Removed @tailwindcss/vite v4 plugin
+    - Eliminated version mismatch between Tailwind v3 and v4 plugin
+    - Reduced dependencies by 17 packages
+    - Maintains standard PostCSS integration for Tailwind v3
+
+### Improved
+
+- **User Experience**: Loading states provide clear feedback during async operations
+- **Accessibility**: Better screen reader support with ARIA labels
+- **Performance**: Fonts and editor assets now cached locally
+- **Testing**: Foundation for comprehensive test coverage across models
+- **Type Safety**: Strict typing prevents runtime errors and improves maintainability
+- **Code Quality**: All code passes Pint, PHPUnit, ESLint, and Prettier checks
+
+---
+
+## 2025-10-15 (Part 2) - Comprehensive Security & Code Quality Improvements
+
+### Added
+
+- **HasSlug Trait**: Created reusable trait for automatic slug generation with uniqueness checks
+    - Replaces duplicate slug generation code across Project, Ticket, and User models
+    - Implements efficient algorithm to prevent N+1 queries
+    - Configurable via `getSlugSourceColumn()` and `getDefaultSlugBase()` methods
+- **Security Headers Middleware**: Added HTTP security headers to all web responses
+    - X-Frame-Options: SAMEORIGIN (prevent clickjacking)
+    - X-Content-Type-Options: nosniff (prevent MIME sniffing)
+    - Referrer-Policy: strict-origin-when-cross-origin
+    - Permissions-Policy: restrict geolocation, microphone, camera
+    - X-XSS-Protection: enabled for legacy browsers
+- **Authorization Policies**: Implemented Laravel Policies for Project and Ticket models
+    - ProjectPolicy: controls view, create, update, delete, archive actions
+    - TicketPolicy: controls view, create, update, delete, assign, comment actions
+    - Admins have full access, regular users have context-based permissions
+- **Rate Limiting**: Added throttling to sensitive authentication routes
+    - Login: 5 attempts per minute per IP
+    - Registration: 10 attempts per minute per IP
+    - Password reset request: 3 attempts per minute per IP
+    - Password reset: 5 attempts per minute per IP
+    - Password confirmation: 10 attempts per minute per IP
+- **.env.example**: Created comprehensive environment variable template
+    - Documented all required configuration variables
+    - Includes inline comments for each setting
+    - Covers app, database, mail, cache, queue, API, and service configurations
+
+### Changed
+
+- **API Authorization**: Implemented proper authorization in API FormRequests
+    - ProjectStoreRequest, ProjectUpdateRequest: check create/update policies
+    - TicketStoreRequest, TicketUpdateRequest: check create/update policies
+    - Supports both user-based (policies) and token-based (admin) authentication
+- **Project Slug Generation**: Fixed missing uniqueness check in Project model
+    - Now generates unique slugs with suffix incrementing (e.g., project-1, project-2)
+    - Added proper type hints to boot() method
+- **Alpine.js Loading**: Removed duplicate Alpine.js loading
+    - Removed manual Alpine import from `resources/js/app.js`
+    - Removed alpinejs npm dependency (Livewire 3 bundles it)
+    - Fixes console warning about multiple Alpine instances
+- **Floating Action Button**: Made visible on mobile devices
+    - Changed from `hidden lg:block` to responsive visibility
+    - Adjusted positioning: `bottom-4 right-4` on mobile, `bottom-6 right-6` on large screens
+- **API Route Model Binding**: Fixed tickets API to use ID-based route binding
+    - Added explicit `ticket:id` parameter binding for API routes
+    - Updated TicketsController::update() to use route model binding
+- **Code Formatting**: Applied Laravel Pint fixes to all PHP files
+    - Fixed 5 style issues across new files
+    - Ensured PSR-12 compliance
+
+### Fixed
+
+- **Security**: Closed authorization gap in API endpoints
+    - Previously all API requests were authorized without checking permissions
+    - Now properly validates user permissions via Laravel Policies
+- **Security**: Protected authentication routes from brute force attacks
+    - Added rate limiting to prevent credential stuffing and DoS attacks
+- **Bug**: Project slug collisions
+    - Projects with identical names now get unique slugs with numeric suffixes
+- **Bug**: Test failures after authorization implementation
+    - Fixed API tests to work with new authorization layer
+    - Updated FormRequests to handle token-based authentication
+
+### Improved
+
+- **Code Quality**: Reduced code duplication with HasSlug trait
+    - Eliminated 60+ lines of duplicate slug generation code
+    - Single source of truth for slug generation logic
+- **Code Quality**: Added type hints to model boot methods
+    - Project, Ticket, User models now have proper type declarations
+- **Code Quality**: ProjectList Livewire component already uses eager loading
+    - Verified no N+1 query issues in project listings
+- **Security**: Defense in depth with multiple security layers
+    - HTTP security headers protect against common web vulnerabilities
+    - Rate limiting prevents abuse and automated attacks
+    - Authorization policies ensure proper access control
+    - Token authentication secures API endpoints
+
+### Testing
+
+- All 69 existing tests passing
+- No new linter errors
+- JavaScript/CSS linting clean (only DDEV config warnings)
+
+---
+
+## 2025-10-15 (Part 1) - Notification Improvements
 
 ### Changed
 

@@ -202,8 +202,8 @@
                 @if ($project->tickets->count() > 0)
                     <div class="space-y-4">
                         @foreach ($project->tickets as $ticket)
-                            <div class="card-hover p-6 group animate-fade-in-up"
-                                style="animation-delay: {{ $loop->index * 0.1 }}s;">
+                            <div class="card p-6 group transition-all duration-200 hover:border-primary-500/30 animate-fade-in"
+                                style="animation-delay: {{ $loop->index * 0.05 }}s;">
                                 <div class="flex flex-col md:flex-row md:justify-between items-start gap-4">
                                     <div class="flex-1">
                                         <h4

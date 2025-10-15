@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Ticket extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'title',
@@ -35,34 +35,19 @@ class Ticket extends Model
     ];
 
     /**
-     * Boot model hooks.
+     * Get the column name to use as the slug source.
      */
-    protected static function boot(): void
+    protected function getSlugSourceColumn(): string
     {
-        parent::boot();
-
-        static::creating(function (self $ticket): void {
-            // Generate unique slug from title on creation
-            if (empty($ticket->slug)) {
-                $ticket->slug = static::generateUniqueSlug((string) $ticket->title);
-            }
-        });
+        return 'title';
     }
 
     /**
-     * Generate a globally-unique slug for tickets from the given title.
+     * Get the default base slug when the source text is empty.
      */
-    private static function generateUniqueSlug(string $title): string
+    protected static function getDefaultSlugBase(): string
     {
-        $base = Str::slug($title) ?: 'ticket';
-        $slug = $base;
-        $suffix = 1;
-        while (static::where('slug', $slug)->exists()) {
-            $suffix++;
-            $slug = $base.'-'.$suffix;
-        }
-
-        return $slug;
+        return 'ticket';
     }
 
     /**
