@@ -80,7 +80,7 @@ class TicketUpdated extends Notification
                 'appName' => config('app.name'),
                 'notifiable' => $notifiable,
                 'ticket' => $ticket,
-                'messageText' => $this->message,
+                'messageText' => str($this->message)->limit(120)->toString(),
                 'actorName' => $this->actorName,
                 'url' => $url,
                 'meta' => $meta,

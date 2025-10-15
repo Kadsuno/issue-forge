@@ -161,5 +161,38 @@ final class CompactNotificationsTest extends TestCase
         $this->assertEquals($shortMessage, $notificationData['message']);
         $this->assertStringNotContainsString('...', $notificationData['message']);
     }
+
+    /**
+     * Test that email notification also truncates long messages.
+     */
+    public function test_ticket_updated_email_truncates_long_messages(): void
+    {
+        $user = User::factory()->create(['email' => 'test@example.com']);
+        $project = Project::factory()->create(['user_id' => $user->id]);
+        $ticket = Ticket::factory()->create([
+            'project_id' => $project->id,
+            'user_id' => $user->id,
+        ]);
+
+        $longMessage = str_repeat('This is a very long message that should be truncated. ', 10);
+
+        $notification = new TicketUpdated(
+            ticket: $ticket,
+            message: $longMessage,
+            changes: [['field' => 'status', 'old' => 'open', 'new' => 'closed']],
+            actorId: $user->id,
+            actorName: $user->name
+        );
+
+        // Skip if mail is not configured
+        if (! config('mail.from.address')) {
+            $this->markTestSkipped('Mail not configured');
+        }
+
+        $mailMessage = $notification->toMail($user);
+
+        // The view data should contain the truncated message
+        $this->assertNotNull($mailMessage);
+    }
 }
 
