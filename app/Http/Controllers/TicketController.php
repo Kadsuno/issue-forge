@@ -212,8 +212,12 @@ final class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Ticket $ticket): RedirectResponse
     {
-        //
+        $project = $ticket->project;
+        $ticket->delete();
+
+        return redirect()->route('projects.show', $project)
+            ->with('success', 'Ticket deleted successfully!');
     }
 }
