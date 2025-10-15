@@ -176,6 +176,25 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Attachments Section -->
+                <div class="mb-8 space-y-6">
+                    <h3 class="text-lg font-semibold text-white">Attachments</h3>
+
+                    <!-- Display Existing Attachments -->
+                    <x-attachment-list :attachments="$project->attachments()->with('uploadedBy')->latest()->get()" />
+
+                    <!-- Upload New Attachments -->
+                    <div class="mt-6">
+                        <h4 class="text-sm font-semibold text-dark-100 mb-3">Add Attachments</h4>
+                        <x-file-upload
+                            attachable-type="App\Models\Project"
+                            :attachable-id="$project->id"
+                            :multiple="true"
+                        />
+                    </div>
+                </div>
+
                 <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
                     <div class="flex items-center gap-3">
                         <div

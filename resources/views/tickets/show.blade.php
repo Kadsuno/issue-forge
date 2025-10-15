@@ -325,6 +325,24 @@
                     </div>
                 @endif
 
+                <!-- Attachments Section -->
+                <div class="mt-8 space-y-6">
+                    <h3 class="text-lg font-semibold text-white">Attachments</h3>
+
+                    <!-- Display Existing Attachments -->
+                    <x-attachment-list :attachments="$ticket->attachments()->with('uploadedBy')->latest()->get()" />
+
+                    <!-- Upload New Attachments -->
+                    <div class="mt-6">
+                        <h4 class="text-sm font-semibold text-dark-100 mb-3">Add Attachments</h4>
+                        <x-file-upload
+                            attachable-type="App\Models\Ticket"
+                            :attachable-id="$ticket->id"
+                            :multiple="true"
+                        />
+                    </div>
+                </div>
+
                 <!-- Comments -->
                 <div class="mt-6" id="comment-form">
                     <div class="flex items-center justify-between mb-4">
