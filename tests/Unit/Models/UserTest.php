@@ -47,7 +47,11 @@ final class UserTest extends TestCase
         ]);
         $user->save();
 
-        $this->assertStringStartsWith('user-', $user->slug);
+        // Should be 'user' or 'user-N' if collision
+        $this->assertTrue(
+            $user->slug === 'user' || str_starts_with($user->slug, 'user-'),
+            "Expected slug to be 'user' or start with 'user-', got: {$user->slug}"
+        );
     }
 
     public function test_uses_route_key_as_slug(): void

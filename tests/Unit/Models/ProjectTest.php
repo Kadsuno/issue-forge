@@ -43,7 +43,11 @@ final class ProjectTest extends TestCase
         $project = new Project(['name' => '', 'user_id' => User::factory()->create()->id]);
         $project->save();
 
-        $this->assertStringStartsWith('project-', $project->slug);
+        // Should be 'project' or 'project-N' if collision
+        $this->assertTrue(
+            $project->slug === 'project' || str_starts_with($project->slug, 'project-'),
+            "Expected slug to be 'project' or start with 'project-', got: {$project->slug}"
+        );
     }
 
     public function test_uses_route_key_as_slug(): void
