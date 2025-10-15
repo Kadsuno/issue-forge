@@ -80,7 +80,7 @@ class TicketUpdated extends Notification
                 'appName' => config('app.name'),
                 'notifiable' => $notifiable,
                 'ticket' => $ticket,
-                'messageText' => $this->message,
+                'messageText' => str($this->message)->limit(120)->toString(),
                 'actorName' => $this->actorName,
                 'url' => $url,
                 'meta' => $meta,
@@ -100,10 +100,10 @@ class TicketUpdated extends Notification
             'ticket_number' => $this->ticket->number,
             'ticket_title' => $this->ticket->title,
             'project_id' => $this->ticket->project_id,
-            'changes' => $this->changes,
+            'changes_count' => count($this->changes),
             'actor_id' => $this->actorId,
             'actor_name' => $this->actorName,
-            'message' => $this->message,
+            'message' => str($this->message)->limit(120)->toString(),
             'url' => route('tickets.show', $this->ticket),
         ];
     }

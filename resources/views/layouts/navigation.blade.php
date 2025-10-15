@@ -126,11 +126,11 @@
                             const isNew = newTopId && newTopId !== lastId;
                             if (isNew || unread > prevUnread) {
                                 const n = next.length ? next[0] : null;
-                                const title = n?.data?.ticket_title ? `${n.data.ticket_title}` : '';
+                                const title = n?.data?.ticket_title ? `${n.data.ticket_title.substring(0, 80)}${n.data.ticket_title.length > 80 ? '...' : ''}` : '';
                                 const number = n?.data?.ticket_number ? `${n.data.ticket_number}` : '';
                                 const msg = n?.data?.message || 'New notification';
-                                const changesText = Array.isArray(n?.data?.changes) && n.data.changes.length ?
-                                    n.data.changes.map(c => `${c.field}: ${c.old ?? '—'} → ${c.new ?? '—'}`).join(', ') :
+                                const changesText = n?.data?.changes_count > 0 ?
+                                    `Updated ${n.data.changes_count} field${n.data.changes_count === 1 ? '' : 's'}` :
                                     (n?.data?.snippet || '');
                                 window.dispatchEvent(new CustomEvent('toast', {
                                     detail: {
@@ -201,12 +201,12 @@
                                                         <div class="text-xs text-slate-400 mt-0.5">
                                                             <span class="text-slate-300"
                                                                 x-text="n.data.ticket_number"></span>
-                                                            <span x-text="' — ' + (n.data.ticket_title || '')"></span>
+                                                            <span x-text="' — ' + (n.data.ticket_title || '')" class="line-clamp-1"></span>
                                                         </div>
                                                     </template>
-                                                    <template x-if="Array.isArray(n.data?.changes)">
+                                                    <template x-if="n.data?.changes_count > 0">
                                                         <div class="text-xs text-slate-400 mt-1"
-                                                            x-text="n.data.changes.map(c=>`${c.field}: ${c.old ?? '—'} → ${c.new ?? '—'}`).join(', ')">
+                                                            x-text="`Updated ${n.data.changes_count} field${n.data.changes_count === 1 ? '' : 's'}`">
                                                         </div>
                                                     </template>
                                                     <template x-if="n.data?.snippet">

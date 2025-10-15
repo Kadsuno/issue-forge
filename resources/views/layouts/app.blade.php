@@ -256,12 +256,12 @@
                         </template>
                     </div>
                     <div class="text-sm leading-5">
-                        <div class="font-semibold" x-text="t.title"></div>
+                        <div class="font-semibold line-clamp-1" x-text="t.title"></div>
                         <template x-if="t.body">
-                            <div class="text-slate-300 mt-0.5" x-text="t.body"></div>
+                            <div class="text-slate-300 mt-0.5 line-clamp-2" x-text="t.body"></div>
                         </template>
                         <template x-if="t.meta">
-                            <div class="text-slate-400 mt-1 text-xs" x-text="t.meta"></div>
+                            <div class="text-slate-400 mt-1 text-xs line-clamp-1" x-text="t.meta"></div>
                         </template>
                     </div>
                     <template x-if="t.url">

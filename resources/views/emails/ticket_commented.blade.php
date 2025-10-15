@@ -158,11 +158,11 @@
                 @endforeach
             </div>
             <div class="section-title">New Comment</div>
-            <div class="flow">{{ e($comment->body) }}</div>
+            <div class="flow">{{ e(Str::limit($comment->body, 200)) }}</div>
 
             @if (!empty($ticket->description))
                 <div class="section-title">Description</div>
-                <div class="flow">{{ e($ticket->description) }}</div>
+                <div class="flow">{{ e(Str::limit($ticket->description, 200)) }}</div>
             @endif
             <p style="margin-top:20px;">
                 <a class="btn" href="{{ $url }}" target="_blank" rel="noopener">View Comment</a>
