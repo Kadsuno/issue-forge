@@ -1,3 +1,68 @@
+## 2025-10-16
+
+### Changed
+
+- **README Roadmap**: Updated roadmap to reflect current implementation status
+    - Marked "Ticket comments & discussions" as completed
+    - Marked "Email notifications (Brevo SMTP/API)" as completed
+    - Added clarifying notes to "Extended workflow states" roadmap item (blocked, needs review, reopened, status history)
+    - Reordered roadmap items to match implementation priority
+
+## 2025-10-15 (Part 4) - File Attachments Implementation
+
+### Added
+
+- **File Attachments System**: Implemented polymorphic file attachment system
+    - Created `Attachment` model with polymorphic relationships (tickets, projects, comments)
+    - Migration: `create_attachments_table` with polymorphic fields and user tracking
+    - Added `morphMany` relationships to Ticket, TicketComment, and Project models
+    - Support for multiple file types: images, PDFs, documents, spreadsheets, archives
+    - File size limit: 10MB per file
+    - Storage: public disk with `attachments` directory
+- **Web UI Components**:
+    - `file-upload.blade.php`: Drag-and-drop + simple file input with Alpine.js
+    - `attachment-list.blade.php`: Display uploaded files with thumbnails and metadata
+    - Image previews for uploaded images
+    - File type icons with color coding (PDF, Word, Excel, archives)
+    - Progress indicators and file validation feedback
+    - Integrated into ticket show, project show views
+- **REST API Endpoints**: Full API support for attachments
+    - `POST /api/v1/attachments` - Upload files (multipart/form-data)
+    - `GET /api/v1/{type}/{id}/attachments` - List attachments for resource
+    - `GET /api/v1/attachments/{id}` - Get attachment metadata
+    - `GET /api/v1/attachments/{id}/download` - Download file
+    - `DELETE /api/v1/attachments/{id}` - Delete attachment
+    - `AttachmentResource` for consistent JSON responses
+    - Updated `TicketResource` and `ProjectResource` to include attachments
+- **Authorization & Security**:
+    - `AttachmentPolicy`: Controls download and delete permissions
+    - Users can delete own attachments
+    - Admins can delete any attachment
+    - View permissions inherited from parent resource
+    - File validation: type checking and size limits
+    - Automatic file cleanup when attachment deleted
+- **Styling**: Custom CSS for file attachments
+    - Drag-and-drop zone animations
+    - File type indicators with color coding
+    - Hover effects and transitions
+    - Upload progress animations
+    - Responsive grid layout for attachments
+- **Testing**: Comprehensive test coverage
+    - `AttachmentUploadTest.php`: 10 tests for web upload functionality
+    - `AttachmentApiTest.php`: 8 tests for API endpoints
+    - Tests cover upload, validation, authorization, download, delete
+    - Tests for file size and type validation
+    - Tests for polymorphic relationships
+
+### Changed
+
+- **Storage Configuration**: Added `attachments` disk in `config/filesystems.php`
+    - Path: `storage/app/public/attachments`
+    - Public visibility with automatic URL generation
+- **Routes**: Added web and API routes for attachment management
+    - Web: store, download, destroy routes
+    - API: full CRUD with versioned endpoints
+
 ## 2025-10-15 (Part 3) - UX, Accessibility, Type Safety & Testing
 
 ### Added

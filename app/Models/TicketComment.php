@@ -28,4 +28,12 @@ class TicketComment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get attachments for the comment
+     */
+    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
 }

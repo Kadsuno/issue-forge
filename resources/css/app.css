@@ -710,3 +710,126 @@
         border: 2px solid rgba(255, 255, 255, 0.5);
     }
 }
+
+/* File Upload & Attachments */
+.file-upload-zone {
+    position: relative;
+    cursor: pointer;
+}
+
+.file-upload-zone.is-dragging {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.file-preview-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.file-preview-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-icon-image::before {
+    content: '📷';
+    font-size: 2rem;
+}
+
+.file-icon-pdf::before {
+    content: '📄';
+    font-size: 2rem;
+}
+
+.file-icon-word::before {
+    content: '📘';
+    font-size: 2rem;
+}
+
+.file-icon-excel::before {
+    content: '📊';
+    font-size: 2rem;
+}
+
+.file-icon-archive::before {
+    content: '📦';
+    font-size: 2rem;
+}
+
+.file-icon-text::before {
+    content: '📝';
+    font-size: 2rem;
+}
+
+.file-icon-generic::before {
+    content: '📎';
+    font-size: 2rem;
+}
+
+.upload-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    animation: progressBar 1.5s ease-in-out infinite;
+}
+
+@keyframes progressBar {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.attachment-thumbnail {
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.attachment-card {
+    transition: all 0.2s ease;
+}
+
+.attachment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* File type indicators with color coding */
+.file-type-image {
+    border-left: 3px solid #10b981;
+}
+
+.file-type-pdf {
+    border-left: 3px solid #ef4444;
+}
+
+.file-type-doc {
+    border-left: 3px solid #3b82f6;
+}
+
+.file-type-excel {
+    border-left: 3px solid #22c55e;
+}
+
+.file-type-archive {
+    border-left: 3px solid #f59e0b;
+}
+
+.file-type-text {
+    border-left: 3px solid #6b7280;
+}
