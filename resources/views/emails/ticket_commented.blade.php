@@ -113,6 +113,13 @@
             box-shadow: 0 8px 20px rgba(99, 102, 241, .35);
         }
 
+        .btn:hover {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, .45);
+        }
+
         .footer {
             margin-top: 28px;
             color: #64748b;
