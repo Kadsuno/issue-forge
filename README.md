@@ -164,10 +164,10 @@ Available utility classes (non-exhaustive): `btn-primary`, `btn-secondary`, `btn
 
 - [x] Token-protected REST API (projects, tickets)
 - [x] Search enhancements (ticket id/number)
-- [ ] Ticket comments & discussions
+- [x] Ticket comments & discussions
+- [x] Email notifications (Brevo SMTP/API)
 - [ ] File attachments
-- [ ] Extended workflow states
-- [ ] Email notifications
+- [ ] Extended workflow states (blocked, needs review, reopened, status history)
 - [ ] Advanced search and filters
 - [ ] Reports & analytics
 - [ ] Mobile app

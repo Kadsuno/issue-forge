@@ -1,3 +1,13 @@
+## 2025-10-16
+
+### Changed
+
+- **README Roadmap**: Updated roadmap to reflect current implementation status
+    - Marked "Ticket comments & discussions" as completed
+    - Marked "Email notifications (Brevo SMTP/API)" as completed
+    - Added clarifying notes to "Extended workflow states" roadmap item (blocked, needs review, reopened, status history)
+    - Reordered roadmap items to match implementation priority
+
 ## 2025-10-15 (Part 3) - UX, Accessibility, Type Safety & Testing
 
 ### Added
