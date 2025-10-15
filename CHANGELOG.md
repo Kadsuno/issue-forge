@@ -1,3 +1,28 @@
+## 2025-10-15
+
+### Changed
+
+- **Compact Notifications**: Made notifications more compact and scannable
+    - **TicketUpdated Notification**: Changed to show `changes_count` instead of detailed changes array
+        - Replaced detailed field changes with simple count (e.g., "Updated 3 fields")
+        - Messages truncated to 120 characters maximum to prevent overflow
+        - Removed `changes` array from notification data for cleaner payloads
+    - **Notification Dropdown UI**: Enhanced notification display in dropdown
+        - Changes now show as compact count instead of field-by-field details
+        - Added `line-clamp-1` to ticket titles to prevent wrapping
+        - Snippet display kept at `line-clamp-2` for readability
+    - **Toast Notifications**: Updated popup toast notifications
+        - Toast title truncated to 80 characters with ellipsis
+        - Changes displayed as simple count instead of detailed list
+        - Added line clamps: title (1 line), body (2 lines), meta (1 line)
+        - Improved visual consistency and readability
+    - **Testing**: Added comprehensive test suite for notification compaction
+        - Tests for `changes_count` field presence and accuracy
+        - Tests for message truncation at 120 characters
+        - Tests for all required notification data fields
+        - Tests for zero changes case
+        - Tests for short message preservation
+
 ## 2025-10-14
 
 ### Fixed
