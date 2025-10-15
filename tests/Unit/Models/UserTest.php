@@ -43,7 +43,7 @@ final class UserTest extends TestCase
         $user = new User([
             'name' => '',
             'email' => 'test@example.com',
-            'password' => 'password123'
+            'password' => 'password123',
         ]);
         $user->save();
 
@@ -152,4 +152,3 @@ final class UserTest extends TestCase
         }
     }
 }
-

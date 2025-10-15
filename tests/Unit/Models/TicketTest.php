@@ -35,25 +35,25 @@ final class TicketTest extends TestCase
     {
         $user = User::factory()->create();
         $project = Project::factory()->create();
-        
+
         $ticket1 = Ticket::factory()->make([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'title' => 'Duplicate'
+            'title' => 'Duplicate',
         ]);
         $ticket1->save();
-        
+
         $ticket2 = Ticket::factory()->make([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'title' => 'Duplicate'
+            'title' => 'Duplicate',
         ]);
         $ticket2->save();
-        
+
         $ticket3 = Ticket::factory()->make([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'title' => 'Duplicate'
+            'title' => 'Duplicate',
         ]);
         $ticket3->save();
 
@@ -212,12 +212,12 @@ final class TicketTest extends TestCase
         $openTicket = Ticket::factory()->create([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'status' => 'open'
+            'status' => 'open',
         ]);
         $closedTicket = Ticket::factory()->create([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'status' => 'closed'
+            'status' => 'closed',
         ]);
 
         $openTickets = Ticket::where('status', 'open')->get();
@@ -233,12 +233,12 @@ final class TicketTest extends TestCase
         $assignedTicket = Ticket::factory()->create([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'assigned_to' => $user->id
+            'assigned_to' => $user->id,
         ]);
         $unassignedTicket = Ticket::factory()->create([
             'project_id' => $project->id,
             'user_id' => $user->id,
-            'assigned_to' => null
+            'assigned_to' => null,
         ]);
 
         $assignedTickets = Ticket::where('assigned_to', $user->id)->get();
@@ -247,4 +247,3 @@ final class TicketTest extends TestCase
         $this->assertEquals($user->id, $assignedTickets->first()->assigned_to);
     }
 }
-

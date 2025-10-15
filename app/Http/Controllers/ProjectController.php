@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Ticket;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
-class ProjectController extends Controller
+final class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         return view('projects.index');
     }
@@ -20,7 +24,7 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('projects.create');
     }
@@ -28,7 +32,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:projects,name',
@@ -64,7 +68,7 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Project $project): View
     {
         // Re-query to include aggregates and additional relations for the detail view
         $project = Project::query()
@@ -100,7 +104,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit(Project $project): View
     {
         return view('projects.edit', compact('project'));
     }
@@ -108,7 +112,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:projects,name,'.$project->id,
@@ -145,7 +149,7 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): RedirectResponse
     {
         $project->delete();
 

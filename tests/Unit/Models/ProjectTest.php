@@ -127,4 +127,3 @@ final class ProjectTest extends TestCase
         $this->assertFalse($inactiveProject->is_active);
     }
 }
-

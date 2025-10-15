@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketUpdated;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
-class TicketController extends Controller
+final class TicketController extends Controller
 {
     /**
      * List tickets assigned to the current user.
      */
-    public function myTickets()
+    public function myTickets(): View
     {
         $tickets = Ticket::with(['project', 'user', 'assignedUser'])
             ->where('assigned_to', Auth::id())
@@ -27,7 +31,7 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Project $project)
+    public function index(Project $project): View
     {
         $tickets = $project->tickets()->with(['user', 'assignedUser'])->latest()->get();
 
@@ -37,7 +41,7 @@ class TicketController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Project $project)
+    public function create(Project $project): View
     {
         $users = User::orderBy('name')->get();
         $parentOptions = $project->tickets()->orderByDesc('id')->get(['id', 'title']);
@@ -50,7 +54,7 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Project $project)
+    public function store(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -107,7 +111,7 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ticket $ticket)
+    public function show(Ticket $ticket): View
     {
         $ticket->load(['project', 'user', 'assignedUser']);
 
@@ -117,7 +121,7 @@ class TicketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ticket $ticket)
+    public function edit(Ticket $ticket): View
     {
         $ticket->load(['project', 'assignedUser']);
         $users = User::orderBy('name')->get();
@@ -131,7 +135,7 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, Ticket $ticket): RedirectResponse
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -208,7 +212,7 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         //
     }
