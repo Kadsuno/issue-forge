@@ -14,8 +14,8 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user if it doesn't exist
-        User::firstOrCreate(
+        // Create or update admin user
+        $admin = User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
@@ -25,12 +25,12 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $admin = User::where('email', 'admin@example.com')->first();
+
         $role = Role::firstOrCreate(['name' => 'admin']);
         if (! $admin->hasRole('admin')) {
             $admin->assignRole($role);
         }
 
-        $this->command->info('Admin user created with email: admin@example.com and password: password (role: admin)');
+        $this->command->info('Admin user created/updated with email: admin@example.com and password: password (role: admin)');
     }
 }

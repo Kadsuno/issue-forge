@@ -158,16 +158,13 @@
 
             @if (!empty($changes))
                 <div class="changes">
-                    <strong>Changes:</strong>
-                    @foreach ($changes as $c)
-                        <div>{{ $c['field'] ?? 'field' }}: {{ $c['old'] ?? '—' }} → {{ $c['new'] ?? '—' }}</div>
-                    @endforeach
+                    <strong>Updated {{ count($changes) }} field{{ count($changes) === 1 ? '' : 's' }}</strong>
                 </div>
             @endif
 
             @if (!empty($ticket->description))
                 <div class="section-title">Description</div>
-                <div class="flow">{{ e($ticket->description) }}</div>
+                <div class="flow">{{ e(Str::limit($ticket->description, 200)) }}</div>
             @endif
 
             <p style="margin-top:20px;">
