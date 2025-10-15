@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'name',
@@ -34,17 +34,11 @@ class Project extends Model
     ];
 
     /**
-     * Boot the model
+     * Get the default base slug when the source text is empty.
      */
-    protected static function boot(): void
+    protected static function getDefaultSlugBase(): string
     {
-        parent::boot();
-
-        static::creating(function ($project) {
-            if (! $project->slug) {
-                $project->slug = Str::slug($project->name);
-            }
-        });
+        return 'project';
     }
 
     /**

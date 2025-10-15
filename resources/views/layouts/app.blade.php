@@ -23,20 +23,13 @@
     <meta name="theme-color" content="#6366f1">
     <meta name="msapplication-TileColor" content="#6366f1">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-
+    <!-- Fonts are loaded via app.css for better caching -->
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    @livewireStyles
 
-    <!-- Alpine is bundled via Vite in resources/js/app.js -->
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <!-- Alpine.js and SimpleMDE are bundled via Vite in resources/js/app.js -->
 </head>
 
 <body class="font-sans antialiased main-content">
@@ -106,7 +99,7 @@
         </footer>
 
         <!-- Floating Action Button with Quick Actions -->
-        <div class="hidden lg:block fixed bottom-6 right-6 z-50" x-data="{ open: false, tooltip: false }"
+        <div class="fixed bottom-4 right-4 lg:bottom-6 lg:right-6 z-50" x-data="{ open: false, tooltip: false }"
             @keydown.escape.window="open=false">
             <button @click="open = !open"
                 class="btn-primary rounded-full p-4 shadow-2xl hover:shadow-glow-primary transition-all duration-300 group relative"
@@ -290,6 +283,11 @@
         </template>
     </div>
 
+    <!-- Livewire Global Loading Indicator -->
+    <div wire:loading.delay.longer class="fixed top-0 left-0 right-0 z-50 h-1 animate-pulse">
+        <div class="h-full bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 animate-shimmer"></div>
+    </div>
+
     <script>
         // Hide loader after page load
         window.addEventListener('load', function() {
@@ -304,6 +302,8 @@
         // Toasts are handled by the Alpine container above. Dispatch with:
         // window.dispatchEvent(new CustomEvent('toast', { detail: { message: '...', type: 'info|success|error' } }))
     </script>
+
+    @livewireScripts
 </body>
 
 </html>

@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Add security headers to all web responses
+        $middleware->web(append: [
+            App\Http\Middleware\SecurityHeaders::class,
+        ]);
+
         // Spatie permission middleware aliases (use class-string to avoid static analysis errors)
         $middleware->alias([
             'role' => 'Spatie\\Permission\\Middlewares\\RoleMiddleware',

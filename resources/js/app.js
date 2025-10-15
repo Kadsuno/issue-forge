@@ -1,10 +1,13 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+// Alpine.js is bundled with Livewire 3, no need to import it separately
 
-window.Alpine = Alpine;
-
-Alpine.start();
+// ============================================
+// EasyMDE Markdown Editor (SimpleMDE maintained fork)
+// ============================================
+import EasyMDE from 'easymde';
+window.SimpleMDE = EasyMDE; // Keep SimpleMDE name for backward compatibility
+window.EasyMDE = EasyMDE;
 
 // ============================================
 // Modern Design System Enhancements
@@ -82,7 +85,7 @@ document.addEventListener(
     'mouseout',
     (e) => {
         const magneticElement = e.target.closest('.magnetic, .btn-primary, .btn-accent');
-        if (magneticElement && !magneticElement.contains(e.relatedTarget)) {
+        if (magneticElement && (!e.relatedTarget || !magneticElement.contains(e.relatedTarget))) {
             magneticElement.style.transform = 'translate(0, 0)';
             if (currentMagneticElement === magneticElement) {
                 currentMagneticElement = null;
@@ -130,7 +133,7 @@ document.addEventListener(
     'mouseout',
     (e) => {
         const tiltCard = e.target.closest('.tilt, .card-hover');
-        if (tiltCard && !tiltCard.contains(e.relatedTarget)) {
+        if (tiltCard && (!e.relatedTarget || !tiltCard.contains(e.relatedTarget))) {
             tiltCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
             if (currentTiltCard === tiltCard) {
                 currentTiltCard = null;

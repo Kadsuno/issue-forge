@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Mail\Transport\BrevoApiTransport;
+use App\Models\Project;
+use App\Models\Ticket;
 use App\Models\User;
+use App\Policies\ProjectPolicy;
+use App\Policies\TicketPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -28,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Project::class, ProjectPolicy::class);
+        Gate::policy(Ticket::class, TicketPolicy::class);
 
         $this->configureRateLimiting();
         $this->configureMailTransports();

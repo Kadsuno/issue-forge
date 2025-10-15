@@ -195,4 +195,3 @@ final class CompactNotificationsTest extends TestCase
         $this->assertNotNull($mailMessage);
     }
 }
-

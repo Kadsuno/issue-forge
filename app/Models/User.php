@@ -3,18 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, HasSlug, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,24 +54,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Boot model hooks.
+     * Get the default base slug when the source text is empty.
      */
-    protected static function boot(): void
+    protected static function getDefaultSlugBase(): string
     {
-        parent::boot();
-
-        static::creating(function (self $user): void {
-            if (empty($user->slug) && ! empty($user->name)) {
-                $base = Str::slug($user->name);
-                $slug = $base ?: 'user';
-                $suffix = 1;
-                while (static::where('slug', $slug)->exists()) {
-                    $suffix++;
-                    $slug = $base.'-'.$suffix;
-                }
-                $user->slug = $slug;
-            }
-        });
+        return 'user';
     }
 
     /**
