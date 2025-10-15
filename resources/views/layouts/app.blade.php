@@ -106,7 +106,7 @@
         </footer>
 
         <!-- Floating Action Button with Quick Actions -->
-        <div class="hidden lg:block fixed bottom-6 right-6 z-50" x-data="{ open: false, tooltip: false }"
+        <div class="fixed bottom-4 right-4 lg:bottom-6 lg:right-6 z-50" x-data="{ open: false, tooltip: false }"
             @keydown.escape.window="open=false">
             <button @click="open = !open"
                 class="btn-primary rounded-full p-4 shadow-2xl hover:shadow-glow-primary transition-all duration-300 group relative"

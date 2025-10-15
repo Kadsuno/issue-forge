@@ -67,9 +67,8 @@ final class TicketsController extends Controller
         return TicketResource::make($ticket);
     }
 
-    public function update(TicketUpdateRequest $request, string $id): TicketResource
+    public function update(TicketUpdateRequest $request, Ticket $ticket): TicketResource
     {
-        $ticket = Ticket::findOrFail((int) $id);
         $ticket->update($request->validated());
 
         return TicketResource::make($ticket->load('project'));

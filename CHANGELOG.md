@@ -1,4 +1,92 @@
-## 2025-10-15
+## 2025-10-15 (Part 2) - Comprehensive Security & Code Quality Improvements
+
+### Added
+
+- **HasSlug Trait**: Created reusable trait for automatic slug generation with uniqueness checks
+    - Replaces duplicate slug generation code across Project, Ticket, and User models
+    - Implements efficient algorithm to prevent N+1 queries
+    - Configurable via `getSlugSourceColumn()` and `getDefaultSlugBase()` methods
+- **Security Headers Middleware**: Added HTTP security headers to all web responses
+    - X-Frame-Options: SAMEORIGIN (prevent clickjacking)
+    - X-Content-Type-Options: nosniff (prevent MIME sniffing)
+    - Referrer-Policy: strict-origin-when-cross-origin
+    - Permissions-Policy: restrict geolocation, microphone, camera
+    - X-XSS-Protection: enabled for legacy browsers
+- **Authorization Policies**: Implemented Laravel Policies for Project and Ticket models
+    - ProjectPolicy: controls view, create, update, delete, archive actions
+    - TicketPolicy: controls view, create, update, delete, assign, comment actions
+    - Admins have full access, regular users have context-based permissions
+- **Rate Limiting**: Added throttling to sensitive authentication routes
+    - Login: 5 attempts per minute per IP
+    - Registration: 10 attempts per minute per IP
+    - Password reset request: 3 attempts per minute per IP
+    - Password reset: 5 attempts per minute per IP
+    - Password confirmation: 10 attempts per minute per IP
+- **.env.example**: Created comprehensive environment variable template
+    - Documented all required configuration variables
+    - Includes inline comments for each setting
+    - Covers app, database, mail, cache, queue, API, and service configurations
+
+### Changed
+
+- **API Authorization**: Implemented proper authorization in API FormRequests
+    - ProjectStoreRequest, ProjectUpdateRequest: check create/update policies
+    - TicketStoreRequest, TicketUpdateRequest: check create/update policies
+    - Supports both user-based (policies) and token-based (admin) authentication
+- **Project Slug Generation**: Fixed missing uniqueness check in Project model
+    - Now generates unique slugs with suffix incrementing (e.g., project-1, project-2)
+    - Added proper type hints to boot() method
+- **Alpine.js Loading**: Removed duplicate Alpine.js loading
+    - Removed manual Alpine import from `resources/js/app.js`
+    - Removed alpinejs npm dependency (Livewire 3 bundles it)
+    - Fixes console warning about multiple Alpine instances
+- **Floating Action Button**: Made visible on mobile devices
+    - Changed from `hidden lg:block` to responsive visibility
+    - Adjusted positioning: `bottom-4 right-4` on mobile, `bottom-6 right-6` on large screens
+- **API Route Model Binding**: Fixed tickets API to use ID-based route binding
+    - Added explicit `ticket:id` parameter binding for API routes
+    - Updated TicketsController::update() to use route model binding
+- **Code Formatting**: Applied Laravel Pint fixes to all PHP files
+    - Fixed 5 style issues across new files
+    - Ensured PSR-12 compliance
+
+### Fixed
+
+- **Security**: Closed authorization gap in API endpoints
+    - Previously all API requests were authorized without checking permissions
+    - Now properly validates user permissions via Laravel Policies
+- **Security**: Protected authentication routes from brute force attacks
+    - Added rate limiting to prevent credential stuffing and DoS attacks
+- **Bug**: Project slug collisions
+    - Projects with identical names now get unique slugs with numeric suffixes
+- **Bug**: Test failures after authorization implementation
+    - Fixed API tests to work with new authorization layer
+    - Updated FormRequests to handle token-based authentication
+
+### Improved
+
+- **Code Quality**: Reduced code duplication with HasSlug trait
+    - Eliminated 60+ lines of duplicate slug generation code
+    - Single source of truth for slug generation logic
+- **Code Quality**: Added type hints to model boot methods
+    - Project, Ticket, User models now have proper type declarations
+- **Code Quality**: ProjectList Livewire component already uses eager loading
+    - Verified no N+1 query issues in project listings
+- **Security**: Defense in depth with multiple security layers
+    - HTTP security headers protect against common web vulnerabilities
+    - Rate limiting prevents abuse and automated attacks
+    - Authorization policies ensure proper access control
+    - Token authentication secures API endpoints
+
+### Testing
+
+- All 69 existing tests passing
+- No new linter errors
+- JavaScript/CSS linting clean (only DDEV config warnings)
+
+---
+
+## 2025-10-15 (Part 1) - Notification Improvements
 
 ### Changed
 
