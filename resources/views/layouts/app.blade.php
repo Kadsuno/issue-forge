@@ -27,6 +27,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 
     <!-- Alpine.js and SimpleMDE are bundled via Vite in resources/js/app.js -->
 </head>
@@ -301,6 +302,8 @@
         // Toasts are handled by the Alpine container above. Dispatch with:
         // window.dispatchEvent(new CustomEvent('toast', { detail: { message: '...', type: 'info|success|error' } }))
     </script>
+
+    @livewireScripts
 </body>
 
 </html>
