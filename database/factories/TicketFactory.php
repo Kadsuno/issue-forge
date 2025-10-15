@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Project;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,7 @@ final class TicketFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
+            'user_id' => User::factory(),
             'title' => $this->faker->sentence(6),
             'description' => $this->faker->paragraph(),
             'status' => Ticket::STATUS_OPEN,
