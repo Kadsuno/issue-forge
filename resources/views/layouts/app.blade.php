@@ -23,13 +23,7 @@
     <meta name="theme-color" content="#6366f1">
     <meta name="msapplication-TileColor" content="#6366f1">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-
+    <!-- Fonts are loaded via app.css for better caching -->
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -288,6 +282,11 @@
                 </div>
             </div>
         </template>
+    </div>
+
+    <!-- Livewire Global Loading Indicator -->
+    <div wire:loading.delay.longer class="fixed top-0 left-0 right-0 z-50 h-1 animate-pulse">
+        <div class="h-full bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 animate-shimmer"></div>
     </div>
 
     <script>
