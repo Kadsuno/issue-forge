@@ -166,4 +166,3 @@ final class ProjectApiAuthorizationTest extends TestCase
         $this->assertDatabaseMissing('projects', ['id' => $project->id]);
     }
 }
-
