@@ -225,6 +225,14 @@ class Ticket extends Model
     }
 
     /**
+     * Get attachments for the ticket
+     */
+    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
+
+    /**
      * Check if ticket is overdue
      */
     public function isOverdue(): bool

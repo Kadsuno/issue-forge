@@ -66,6 +66,14 @@ class Project extends Model
     }
 
     /**
+     * Get attachments for the project
+     */
+    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
+
+    /**
      * Get route key name for route model binding
      */
     public function getRouteKeyName(): string

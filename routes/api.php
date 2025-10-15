@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\ProjectsController;
 use App\Http\Controllers\Api\TicketsController;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,12 @@ Route::prefix(config('api.version', 'v1'))
         Route::apiResource('tickets', TicketsController::class)->parameters([
             'tickets' => 'ticket:id',
         ]);
+
+        // Attachments
+        Route::post('attachments', [AttachmentController::class, 'store']);
+        Route::get('{type}/{id}/attachments', [AttachmentController::class, 'index'])
+            ->where('type', 'tickets|projects|comments');
+        Route::get('attachments/{attachment}', [AttachmentController::class, 'show']);
+        Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download']);
+        Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
     });
