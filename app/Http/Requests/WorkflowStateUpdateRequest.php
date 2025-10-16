@@ -39,4 +39,3 @@ final class WorkflowStateUpdateRequest extends FormRequest
         ];
     }
 }
-

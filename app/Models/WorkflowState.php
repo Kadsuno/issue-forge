@@ -41,7 +41,7 @@ final class WorkflowState extends Model
     {
         parent::boot();
 
-        static::creating(function (self $state): void {
+        self::creating(function (self $state): void {
             if (empty($state->slug)) {
                 $state->slug = Str::slug((string) $state->name);
             }
@@ -137,4 +137,3 @@ final class WorkflowState extends Model
         };
     }
 }
-

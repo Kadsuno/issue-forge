@@ -122,4 +122,3 @@ final class WorkflowStateController extends Controller
             ->with('success', 'Workflow state deleted successfully.');
     }
 }
-

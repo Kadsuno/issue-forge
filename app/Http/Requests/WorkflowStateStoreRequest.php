@@ -29,4 +29,3 @@ final class WorkflowStateStoreRequest extends FormRequest
         ];
     }
 }
-

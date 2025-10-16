@@ -30,4 +30,3 @@ final class WorkflowStateResource extends JsonResource
         ];
     }
 }
-

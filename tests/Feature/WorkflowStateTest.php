@@ -8,7 +8,6 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\WorkflowState;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 final class WorkflowStateTest extends TestCase
@@ -19,10 +18,8 @@ final class WorkflowStateTest extends TestCase
     {
         parent::setUp();
 
-        // Create roles
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'project_manager']);
-        Role::create(['name' => 'agent']);
+        // Seed roles and permissions first
+        $this->artisan('db:seed', ['--class' => 'RolesAndPermissionsSeeder']);
 
         // Seed workflow states
         $workflowService = new \App\Services\WorkflowService;
@@ -48,9 +45,9 @@ final class WorkflowStateTest extends TestCase
 
         $response = $this->actingAs($admin)
             ->post(route('admin.workflows.store'), [
-                'name' => 'Testing',
-                'label' => 'In Testing',
-                'description' => 'Ticket is being tested',
+                'name' => 'Custom State',
+                'label' => 'Custom State',
+                'description' => 'A custom workflow state',
                 'color' => 'purple',
                 'icon' => 'test',
                 'order' => 10,
@@ -60,8 +57,8 @@ final class WorkflowStateTest extends TestCase
 
         $response->assertRedirect();
         $this->assertDatabaseHas('workflow_states', [
-            'name' => 'Testing',
-            'slug' => 'testing',
+            'name' => 'Custom State',
+            'slug' => 'custom-state',
             'project_id' => $project->id,
             'is_predefined' => false,
         ]);
@@ -181,4 +178,3 @@ final class WorkflowStateTest extends TestCase
         $this->assertEquals($project->id, $states->first()->project_id);
     }
 }
-

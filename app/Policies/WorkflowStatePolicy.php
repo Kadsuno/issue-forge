@@ -51,4 +51,3 @@ final class WorkflowStatePolicy
         return $state->canBeSetBy($user);
     }
 }
-

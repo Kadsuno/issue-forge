@@ -32,4 +32,3 @@ final class WorkflowStatesController extends Controller
         return WorkflowStateResource::collection($states);
     }
 }
-

@@ -75,11 +75,10 @@ final class MigrateLegacyStatuses extends Command
             $updated++;
         }
 
-        $this->info("Migration complete!");
+        $this->info('Migration complete!');
         $this->info("- Updated: {$updated}");
         $this->info("- Skipped: {$skipped}");
 
         return self::SUCCESS;
     }
 }
-

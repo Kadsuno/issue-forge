@@ -25,9 +25,8 @@ final class WorkflowServiceTest extends TestCase
 
         $this->workflowService = new WorkflowService;
 
-        // Create roles
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'agent']);
+        // Seed roles and permissions first
+        $this->artisan('db:seed', ['--class' => 'RolesAndPermissionsSeeder']);
 
         // Seed predefined states
         $this->workflowService->seedPredefinedStates();
@@ -160,4 +159,3 @@ final class WorkflowServiceTest extends TestCase
         $this->workflowService->transition($ticket, 'restricted', $user);
     }
 }
-

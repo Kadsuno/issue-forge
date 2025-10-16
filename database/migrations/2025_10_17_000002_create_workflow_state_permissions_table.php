@@ -31,4 +31,3 @@ return new class extends Migration
         Schema::dropIfExists('workflow_state_permissions');
     }
 };
-

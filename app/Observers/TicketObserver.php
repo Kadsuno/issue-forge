@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 final class TicketObserver
 {
+    private static array $pendingHistories = [];
+
     /**
      * Handle the Ticket "updating" event.
      */
@@ -23,8 +25,8 @@ final class TicketObserver
             // Only log if we have a user context
             $userId = Auth::id();
             if ($userId && $original !== $new) {
-                // We'll create the history record after the update
-                $ticket->_pendingStatusHistory = [
+                // Store in static property to avoid model attribute pollution
+                self::$pendingHistories[$ticket->id] = [
                     'from_status' => $original,
                     'to_status' => $new,
                     'user_id' => $userId,
@@ -39,16 +41,17 @@ final class TicketObserver
     public function updated(Ticket $ticket): void
     {
         // Check if we have a pending status history to create
-        if (isset($ticket->_pendingStatusHistory)) {
+        if (isset(self::$pendingHistories[$ticket->id])) {
+            $history = self::$pendingHistories[$ticket->id];
+
             TicketStatusHistory::create([
                 'ticket_id' => $ticket->id,
-                'from_status' => $ticket->_pendingStatusHistory['from_status'],
-                'to_status' => $ticket->_pendingStatusHistory['to_status'],
-                'user_id' => $ticket->_pendingStatusHistory['user_id'],
+                'from_status' => $history['from_status'],
+                'to_status' => $history['to_status'],
+                'user_id' => $history['user_id'],
             ]);
 
-            unset($ticket->_pendingStatusHistory);
+            unset(self::$pendingHistories[$ticket->id]);
         }
     }
 }
-

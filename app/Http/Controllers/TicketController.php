@@ -16,9 +16,8 @@ use Illuminate\View\View;
 
 final class TicketController extends Controller
 {
-    public function __construct(private readonly WorkflowService $workflowService)
-    {
-    }
+    public function __construct(private readonly WorkflowService $workflowService) {}
+
     /**
      * List tickets assigned to the current user.
      */
