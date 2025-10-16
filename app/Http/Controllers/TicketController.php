@@ -199,10 +199,11 @@ final class TicketController extends Controller
                     'new' => $newValue,
                 ];
             })->values()->all();
-            $recipients = $ticket->watchers()->get()->merge([
-                $ticket->user,
-                $ticket->assignedUser,
-            ])->filter()->unique('id')->reject(fn ($u) => $u->id === Auth::id());
+            $recipients = $ticket->watchers()->get()
+                ->merge([$ticket->user, $ticket->assignedUser])
+                ->filter()
+                ->unique('id')
+                ->reject(fn ($u) => $u->id === Auth::id());
             foreach ($recipients as $recipient) {
                 $recipient->notify(new TicketUpdated(
                     $ticket,
