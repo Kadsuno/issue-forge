@@ -17,7 +17,9 @@ The workflow system provides flexible state management for tickets, supporting b
 ### Database Schema
 
 #### `workflow_states` Table
+
 Stores all workflow state definitions:
+
 - `id`: Primary key
 - `name`: Internal name (e.g., "In Progress")
 - `slug`: URL-friendly identifier (e.g., "in_progress")
@@ -31,13 +33,17 @@ Stores all workflow state definitions:
 - `project_id`: NULL for global states, project ID for project-specific states
 
 #### `workflow_state_permissions` Table
+
 Controls role permissions for states:
+
 - `workflow_state_id`: Foreign key to workflow_states
 - `role_id`: Foreign key to roles (Spatie permissions)
 - `can_set_to`: Boolean, allows role to transition to this state
 
 #### `ticket_status_history` Table
+
 Tracks all status changes:
+
 - `ticket_id`: Foreign key to tickets
 - `from_status`: Previous status slug
 - `to_status`: New status slug
@@ -48,23 +54,26 @@ Tracks all status changes:
 ### Models
 
 #### `WorkflowState` Model
+
 - **Scopes**:
-  - `global()`: Get global states (project_id is null)
-  - `forProject($projectId)`: Get states for specific project
-  - `predefined()`: Get only system-defined states
-  - `custom()`: Get only custom states
+    - `global()`: Get global states (project_id is null)
+    - `forProject($projectId)`: Get states for specific project
+    - `predefined()`: Get only system-defined states
+    - `custom()`: Get only custom states
 
 - **Methods**:
-  - `canBeSetBy(User $user)`: Check if user has permission to use this state
-  - `getColorClassAttribute()`: Get Tailwind CSS class for badge color
+    - `canBeSetBy(User $user)`: Check if user has permission to use this state
+    - `getColorClassAttribute()`: Get Tailwind CSS class for badge color
 
 #### `TicketStatusHistory` Model
+
 - Relationships: `ticket()`, `user()`
 - Automatically created by TicketObserver when status changes
 
 ### Services
 
 #### `WorkflowService`
+
 Central service for workflow management:
 
 ```php
@@ -86,10 +95,12 @@ $workflowService->transition($ticket, 'resolved', $user, 'Fixed the bug');
 ### Project Workflow Type
 
 Each project has a `workflow_type` field:
+
 - **`global`** (default): Uses system-wide predefined states
 - **`custom`**: Uses project-specific custom states
 
 Configure in project settings:
+
 ```php
 $project->update(['workflow_type' => 'custom']);
 ```
@@ -99,13 +110,13 @@ $project->update(['workflow_type' => 'custom']);
 1. Navigate to **Admin > Workflows**
 2. Click **Create Custom State**
 3. Fill in:
-   - Name and Label
-   - Description
-   - Color (for UI badges)
-   - Icon (optional)
-   - Order (determines display sequence)
-   - Project (leave empty for global, or select specific project)
-   - Is Closed checkbox (marks tickets as completed)
+    - Name and Label
+    - Description
+    - Color (for UI badges)
+    - Icon (optional)
+    - Order (determines display sequence)
+    - Project (leave empty for global, or select specific project)
+    - Is Closed checkbox (marks tickets as completed)
 
 ### Setting Role Permissions
 
@@ -166,37 +177,37 @@ POST /api/v1/tickets
 
 ```json
 {
-  "id": 123,
-  "title": "Fix login bug",
-  "status": "in_progress",
-  "status_details": {
-    "id": 2,
-    "slug": "in_progress",
-    "label": "In Progress",
-    "color": "blue",
-    "is_closed": false
-  },
-  "available_transitions": [
-    {"slug": "testing", "label": "Testing", "color": "purple"},
-    {"slug": "blocked", "label": "Blocked", "color": "red"},
-    {"slug": "resolved", "label": "Resolved", "color": "green"}
-  ]
+    "id": 123,
+    "title": "Fix login bug",
+    "status": "in_progress",
+    "status_details": {
+        "id": 2,
+        "slug": "in_progress",
+        "label": "In Progress",
+        "color": "blue",
+        "is_closed": false
+    },
+    "available_transitions": [
+        { "slug": "testing", "label": "Testing", "color": "purple" },
+        { "slug": "blocked", "label": "Blocked", "color": "red" },
+        { "slug": "resolved", "label": "Resolved", "color": "green" }
+    ]
 }
 ```
 
 ## Predefined States
 
-| Slug | Label | Color | Description | Closed? |
-|------|-------|-------|-------------|---------|
-| open | Open | gray | Ticket is open and awaiting action | No |
-| in_progress | In Progress | blue | Actively being worked on | No |
-| testing | Testing | purple | In testing phase | No |
-| review | Review | purple | Under review | No |
-| waiting | Waiting | yellow | Waiting for external input | No |
-| blocked | Blocked | red | Blocked by dependency or issue | No |
-| resolved | Resolved | green | Issue has been resolved | No |
-| wontfix | Won't Fix | gray | Will not be implemented (admin/PM only) | Yes |
-| closed | Closed | gray | Completed and closed | Yes |
+| Slug        | Label       | Color  | Description                             | Closed? |
+| ----------- | ----------- | ------ | --------------------------------------- | ------- |
+| open        | Open        | gray   | Ticket is open and awaiting action      | No      |
+| in_progress | In Progress | blue   | Actively being worked on                | No      |
+| testing     | Testing     | purple | In testing phase                        | No      |
+| review      | Review      | purple | Under review                            | No      |
+| waiting     | Waiting     | yellow | Waiting for external input              | No      |
+| blocked     | Blocked     | red    | Blocked by dependency or issue          | No      |
+| resolved    | Resolved    | green  | Issue has been resolved                 | No      |
+| wontfix     | Won't Fix   | gray   | Will not be implemented (admin/PM only) | Yes     |
+| closed      | Closed      | gray   | Completed and closed                    | Yes     |
 
 ## Frontend Integration
 
@@ -241,6 +252,7 @@ php artisan migrate
 ```
 
 This creates:
+
 - `workflow_states` table
 - `workflow_state_permissions` table
 - `ticket_status_history` table
@@ -264,6 +276,7 @@ php artisan workflow:migrate-legacy-statuses
 ```
 
 This command:
+
 - Maps old enum values to new workflow state slugs
 - Updates all existing tickets
 - Verifies all states exist
@@ -284,6 +297,7 @@ This command:
 **Cause**: Ticket status doesn't match any workflow state slug for the project.
 
 **Solution**:
+
 1. Check project's `workflow_type` setting
 2. Verify the status slug exists in available states
 3. Run `workflow:migrate-legacy-statuses` if upgrading
@@ -293,6 +307,7 @@ This command:
 **Cause**: User's role doesn't have permission for the target state.
 
 **Solution**:
+
 1. Check state permissions in Admin > Workflows
 2. Verify user's role assignment
 3. Add role to state permissions or make state available to all
@@ -302,6 +317,7 @@ This command:
 **Cause**: TicketObserver not registered or user context missing.
 
 **Solution**:
+
 1. Verify `Ticket::observe(TicketObserver::class)` in AppServiceProvider
 2. Ensure status changes happen in authenticated context
 3. Check if `Auth::id()` returns valid user ID
@@ -309,6 +325,7 @@ This command:
 ## Future Enhancements
 
 Potential improvements for future versions:
+
 - Workflow transition rules (define allowed state-to-state transitions)
 - Automatic state transitions based on conditions
 - Custom actions/hooks on state changes
@@ -320,7 +337,7 @@ Potential improvements for future versions:
 ## Support
 
 For issues or questions:
+
 - Check GitHub Issues
 - Review API documentation in `docs/api.md`
 - Contact project maintainers
-

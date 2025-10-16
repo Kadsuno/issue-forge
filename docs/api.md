@@ -283,32 +283,32 @@ Response 200 body:
 
 ```json
 {
-  "data": [
-    {
-      "id": 1,
-      "slug": "open",
-      "label": "Open",
-      "description": "Ticket is open and awaiting assignment or action",
-      "color": "gray",
-      "icon": "circle",
-      "is_closed": false,
-      "is_predefined": true,
-      "order": 1,
-      "project_id": null
-    },
-    {
-      "id": 2,
-      "slug": "in_progress",
-      "label": "In Progress",
-      "description": "Ticket is actively being worked on",
-      "color": "blue",
-      "icon": "arrow-right",
-      "is_closed": false,
-      "is_predefined": true,
-      "order": 2,
-      "project_id": null
-    }
-  ]
+    "data": [
+        {
+            "id": 1,
+            "slug": "open",
+            "label": "Open",
+            "description": "Ticket is open and awaiting assignment or action",
+            "color": "gray",
+            "icon": "circle",
+            "is_closed": false,
+            "is_predefined": true,
+            "order": 1,
+            "project_id": null
+        },
+        {
+            "id": 2,
+            "slug": "in_progress",
+            "label": "In Progress",
+            "description": "Ticket is actively being worked on",
+            "color": "blue",
+            "icon": "arrow-right",
+            "is_closed": false,
+            "is_predefined": true,
+            "order": 2,
+            "project_id": null
+        }
+    ]
 }
 ```
 
@@ -326,31 +326,31 @@ Tickets now include workflow state details and available transitions:
 
 ```json
 {
-  "id": 456,
-  "project_id": 123,
-  "title": "Fix login",
-  "description": "...",
-  "status": "in_progress",
-  "status_details": {
-    "id": 2,
-    "slug": "in_progress",
-    "label": "In Progress",
-    "description": "Ticket is actively being worked on",
-    "color": "blue",
-    "icon": "arrow-right",
-    "is_closed": false,
-    "is_predefined": true,
-    "order": 2,
-    "project_id": null
-  },
-  "priority": "medium",
-  "available_transitions": [
-    {"slug": "testing", "label": "Testing", "color": "purple"},
-    {"slug": "blocked", "label": "Blocked", "color": "red"},
-    {"slug": "resolved", "label": "Resolved", "color": "green"}
-  ],
-  "created_at": "...",
-  "updated_at": "..."
+    "id": 456,
+    "project_id": 123,
+    "title": "Fix login",
+    "description": "...",
+    "status": "in_progress",
+    "status_details": {
+        "id": 2,
+        "slug": "in_progress",
+        "label": "In Progress",
+        "description": "Ticket is actively being worked on",
+        "color": "blue",
+        "icon": "arrow-right",
+        "is_closed": false,
+        "is_predefined": true,
+        "order": 2,
+        "project_id": null
+    },
+    "priority": "medium",
+    "available_transitions": [
+        { "slug": "testing", "label": "Testing", "color": "purple" },
+        { "slug": "blocked", "label": "Blocked", "color": "red" },
+        { "slug": "resolved", "label": "Resolved", "color": "green" }
+    ],
+    "created_at": "...",
+    "updated_at": "..."
 }
 ```
 
