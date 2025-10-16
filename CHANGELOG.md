@@ -1,3 +1,83 @@
+## 2025-10-17 - Extended Workflow States Implementation
+
+### Added
+
+- **Extended Workflow System**: Implemented flexible workflow state management for tickets
+    - 9 predefined workflow states: open, in_progress, testing, review, waiting, blocked, resolved, wontfix, closed
+    - Support for custom workflow states (project-specific or global)
+    - Role-based permissions for state transitions
+    - Automatic status history tracking with user attribution
+    - Configurable workflows: global (default) or per-project
+- **Database Schema**:
+    - `workflow_states` table: Stores workflow state definitions with color, icon, description
+    - `workflow_state_permissions` pivot table: Links states to Spatie roles for access control
+    - `ticket_status_history` table: Tracks all status changes with timestamps and comments
+    - Updated `projects` table: Added `workflow_type` enum (global/custom)
+    - Updated `tickets` table: Changed `status` from enum to string(50), added `previous_status` field
+- **Models & Services**:
+    - `WorkflowState` model with scopes (global, forProject, predefined, custom)
+    - `TicketStatusHistory` model for tracking status changes
+    - `WorkflowService`: Central service for state management and transitions
+    - `TicketObserver`: Automatically logs status changes when tickets are updated
+    - Updated `Ticket` model: Added `statusHistory()` relationship and helper methods
+    - Updated `Project` model: Added `workflowStates()` relationship and `getAvailableStates()` method
+- **Authorization & Permissions**:
+    - `WorkflowStatePolicy`: Controls creation, updating, and deletion of workflow states
+    - Updated `RolesAndPermissionsSeeder`: Added `workflow.manage` and `workflow.create_custom_states` permissions
+    - `WorkflowStatesSeeder`: Seeds predefined states and default permissions
+    - Restricted "wontfix" state to admin and project_manager roles by default
+- **Admin Interface**:
+    - `WorkflowStateController`: CRUD operations for managing workflow states
+    - Admin views: `index`, `create`, `edit` for workflow management
+    - Project filter to manage global or project-specific states
+    - Role permission assignment interface for custom states
+- **API Integration**:
+    - `GET /api/v1/workflows/states`: List all global workflow states
+    - `GET /api/v1/projects/{id}/workflows/states`: Get workflow states for a specific project
+    - Updated `TicketResource`: Now includes `status_details` (WorkflowState object) and `available_transitions`
+    - `WorkflowStateResource`: API resource for workflow state data
+    - Dynamic status validation in `TicketStoreRequest` and `TicketUpdateRequest`
+- **UI Components**:
+    - Status history partial view (`tickets/partials/status-history.blade.php`)
+    - Dynamic status dropdowns in ticket forms based on project workflow
+    - Color-coded status badges using workflow state colors
+- **Artisan Commands**:
+    - `workflow:migrate-legacy-statuses`: Migrate existing enum statuses to workflow state slugs
+- **Documentation**:
+    - Comprehensive `docs/WORKFLOW_SYSTEM.md`: Full workflow system documentation
+    - Updated `docs/api.md`: Added workflow endpoints and extended ticket resource documentation
+- **Testing**:
+    - `tests/Feature/WorkflowStateTest.php`: 8 tests for workflow CRUD operations
+    - `tests/Unit/WorkflowServiceTest.php`: 5 tests for WorkflowService logic
+    - Tests cover state creation, permissions, transitions, and history tracking
+
+### Changed
+
+- **Ticket Status System**: Migrated from hardcoded enum to flexible workflow states
+    - `TicketController`: Now uses `WorkflowService` for status options
+    - Status validation is now dynamic based on project's available workflow states
+    - All status changes now logged to history table
+- **Database Migrations**: Status column changed from enum to string to support custom states
+- **API Responses**: Tickets now include rich status metadata and available transitions
+- **Seeders**: Updated `DatabaseSeeder` to include `WorkflowStatesSeeder`
+
+### Fixed
+
+- Backward compatibility: Legacy status values (open, in_progress, resolved, closed) still work
+- Migration command ensures all existing tickets have valid status slugs
+
+### Technical Details
+
+- Workflow states support polymorphic relationships (global or project-specific)
+- State transitions respect role permissions via Spatie Permission package
+- Status history automatically logged via Eloquent Observer pattern
+- WorkflowService provides transaction-safe status transitions
+- Predefined states cannot be edited or deleted (protected by policy)
+- Custom states can be created per-project or globally
+- Projects can toggle between global and custom workflows
+
+---
+
 ## 2025-10-16
 
 ### Changed

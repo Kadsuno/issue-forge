@@ -100,6 +100,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->parameters([
             'users' => 'user:slug',
         ]);
+
+        // Workflow management
+        Route::resource('workflows', \App\Http\Controllers\Admin\WorkflowStateController::class)
+            ->middleware('can:workflow.manage');
     });
 });
 

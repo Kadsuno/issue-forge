@@ -25,6 +25,7 @@ class Project extends Model
         'ticket_prefix',
         'color',
         'priority',
+        'workflow_type',
     ];
 
     protected $casts = [
@@ -63,6 +64,30 @@ class Project extends Model
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Get workflow states for the project
+     */
+    public function workflowStates(): HasMany
+    {
+        return $this->hasMany(WorkflowState::class);
+    }
+
+    /**
+     * Get available workflow states for this project
+     */
+    public function getAvailableStates(): \Illuminate\Database\Eloquent\Collection
+    {
+        if ($this->workflow_type === 'custom') {
+            return WorkflowState::where('project_id', $this->id)
+                ->orderBy('order')
+                ->get();
+        }
+
+        return WorkflowState::whereNull('project_id')
+            ->orderBy('order')
+            ->get();
     }
 
     /**

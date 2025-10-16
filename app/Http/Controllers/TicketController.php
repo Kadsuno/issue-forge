@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketUpdated;
+use App\Services\WorkflowService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,9 @@ use Illuminate\View\View;
 
 final class TicketController extends Controller
 {
+    public function __construct(private readonly WorkflowService $workflowService)
+    {
+    }
     /**
      * List tickets assigned to the current user.
      */
@@ -45,10 +49,11 @@ final class TicketController extends Controller
     {
         $users = User::orderBy('name')->get();
         $parentOptions = $project->tickets()->orderByDesc('id')->get(['id', 'title']);
-        $statuses = Ticket::getStatuses();
+        $workflowStates = $this->workflowService->getStatesForProject($project);
+        $statuses = $workflowStates->pluck('label', 'slug')->toArray();
         $priorities = Ticket::getPriorities();
 
-        return view('tickets.create', compact('project', 'users', 'statuses', 'priorities', 'parentOptions'));
+        return view('tickets.create', compact('project', 'users', 'statuses', 'priorities', 'parentOptions', 'workflowStates'));
     }
 
     /**
@@ -56,10 +61,12 @@ final class TicketController extends Controller
      */
     public function store(Request $request, Project $project): RedirectResponse
     {
+        $validStatuses = $this->workflowService->getStatesForProject($project)->pluck('slug')->toArray();
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:'.implode(',', array_keys(Ticket::getStatuses())),
+            'status' => 'required|in:'.implode(',', $validStatuses),
             'priority' => 'required|in:'.implode(',', array_keys(Ticket::getPriorities())),
             'type' => 'nullable|in:'.implode(',', array_keys(Ticket::getTypes())),
             'severity' => 'nullable|in:'.implode(',', array_keys(Ticket::getSeverities())),
@@ -126,10 +133,11 @@ final class TicketController extends Controller
         $ticket->load(['project', 'assignedUser']);
         $users = User::orderBy('name')->get();
         $parentOptions = $ticket->project->tickets()->where('id', '!=', $ticket->id)->orderByDesc('id')->get(['id', 'title']);
-        $statuses = Ticket::getStatuses();
+        $workflowStates = $this->workflowService->getStatesForProject($ticket->project);
+        $statuses = $workflowStates->pluck('label', 'slug')->toArray();
         $priorities = Ticket::getPriorities();
 
-        return view('tickets.edit', compact('ticket', 'users', 'statuses', 'priorities', 'parentOptions'));
+        return view('tickets.edit', compact('ticket', 'users', 'statuses', 'priorities', 'parentOptions', 'workflowStates'));
     }
 
     /**
@@ -137,10 +145,12 @@ final class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket): RedirectResponse
     {
+        $validStatuses = $this->workflowService->getStatesForProject($ticket->project)->pluck('slug')->toArray();
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:'.implode(',', array_keys(Ticket::getStatuses())),
+            'status' => 'required|in:'.implode(',', $validStatuses),
             'priority' => 'required|in:'.implode(',', array_keys(Ticket::getPriorities())),
             'type' => 'nullable|in:'.implode(',', array_keys(Ticket::getTypes())),
             'severity' => 'nullable|in:'.implode(',', array_keys(Ticket::getSeverities())),

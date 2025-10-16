@@ -6,9 +6,12 @@ use App\Mail\Transport\BrevoApiTransport;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\WorkflowState;
+use App\Observers\TicketObserver;
 use App\Policies\ProjectPolicy;
 use App\Policies\TicketPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\WorkflowStatePolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -34,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Project::class, ProjectPolicy::class);
         Gate::policy(Ticket::class, TicketPolicy::class);
+        Gate::policy(WorkflowState::class, WorkflowStatePolicy::class);
+
+        // Register observers
+        Ticket::observe(TicketObserver::class);
 
         $this->configureRateLimiting();
         $this->configureMailTransports();

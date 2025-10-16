@@ -23,4 +23,8 @@ Route::prefix(config('api.version', 'v1'))
         Route::get('attachments/{attachment}', [AttachmentController::class, 'show']);
         Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download']);
         Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
+
+        // Workflow States
+        Route::get('workflows/states', [\App\Http\Controllers\Api\WorkflowStatesController::class, 'index']);
+        Route::get('projects/{project}/workflows/states', [\App\Http\Controllers\Api\WorkflowStatesController::class, 'forProject']);
     });
