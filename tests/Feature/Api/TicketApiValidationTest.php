@@ -19,6 +19,10 @@ final class TicketApiValidationTest extends TestCase
     {
         parent::setUp();
         $this->adminToken = config('api.admin_token');
+
+        // Seed workflow states
+        $workflowService = new \App\Services\WorkflowService;
+        $workflowService->seedPredefinedStates();
     }
 
     private function authenticatedHeaders(): array
