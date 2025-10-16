@@ -17,6 +17,7 @@ class Ticket extends Model
         'title',
         'description',
         'status',
+        'previous_status',
         'priority',
         'project_id',
         'parent_ticket_id',
@@ -222,6 +223,46 @@ class Ticket extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(TicketComment::class)->latest();
+    }
+
+    /**
+     * Get status history for the ticket
+     */
+    public function statusHistory(): HasMany
+    {
+        return $this->hasMany(TicketStatusHistory::class)->latest();
+    }
+
+    /**
+     * Get the current status as a WorkflowState object
+     */
+    public function getCurrentStatusObject(): ?WorkflowState
+    {
+        return WorkflowState::where('slug', $this->status)
+            ->where(function ($query) {
+                $query->whereNull('project_id')
+                    ->orWhere('project_id', $this->project_id);
+            })
+            ->first();
+    }
+
+    /**
+     * Check if user can change ticket to a new status
+     */
+    public function canUserChangeStatus(User $user, string $newStatus): bool
+    {
+        $targetState = WorkflowState::where('slug', $newStatus)
+            ->where(function ($query) {
+                $query->whereNull('project_id')
+                    ->orWhere('project_id', $this->project_id);
+            })
+            ->first();
+
+        if (! $targetState) {
+            return false;
+        }
+
+        return $targetState->canBeSetBy($user);
     }
 
     /**

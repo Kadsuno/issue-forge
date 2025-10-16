@@ -34,6 +34,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'ticket.update',
             'ticket.assign',
             'ticket.close',
+            // Workflow
+            'workflow.manage',
+            'workflow.create_custom_states',
             // Admin Area Access
             'admin.access',
         ];
@@ -59,6 +62,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'ticket.update',
                 'ticket.assign',
                 'ticket.close',
+                'workflow.manage',
+                'workflow.create_custom_states',
             ],
             'project_manager' => [
                 'project.view',
@@ -69,6 +74,8 @@ class RolesAndPermissionsSeeder extends Seeder
                 'ticket.update',
                 'ticket.assign',
                 'ticket.close',
+                'workflow.manage',
+                'workflow.create_custom_states',
             ],
             'agent' => [
                 'ticket.view',

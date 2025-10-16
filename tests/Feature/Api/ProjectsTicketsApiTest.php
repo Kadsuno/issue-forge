@@ -60,6 +60,10 @@ final class ProjectsTicketsApiTest extends TestCase
         // Set up admin token for this test
         config()->set('api.admin_token', 'test-token');
 
+        // Seed workflow states
+        $workflowService = new \App\Services\WorkflowService;
+        $workflowService->seedPredefinedStates();
+
         // Create a user first (though Project::factory() should handle this automatically)
         User::factory()->create();
 
