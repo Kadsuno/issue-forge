@@ -6,6 +6,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Services\WorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -61,7 +62,7 @@ final class ProjectsTicketsApiTest extends TestCase
         config()->set('api.admin_token', 'test-token');
 
         // Seed workflow states
-        $workflowService = new \App\Services\WorkflowService;
+        $workflowService = new WorkflowService;
         $workflowService->seedPredefinedStates();
 
         // Create a user first (though Project::factory() should handle this automatically)

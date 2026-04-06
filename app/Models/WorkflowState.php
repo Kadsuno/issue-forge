@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 final class WorkflowState extends Model
 {
@@ -62,7 +63,7 @@ final class WorkflowState extends Model
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(
-            \Spatie\Permission\Models\Role::class,
+            Role::class,
             'workflow_state_permissions',
             'workflow_state_id',
             'role_id'

@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAttachmentRequest;
 use App\Http\Resources\AttachmentResource;
 use App\Models\Attachment;
+use App\Models\Project;
+use App\Models\Ticket;
+use App\Models\TicketComment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
@@ -21,9 +24,9 @@ final class AttachmentController extends Controller
     public function index(string $type, int $id): AnonymousResourceCollection
     {
         $modelClass = match ($type) {
-            'tickets' => \App\Models\Ticket::class,
-            'projects' => \App\Models\Project::class,
-            'comments' => \App\Models\TicketComment::class,
+            'tickets' => Ticket::class,
+            'projects' => Project::class,
+            'comments' => TicketComment::class,
             default => abort(404, 'Invalid resource type'),
         };
 

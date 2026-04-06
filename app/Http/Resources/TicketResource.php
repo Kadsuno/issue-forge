@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Ticket;
+use App\Services\WorkflowService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Ticket */
+/** @mixin Ticket */
 final class TicketResource extends JsonResource
 {
     public function toArray(Request $request): array
@@ -18,7 +20,7 @@ final class TicketResource extends JsonResource
         // Get available transitions based on user permissions
         $availableTransitions = [];
         if ($request->user() && $project) {
-            $workflowService = new \App\Services\WorkflowService;
+            $workflowService = new WorkflowService;
             $availableTransitions = $workflowService->getStatesForUser($request->user(), $project)
                 ->map(fn ($state) => [
                     'slug' => $state->slug,

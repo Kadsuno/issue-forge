@@ -101,7 +101,7 @@ final class TicketController extends Controller
             $ticket->assignedUser,
         ])->filter()->unique('id')->reject(fn ($u) => $u->id === Auth::id());
         foreach ($recipients as $recipient) {
-            $recipient->notify(new \App\Notifications\TicketUpdated(
+            $recipient->notify(new TicketUpdated(
                 $ticket,
                 'Ticket created by '.Auth::user()->name,
                 [],
@@ -183,8 +183,8 @@ final class TicketController extends Controller
 
                 // Humanize certain fields for notifications
                 if ($key === 'assigned_to') {
-                    $oldName = $oldValue ? (\App\Models\User::find($oldValue)?->name ?? (string) $oldValue) : null;
-                    $newName = $newValue ? (\App\Models\User::find($newValue)?->name ?? (string) $newValue) : null;
+                    $oldName = $oldValue ? (User::find($oldValue)?->name ?? (string) $oldValue) : null;
+                    $newName = $newValue ? (User::find($newValue)?->name ?? (string) $newValue) : null;
 
                     return [
                         'field' => 'assignee',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Project;
 use App\Models\Ticket;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -45,7 +46,7 @@ final class TicketStoreRequest extends FormRequest
             return ['open', 'in_progress', 'resolved', 'closed'];
         }
 
-        $project = \App\Models\Project::find($projectId);
+        $project = Project::find($projectId);
         if (! $project) {
             return ['open', 'in_progress', 'resolved', 'closed'];
         }

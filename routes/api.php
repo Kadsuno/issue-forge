@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\ProjectsController;
 use App\Http\Controllers\Api\TicketsController;
+use App\Http\Controllers\Api\WorkflowStatesController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix(config('api.version', 'v1'))
@@ -25,6 +26,6 @@ Route::prefix(config('api.version', 'v1'))
         Route::delete('attachments/{attachment}', [AttachmentController::class, 'destroy']);
 
         // Workflow States
-        Route::get('workflows/states', [\App\Http\Controllers\Api\WorkflowStatesController::class, 'index']);
-        Route::get('projects/{project}/workflows/states', [\App\Http\Controllers\Api\WorkflowStatesController::class, 'forProject']);
+        Route::get('workflows/states', [WorkflowStatesController::class, 'index']);
+        Route::get('projects/{project}/workflows/states', [WorkflowStatesController::class, 'forProject']);
     });

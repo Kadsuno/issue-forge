@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_layout_includes_skip_to_content_link(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
@@ -23,7 +24,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_layout_has_proper_aria_landmarks(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
@@ -35,7 +36,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_layout_includes_view_transition_meta_tag(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
@@ -45,7 +46,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_layout_has_parallax_background_elements(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
@@ -186,7 +187,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_app_layout_includes_noise_texture_reference(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
@@ -196,7 +197,7 @@ final class DesignSystemComponentsTest extends TestCase
 
     public function test_enhanced_buttons_have_ripple_container_class(): void
     {
-        $user = \App\Models\User::factory()->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);

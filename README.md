@@ -4,7 +4,7 @@
 
 ### Forge Solutions From Issues
 
-A modern, self‑hosted ticket system and Redmine alternative — built with Laravel 12, Livewire 3, and Tailwind CSS, featuring a cohesive dark design system.
+A modern, self‑hosted ticket system and Redmine alternative — built with Laravel 13, Livewire 3, and Tailwind CSS, featuring a cohesive dark design system.
 
 ---
 
@@ -24,7 +24,7 @@ A modern, self‑hosted ticket system and Redmine alternative — built with Lar
 
 ## 🚀 Tech Stack
 
-- **Backend**: Laravel 12, PHP 8.3
+- **Backend**: Laravel 13, PHP 8.4
 - **Frontend**: Livewire 3, Blade, Alpine.js
 - **Styling**: Tailwind CSS, Tailwind Typography, custom dark design system
 - **Auth**: Laravel Breeze, Spatie Permission

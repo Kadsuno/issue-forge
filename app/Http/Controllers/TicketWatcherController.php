@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use App\Models\User;
+use App\Notifications\TicketUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,7 @@ class TicketWatcherController extends Controller
                 ->unique('id')
                 ->reject(fn ($u) => $u->id === (Auth::id() ?? 0));
             foreach ($recipients as $recipient) {
-                $recipient->notify(new \App\Notifications\TicketUpdated(
+                $recipient->notify(new TicketUpdated(
                     $ticket,
                     'Watcher added by '.(Auth::user()->name ?? 'System'),
                     [['field' => 'watchers', 'old' => '—', 'new' => $addedUser->name]],

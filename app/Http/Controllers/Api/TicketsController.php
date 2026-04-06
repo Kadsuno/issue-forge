@@ -10,6 +10,7 @@ use App\Http\Requests\Api\TicketUpdateRequest;
 use App\Http\Resources\TicketCollection;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 final class TicketsController extends Controller
@@ -52,7 +53,7 @@ final class TicketsController extends Controller
 
         // If no user_id provided, use the first available user (for API requests)
         if (! isset($validated['user_id'])) {
-            $validated['user_id'] = \App\Models\User::first()?->id ?? 1;
+            $validated['user_id'] = User::first()?->id ?? 1;
         }
 
         $ticket = Ticket::create($validated);

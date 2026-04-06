@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Traits\HasSlug;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Project extends Model
 {
@@ -77,7 +79,7 @@ class Project extends Model
     /**
      * Get available workflow states for this project
      */
-    public function getAvailableStates(): \Illuminate\Database\Eloquent\Collection
+    public function getAvailableStates(): Collection
     {
         if ($this->workflow_type === 'custom') {
             return WorkflowState::where('project_id', $this->id)
@@ -93,7 +95,7 @@ class Project extends Model
     /**
      * Get attachments for the project
      */
-    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable');
     }

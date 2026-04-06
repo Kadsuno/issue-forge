@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\WorkflowState;
 use App\Services\WorkflowService;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -37,7 +38,7 @@ final class WorkflowStatesSeeder extends Seeder
         }
 
         // Get the wontfix state - only admin and PM can set
-        $wontfixState = \App\Models\WorkflowState::where('slug', 'wontfix')->first();
+        $wontfixState = WorkflowState::where('slug', 'wontfix')->first();
         if ($wontfixState) {
             $wontfixState->roles()->syncWithoutDetaching([
                 $adminRole->id => ['can_set_to' => true],

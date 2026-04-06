@@ -1,3 +1,14 @@
+## 2026-04-06 - Laravel 13 upgrade
+
+### Changed
+
+- **Framework**: Upgraded to Laravel 13 (`laravel/framework` ^13.0) with aligned dependencies (`laravel/tinker` ^3, PHPUnit 12, Symfony 8 components).
+- **PHP**: Application now requires **PHP 8.4+** (Symfony 8 and Composer platform). Local DDEV config uses `php_version: "8.4"`.
+- **Configuration**: `config/cache.php` includes `serializable_classes` (default `false`) per Laravel 13 security hardening; `.env.example` documents optional `CACHE_PREFIX`, `REDIS_PREFIX`, and `SESSION_COOKIE` for stable keys across upgrades.
+- **Tooling**: Laravel Pint updated with the ecosystem; codebase formatted to satisfy current Pint rules.
+
+---
+
 ## 2025-10-17 - Extended Workflow States Implementation
 
 ### Added
