@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 final class UserTest extends TestCase
@@ -120,7 +121,7 @@ final class UserTest extends TestCase
     {
         $user = User::factory()->create(['email_verified_at' => now()]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $user->email_verified_at);
+        $this->assertInstanceOf(Carbon::class, $user->email_verified_at);
     }
 
     public function test_casts_is_admin_to_boolean(): void

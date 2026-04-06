@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Project;
 use App\Models\Ticket;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,12 +30,33 @@ final class TicketUpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        $ticket = $this->route('ticket');
+        $projectId = $this->input('project_id', $ticket?->project_id);
+        $validStatuses = $this->getValidStatuses($projectId);
+
         return [
             'project_id' => ['sometimes', 'integer', 'exists:projects,id'],
             'title' => ['sometimes', 'string', 'max:200'],
             'description' => ['sometimes', 'nullable', 'string'],
-            'status' => ['sometimes', 'in:open,in_progress,resolved,closed'],
+            'status' => ['sometimes', 'in:'.implode(',', $validStatuses)],
             'priority' => ['sometimes', 'in:low,medium,high,urgent'],
         ];
+    }
+
+    /**
+     * Get valid status values for the project
+     */
+    private function getValidStatuses(?int $projectId): array
+    {
+        if (! $projectId) {
+            return ['open', 'in_progress', 'resolved', 'closed'];
+        }
+
+        $project = Project::find($projectId);
+        if (! $project) {
+            return ['open', 'in_progress', 'resolved', 'closed'];
+        }
+
+        return $project->getAvailableStates()->pluck('slug')->toArray();
     }
 }

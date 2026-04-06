@@ -1,12 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WorkflowStateController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TicketCommentController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TicketWatcherController;
+use App\Http\Controllers\TimeEntryController;
+use App\Models\Project;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,22 +31,22 @@ Route::redirect('/datenschutz', '/privacy');
 
 Route::get('/dashboard', function () {
     // Get recent activity data
-    $recentProjects = \App\Models\Project::with('user')
+    $recentProjects = Project::with('user')
         ->latest()
         ->take(3)
         ->get();
 
-    $recentTickets = \App\Models\Ticket::with(['project', 'user', 'assignedUser'])
+    $recentTickets = Ticket::with(['project', 'user', 'assignedUser'])
         ->latest()
         ->take(5)
         ->get();
 
     // Get stats
     $stats = [
-        'total_projects' => \App\Models\Project::count(),
-        'total_tickets' => \App\Models\Ticket::count(),
-        'open_tickets' => \App\Models\Ticket::where('status', '!=', 'closed')->count(),
-        'my_tickets' => \App\Models\Ticket::where('assigned_to', Auth::id())->count(),
+        'total_projects' => Project::count(),
+        'total_tickets' => Ticket::count(),
+        'open_tickets' => Ticket::where('status', '!=', 'closed')->count(),
+        'my_tickets' => Ticket::where('assigned_to', Auth::id())->count(),
     ];
 
     return view('dashboard', compact('recentProjects', 'recentTickets', 'stats'));
@@ -63,18 +70,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects.tickets', TicketController::class)->parameters([
         'tickets' => 'ticket:slug',
     ])->shallow();
-    Route::post('tickets/{ticket}/watchers', [\App\Http\Controllers\TicketWatcherController::class, 'store'])->name('tickets.watchers.store');
-    Route::delete('tickets/{ticket}/watchers/{user}', [\App\Http\Controllers\TicketWatcherController::class, 'destroy'])->name('tickets.watchers.destroy');
-    Route::post('tickets/{ticket}/time-entries', [\App\Http\Controllers\TimeEntryController::class, 'store'])->name('tickets.time.store');
-    Route::patch('time-entries/{timeEntry}', [\App\Http\Controllers\TimeEntryController::class, 'update'])->name('tickets.time.update');
-    Route::delete('time-entries/{timeEntry}', [\App\Http\Controllers\TimeEntryController::class, 'destroy'])->name('tickets.time.destroy');
-    Route::post('tickets/{ticket}/comments', [\App\Http\Controllers\TicketCommentController::class, 'store'])
+    Route::post('tickets/{ticket}/watchers', [TicketWatcherController::class, 'store'])->name('tickets.watchers.store');
+    Route::delete('tickets/{ticket}/watchers/{user}', [TicketWatcherController::class, 'destroy'])->name('tickets.watchers.destroy');
+    Route::post('tickets/{ticket}/time-entries', [TimeEntryController::class, 'store'])->name('tickets.time.store');
+    Route::patch('time-entries/{timeEntry}', [TimeEntryController::class, 'update'])->name('tickets.time.update');
+    Route::delete('time-entries/{timeEntry}', [TimeEntryController::class, 'destroy'])->name('tickets.time.destroy');
+    Route::post('tickets/{ticket}/comments', [TicketCommentController::class, 'store'])
         ->name('tickets.comments.store');
-    Route::get('comments/{comment}/edit', [\App\Http\Controllers\TicketCommentController::class, 'edit'])
+    Route::get('comments/{comment}/edit', [TicketCommentController::class, 'edit'])
         ->name('comments.edit');
-    Route::patch('comments/{comment}', [\App\Http\Controllers\TicketCommentController::class, 'update'])
+    Route::patch('comments/{comment}', [TicketCommentController::class, 'update'])
         ->name('tickets.comments.update');
-    Route::delete('comments/{comment}', [\App\Http\Controllers\TicketCommentController::class, 'destroy'])
+    Route::delete('comments/{comment}', [TicketCommentController::class, 'destroy'])
         ->name('tickets.comments.destroy');
     Route::get('/my-tickets', [TicketController::class, 'myTickets'])->name('tickets.mine');
 
@@ -97,9 +104,13 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes (policy-protected in controller)
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->parameters([
+        Route::resource('users', UserController::class)->parameters([
             'users' => 'user:slug',
         ]);
+
+        // Workflow management
+        Route::resource('workflows', WorkflowStateController::class)
+            ->middleware('can:workflow.manage');
     });
 });
 

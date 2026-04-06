@@ -271,9 +271,98 @@ ddev exec tail -f storage/logs/laravel.log
 
 ---
 
+## Workflow States
+
+Base path: `/workflows`
+
+### GET /workflows/states
+
+Get all global workflow states.
+
+Response 200 body:
+
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "slug": "open",
+            "label": "Open",
+            "description": "Ticket is open and awaiting assignment or action",
+            "color": "gray",
+            "icon": "circle",
+            "is_closed": false,
+            "is_predefined": true,
+            "order": 1,
+            "project_id": null
+        },
+        {
+            "id": 2,
+            "slug": "in_progress",
+            "label": "In Progress",
+            "description": "Ticket is actively being worked on",
+            "color": "blue",
+            "icon": "arrow-right",
+            "is_closed": false,
+            "is_predefined": true,
+            "order": 2,
+            "project_id": null
+        }
+    ]
+}
+```
+
+### GET /projects/{id}/workflows/states
+
+Get available workflow states for a specific project. Returns global states or project-specific states depending on the project's `workflow_type` setting.
+
+Response 200 body: Same structure as above, filtered based on project configuration.
+
+---
+
+### Extended Ticket Resource
+
+Tickets now include workflow state details and available transitions:
+
+```json
+{
+    "id": 456,
+    "project_id": 123,
+    "title": "Fix login",
+    "description": "...",
+    "status": "in_progress",
+    "status_details": {
+        "id": 2,
+        "slug": "in_progress",
+        "label": "In Progress",
+        "description": "Ticket is actively being worked on",
+        "color": "blue",
+        "icon": "arrow-right",
+        "is_closed": false,
+        "is_predefined": true,
+        "order": 2,
+        "project_id": null
+    },
+    "priority": "medium",
+    "available_transitions": [
+        { "slug": "testing", "label": "Testing", "color": "purple" },
+        { "slug": "blocked", "label": "Blocked", "color": "red" },
+        { "slug": "resolved", "label": "Resolved", "color": "green" }
+    ],
+    "created_at": "...",
+    "updated_at": "..."
+}
+```
+
+**Note**: The `status` field now accepts workflow state slugs instead of enum values. Valid values depend on the project's workflow configuration. Use the workflow states endpoints to get available options.
+
+---
+
 ## Notes
 
 - API uses numeric ids for resources (web uses slugs for some routes).
 - `user_id` is optional on create in development; production should specify an explicit user.
 - Sorting and pagination can be combined: `?sort=-id&page=2`.
+- Ticket `status` field now uses workflow state slugs. Check available states via `/projects/{id}/workflows/states`.
 - Consider enabling per-user tokens (Sanctum) and adding an OpenAPI spec if you need client SDKs.
+- See `docs/WORKFLOW_SYSTEM.md` for comprehensive workflow documentation.

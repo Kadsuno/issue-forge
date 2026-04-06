@@ -14,7 +14,7 @@ export default defineConfig({
         strictPort: true,
         https: false,
         hmr: {
-            host: 'laravel-ticket-system.ddev.site',
+            host: 'issue-forge.ddev.site',
             port: 5174,
             protocol: 'wss',
         },

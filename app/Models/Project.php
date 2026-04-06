@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Traits\HasSlug;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Project extends Model
 {
@@ -25,6 +27,7 @@ class Project extends Model
         'ticket_prefix',
         'color',
         'priority',
+        'workflow_type',
     ];
 
     protected $casts = [
@@ -66,9 +69,33 @@ class Project extends Model
     }
 
     /**
+     * Get workflow states for the project
+     */
+    public function workflowStates(): HasMany
+    {
+        return $this->hasMany(WorkflowState::class);
+    }
+
+    /**
+     * Get available workflow states for this project
+     */
+    public function getAvailableStates(): Collection
+    {
+        if ($this->workflow_type === 'custom') {
+            return WorkflowState::where('project_id', $this->id)
+                ->orderBy('order')
+                ->get();
+        }
+
+        return WorkflowState::whereNull('project_id')
+            ->orderBy('order')
+            ->get();
+    }
+
+    /**
      * Get attachments for the project
      */
-    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable');
     }

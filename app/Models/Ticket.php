@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Ticket extends Model
 {
@@ -17,6 +18,7 @@ class Ticket extends Model
         'title',
         'description',
         'status',
+        'previous_status',
         'priority',
         'project_id',
         'parent_ticket_id',
@@ -225,9 +227,49 @@ class Ticket extends Model
     }
 
     /**
+     * Get status history for the ticket
+     */
+    public function statusHistory(): HasMany
+    {
+        return $this->hasMany(TicketStatusHistory::class)->latest();
+    }
+
+    /**
+     * Get the current status as a WorkflowState object
+     */
+    public function getCurrentStatusObject(): ?WorkflowState
+    {
+        return WorkflowState::where('slug', $this->status)
+            ->where(function ($query) {
+                $query->whereNull('project_id')
+                    ->orWhere('project_id', $this->project_id);
+            })
+            ->first();
+    }
+
+    /**
+     * Check if user can change ticket to a new status
+     */
+    public function canUserChangeStatus(User $user, string $newStatus): bool
+    {
+        $targetState = WorkflowState::where('slug', $newStatus)
+            ->where(function ($query) {
+                $query->whereNull('project_id')
+                    ->orWhere('project_id', $this->project_id);
+            })
+            ->first();
+
+        if (! $targetState) {
+            return false;
+        }
+
+        return $targetState->canBeSetBy($user);
+    }
+
+    /**
      * Get attachments for the ticket
      */
-    public function attachments(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable');
     }
