@@ -94,6 +94,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | When unserializing cached values, PHP may only instantiate classes listed
+    | here. Use false to disallow object unserialization (recommended). If you
+    | intentionally cache PHP objects, list each allowed class explicitly.
+    |
+    */
+
+    'serializable_classes' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Key Prefix
     |--------------------------------------------------------------------------
     |

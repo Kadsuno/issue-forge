@@ -6,6 +6,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Project;
 use App\Models\Ticket;
+use App\Services\WorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,7 +22,7 @@ final class TicketApiValidationTest extends TestCase
         $this->adminToken = config('api.admin_token');
 
         // Seed workflow states
-        $workflowService = new \App\Services\WorkflowService;
+        $workflowService = new WorkflowService;
         $workflowService->seedPredefinedStates();
     }
 

@@ -10,6 +10,7 @@ use App\Http\Requests\Api\ProjectUpdateRequest;
 use App\Http\Resources\ProjectCollection;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 final class ProjectsController extends Controller
@@ -41,10 +42,10 @@ final class ProjectsController extends Controller
 
         // If no user_id provided, use the first available user (for API requests)
         if (! isset($validated['user_id'])) {
-            $user = \App\Models\User::first();
+            $user = User::first();
             if (! $user) {
                 // In testing/dev environments, create a default user if none exists
-                $user = \App\Models\User::factory()->create([
+                $user = User::factory()->create([
                     'name' => 'System User',
                     'email' => 'system@example.com',
                 ]);

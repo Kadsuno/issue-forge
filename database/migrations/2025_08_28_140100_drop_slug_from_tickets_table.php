@@ -14,7 +14,7 @@ return new class extends Migration
                 Schema::table('tickets', function (Blueprint $table) {
                     $table->dropUnique(['slug']);
                 });
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 // ignore if index doesn't exist
             }
 
@@ -34,7 +34,7 @@ return new class extends Migration
                 Schema::table('tickets', function (Blueprint $table) {
                     $table->unique('slug');
                 });
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 // ignore if cannot create unique index in rollback context
             }
         }

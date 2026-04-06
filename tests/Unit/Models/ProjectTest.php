@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 final class ProjectTest extends TestCase
@@ -94,8 +95,8 @@ final class ProjectTest extends TestCase
             'due_date' => '2025-12-31',
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $project->start_date);
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $project->due_date);
+        $this->assertInstanceOf(Carbon::class, $project->start_date);
+        $this->assertInstanceOf(Carbon::class, $project->due_date);
     }
 
     public function test_fillable_attributes(): void

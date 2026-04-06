@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\WorkflowState;
+use App\Services\WorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -22,7 +23,7 @@ final class WorkflowStateTest extends TestCase
         $this->artisan('db:seed', ['--class' => 'RolesAndPermissionsSeeder']);
 
         // Seed workflow states
-        $workflowService = new \App\Services\WorkflowService;
+        $workflowService = new WorkflowService;
         $workflowService->seedPredefinedStates();
     }
 

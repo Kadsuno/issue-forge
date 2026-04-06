@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminTokenMiddleware;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Add security headers to all web responses
         $middleware->web(append: [
-            App\Http\Middleware\SecurityHeaders::class,
+            SecurityHeaders::class,
         ]);
 
         // Spatie permission middleware aliases (use class-string to avoid static analysis errors)
@@ -22,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => 'Spatie\\Permission\\Middlewares\\RoleMiddleware',
             'permission' => 'Spatie\\Permission\\Middlewares\\PermissionMiddleware',
             'role_or_permission' => 'Spatie\\Permission\\Middlewares\\RoleOrPermissionMiddleware',
-            'token.admin' => App\Http\Middleware\AdminTokenMiddleware::class,
+            'token.admin' => AdminTokenMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

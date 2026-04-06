@@ -10,6 +10,7 @@ use App\Models\TicketComment;
 use App\Models\TimeEntry;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 final class TicketTest extends TestCase
@@ -171,7 +172,7 @@ final class TicketTest extends TestCase
             'due_date' => '2025-12-31 23:59:59',
         ]);
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $ticket->due_date);
+        $this->assertInstanceOf(Carbon::class, $ticket->due_date);
     }
 
     public function test_casts_estimate_minutes_to_integer(): void

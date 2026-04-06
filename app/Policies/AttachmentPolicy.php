@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Attachment;
+use App\Models\Project;
+use App\Models\Ticket;
+use App\Models\TicketComment;
 use App\Models\User;
 
 final class AttachmentPolicy
@@ -17,15 +20,15 @@ final class AttachmentPolicy
         // Users can download attachments if they can view the parent resource
         $attachable = $attachment->attachable;
 
-        if ($attachable instanceof \App\Models\Ticket) {
+        if ($attachable instanceof Ticket) {
             return $user->can('view', $attachable);
         }
 
-        if ($attachable instanceof \App\Models\Project) {
+        if ($attachable instanceof Project) {
             return true; // Projects are viewable by all authenticated users
         }
 
-        if ($attachable instanceof \App\Models\TicketComment) {
+        if ($attachable instanceof TicketComment) {
             return $user->can('view', $attachable->ticket);
         }
 
